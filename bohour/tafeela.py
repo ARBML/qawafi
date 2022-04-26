@@ -12,6 +12,7 @@ from bohour.zehaf import (
     Qabadh,
     Khaban,
     Qataa,
+    Qataf,
     Shakal,
     Tatheel,
     Tay,
@@ -108,7 +109,10 @@ class Mutafaelon(Tafeela):
 
 class Mafaelaton(Tafeela):
     name = "مفاعلتن"
-    allowed_zehafs = [Asab, Akal, Nakas]
+    # allowed_zehafs = [Asab, Akal, Nakas]
+    allowed_zehafs = [Asab]
+    allowed_ellas = [Asab, Qataf]
+    allowed_dharbs = [Asab, Qataf]
     pattern_int = 1101110
 
 

@@ -14,6 +14,7 @@ from bohour.tafeela import (
     Mutafaelon,
 )
 from bohour.zehaf import (
+    Asab,
     Hadhf,
     HadhfAndKhaban,
     Khaban,
@@ -21,6 +22,7 @@ from bohour.zehaf import (
     NoZehafNorEllah,
     Qabadh,
     Qataa,
+    Qataf,
     Tatheel,
 )
 
@@ -125,8 +127,18 @@ class Baseet(BaseBahr):
     sub_bahrs = (BaseetMajzoo, BaseetMukhalla)
 
 
-class Wafer:
+class WaferMajzoo(BaseBahr):
+    tafeelat = (Mafaelaton, Mafaelaton)
+    ella_dharbs_map = {
+        NoZehafNorEllah: (NoZehafNorEllah, Asab),
+        Asab: (NoZehafNorEllah, Asab),
+    }
+
+
+class Wafer(BaseBahr):
     tafeelat = (Mafaelaton, Mafaelaton, Mafaelaton)
+    ella_dharbs_map = {Qataf: (Qataf,)}
+    sub_bahrs = (WaferMajzoo,)
 
 
 class Kamel:

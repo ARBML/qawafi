@@ -145,7 +145,7 @@ class Hadhf(BaseEllahZehaf):
 #         self.tafeela.pattern[-1] = 0
 
 
-class HadhfAndKhaban(BaseDoubledZehaf):
+class HadhfAndKhaban(BaseEllahZehaf):
     """الحذف والخبن معا"""
 
     def modify_tafeela(self):
@@ -155,6 +155,20 @@ class HadhfAndKhaban(BaseDoubledZehaf):
         # khaban
         kaban = Khaban(self.tafeela)
         self.tafeela = kaban.modified_tafeela
+
+
+class Qataf(BaseEllahZehaf):
+    def modify_tafeela(self):
+        # hadhf
+        if Hadhf not in self.tafeela.allowed_ellas:
+            self.tafeela.allowed_ellas.append(Hadhf)
+        hadhf = Hadhf(self.tafeela)
+        self.tafeela = hadhf.modified_tafeela
+        # asab
+        if Asab not in self.tafeela.allowed_ellas:
+            self.tafeela.allowed_ellas.append(Asab)
+        asab = Asab(self.tafeela)
+        self.tafeela = asab.modified_tafeela
 
 
 class Qataa(BaseEllahZehaf):
@@ -195,8 +209,12 @@ class KhabanAndQataa(BaseDoubledZehaf):
 
     def modify_tafeela(self):
         # hadhf
+        if Qataa not in self.tafeela.allowed_ellas:
+            self.tafeela.allowed_ellas.append(Qataa)
         qataa = Qataa(self.tafeela)
         self.tafeela = qataa.modified_tafeela
         # khaban
+        if Khaban not in self.tafeela.allowed_ellas:
+            self.tafeela.allowed_ellas.append(Khaban)
         kaban = Khaban(self.tafeela)
         self.tafeela = kaban.modified_tafeela
