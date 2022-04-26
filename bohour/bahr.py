@@ -67,6 +67,21 @@ class BaseBahr:
         combinations.extend(self.sub_bahrs_combinations)
         return combinations
 
+    @property
+    def all_combinations_patterns(self):
+        patterns = list()
+        for combination in self.all_combinations:
+            pattern = ""
+            first_shatr, second_shatr = combination
+            pattern += "".join(
+                "".join(map(str, tafeela.pattern)) for tafeela in first_shatr
+            )
+            pattern += "".join(
+                "".join(map(str, tafeela.pattern)) for tafeela in second_shatr
+            )
+            patterns.append(pattern)
+        return patterns
+
 
 class Taweel(BaseBahr):
     tafeelat = (Fawlon, Mafaeelon, Fawlon, Mafaeelon)
