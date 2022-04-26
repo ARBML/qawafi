@@ -22,31 +22,31 @@ class Tafeela:
     def __init__(self, *args, **kwargs):
         self.original_pattern = list(map(int, str(self.pattern_int)))
         self.pattern = self.original_pattern[:]
+        self._assert_length_consistency()
+
+    def _assert_length_consistency(self):
         assert (
             len(self.pattern)
             == len(self.name.replace(" ", ""))
             == len(str(self.pattern_int))
         ), "pattern and name should have the same length"
 
-    def apply_zehaf(self, zehaf_class):
-        assert (
-            zehaf_class in self.allwed_zehafs
-        ), f"zehaf {zehaf_class.__name__} is not allowed for {self}"
-        self.pattern = self.original_pattern[:]
-        zehaf = zehaf_class(self)
-        self.pattern = zehaf.modified_pattern
-
-    def delete_from_tafeela_pattern(self, index):
+    def delete_from_pattern(self, index):
         del self.pattern[index]
         self.name = self.name[:index] + self.name[index + 1 :]
-        self.pattern_int = int(
-            str(self.pattern_int)[:index] + str(self.pattern_int)[index + 1 :]
-        )
-        assert (
-            len(self.pattern)
-            == len(self.name.replace(" ", ""))
-            == len(str(self.pattern_int))
-        ), "pattern and name should have the same length"
+        self.pattern_int = int("".join(map(str, self.pattern)))
+        self._assert_length_consistency()
+
+    def add_to_pattern(self, index, number, char_mask):
+        self.pattern.insert(index, number)
+        self.name = self.name[:index] + char_mask + self.name[index:]
+        self.pattern_int = int("".join(map(str, self.pattern)))
+        self._assert_length_consistency()
+
+    def edit_pattern_at_index(self, index, number):
+        self.pattern[index] = number
+        self.pattern_int = int("".join(map(str, self.pattern)))
+        self._assert_length_consistency
 
     def all_zehaf_tafeela_forms(self):
         forms = [self]

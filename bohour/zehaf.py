@@ -44,8 +44,7 @@ class BaseTaskeenZehaf(BaseEllahZehaf):
         assert (
             self.tafeela.pattern[self.affected_index] == 1
         ), f"tafeela pattern index {self.affected_index} should be sakin"
-        self.tafeela.pattern[self.affected_index] = 0
-        return self.tafeela
+        self.tafeela.edit_pattern_at_index(index=self.affected_index, number=0)
 
 
 class Khaban(BaseHazfZehaf):
