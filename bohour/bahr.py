@@ -29,6 +29,15 @@ class BaseBahr:
         return tafeelas_forms
 
     @property
+    def sub_bahrs_combinations(self):
+        combinations = list()
+        if self.sub_bahrs:
+            for sub_bahr_class in self.sub_bahrs:
+                sub_bahr = sub_bahr_class()
+                combinations.extend(sub_bahr.all_combinations)
+        return combinations
+
+    @property
     def all_combinations(self):
         combinations = list()
         for ella_class, dharb_classes in self.ella_dharbs_map.items():
@@ -54,6 +63,8 @@ class BaseBahr:
                     )
                 )
             )
+        # add combinations for sub bahrs
+        combinations.extend(self.sub_bahrs_combinations)
         return combinations
 
 
