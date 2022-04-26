@@ -98,12 +98,31 @@ class Taweel(BaseBahr):
     ella_dharbs_map = {Qabadh: (Qabadh, Hadhf, NoZehafNorEllah,)}
 
 
-class Madeed:
+class Madeed(BaseBahr):
     tafeelat = (Faelaton, Faelon, Faelaton)
+    ella_dharbs_map = {
+        NoZehafNorEllah: (NoZehafNorEllah,),
+        Hadhf: (Qataa,),
+        HadhfAndKhaban: (HadhfAndKhaban,),
+    }
 
 
-class Baseet:
+class BaseetMajzoo(BaseBahr):
+    tafeelat = (Mustafelon, Faelon, Mustafelon)
+    ella_dharbs_map = {
+        Qataa: (NoZehafNorEllah,),
+        NoZehafNorEllah: (NoZehafNorEllah, Tatheel, Qataa),
+    }
+
+
+class BaseetMukhalla(BaseetMajzoo):
+    ella_dharbs_map = {KhabanAndQataa: (KhabanAndQataa,)}
+
+
+class Baseet(BaseBahr):
     tafeelat = (Mustafelon, Faelon, Mustafelon, Faelon)
+    ella_dharbs_map = {Khaban: (Khaban, Qataa)}
+    sub_bahrs = (BaseetMajzoo, BaseetMukhalla)
 
 
 class Wafer:
