@@ -125,11 +125,78 @@ class Nakas(BaseDoubledZehaf):
 class Hadhf(BaseEllahZehaf):
     """حذف السبب الأخير"""
 
-    @property
-    def modified_tafeela(self):
-        assert self.tafeela.pattern[-2:] == [1, 0], "assertions failed"
+    def modify_tafeela(self):
+        assert self.tafeela.pattern[-2:] == [
+            1,
+            0,
+        ], "last two items of the tafeela pattern should be 1,0"
         for _ in range(2):
-            self.tafeela.delete_from_tafeela_pattern(
-                index=len(self.tafeela.pattern) - 1
-            )
-        return self.tafeela
+            self.tafeela.delete_from_pattern(index=len(self.tafeela.pattern) - 1)
+
+
+# class Qasar(BaseEllahZehaf):
+#     """حذف الساكن الأخير وتسكين ما قبله"""
+
+#     def modify_tafeela(self):
+#         assert (
+#             self.tafeela.pattern[-1] == 0 and self.tafeela.pattern[-2] == 1
+#         ), f"last tow items of tafeela {self.tafeela} should be 0,1"
+#         self.tafeela.delete_from_pattern(index=len(self.tafeela.pattern) - 1)
+#         self.tafeela.pattern[-1] = 0
+
+
+class HadhfAndKhaban(BaseDoubledZehaf):
+    """الحذف والخبن معا"""
+
+    def modify_tafeela(self):
+        # hadhf
+        hadhf = Hadhf(self.tafeela)
+        self.tafeela = hadhf.modified_tafeela
+        # khaban
+        kaban = Khaban(self.tafeela)
+        self.tafeela = kaban.modified_tafeela
+
+
+class Qataa(BaseEllahZehaf):
+    """حذف آخر الوتد المجموع وتسكين ما قبله"""
+
+    """
+    هو ذات القصر، 
+    لكنه اصطلاح آخر للتفريق بين التفعيلة التي آخرها وتد مجموع أو أخرها سبب خفيف
+    """
+
+    def modify_tafeela(self):
+        assert (
+            self.tafeela.pattern[-1] == 0 and self.tafeela.pattern[-2] == 1
+        ), f"last tow items of tafeela {self.tafeela} should be 0,1"
+        self.tafeela.delete_from_pattern(index=len(self.tafeela.pattern) - 1)
+        self.tafeela.edit_pattern_at_index(
+            index=len(self.tafeela.pattern) - 1, number=0,
+        )
+
+
+class Tatheel(BaseEllahZehaf):
+    """زيادة حرف ساكن على آخر الوتد المجموع"""
+
+    def modify_tafeela(self):
+        """
+        technically, we should add at the last.
+         However, after adding we need to change
+         the one to last character, usually 'noon', to 'alef'.
+         we thought we just add 'alef' before last and that is it.
+        """
+        self.tafeela.add_to_pattern(
+            index=len(self.tafeela.pattern) - 1, number=0, char_mask="ا"
+        )
+
+
+class KhabanAndQataa(BaseDoubledZehaf):
+    """الخبن والقطع معا"""
+
+    def modify_tafeela(self):
+        # hadhf
+        qataa = Qataa(self.tafeela)
+        self.tafeela = qataa.modified_tafeela
+        # khaban
+        kaban = Khaban(self.tafeela)
+        self.tafeela = kaban.modified_tafeela

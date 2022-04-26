@@ -1,5 +1,6 @@
-from functools import cached_property
 import itertools
+
+
 from bohour.tafeela import (
     Fae_laton,
     Faelaton,
@@ -12,7 +13,16 @@ from bohour.tafeela import (
     Mustafelon,
     Mutafaelon,
 )
-from bohour.zehaf import Hadhf, NoZehafNorEllah, Qabadh
+from bohour.zehaf import (
+    Hadhf,
+    HadhfAndKhaban,
+    Khaban,
+    KhabanAndQataa,
+    NoZehafNorEllah,
+    Qabadh,
+    Qataa,
+    Tatheel,
+)
 
 
 class BaseBahr:
