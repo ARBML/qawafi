@@ -5,29 +5,42 @@ class BaseEllahZehaf:
     def __init__(self, tafeela):
         self.tafeela = copy.deepcopy(tafeela)
 
+    def modify_tafeela(self):
+        """This method needs to be overridden. If not, it will return the tafeela unchanged"""
+
+    @property
+    def modified_tafeela(self):
+        assert (
+            self.__class__ in self.tafeela.allowed_zehafs
+            or self.__class__ in self.tafeela.allowed_ellas
+            or self.__class__ in self.tafeela.allowed_dharbs
+            or self.__class__.__name__ == "NoZehafNorEllah"
+        ), f"The zehaf/ella/dharb {self.__class__.__name__} is not allowed for {self.tafeela}"
+        if hasattr(self, "assertions"):
+            assert all(self.assertions), "assertions failed"
+        self.modify_tafeela()
+        self.tafeela.applied_zehaf = self.__class__
+        return self.tafeela
+
 
 class NoZehafNorEllah(BaseEllahZehaf):
     @property
     def modified_tafeela(self):
+        self.tafeela.applied_zehaf = None
         return self.tafeela
 
 
-class HazfZehaf(BaseEllahZehaf):
+class BaseHazfZehaf(BaseEllahZehaf):
     affected_index = None
 
-    @property
-    def modified_tafeela(self):
-        if hasattr(self, "assertions"):
-            assert all(self.assertions), "assertions failed"
-        self.tafeela.delete_from_tafeela_pattern(self.affected_index)
-        return self.tafeela
+    def modify_tafeela(self):
+        self.tafeela.delete_from_pattern(self.affected_index)
 
 
-class TaskeenZehaf(BaseEllahZehaf):
+class BaseTaskeenZehaf(BaseEllahZehaf):
     affected_index = None
 
-    @property
-    def modified_tafeela(self):
+    def modify_tafeela(self):
         assert (
             self.tafeela.pattern[self.affected_index] == 1
         ), f"tafeela pattern index {self.affected_index} should be sakin"
@@ -35,35 +48,35 @@ class TaskeenZehaf(BaseEllahZehaf):
         return self.tafeela
 
 
-class Khaban(HazfZehaf):
+class Khaban(BaseHazfZehaf):
     affected_index = 1
 
 
-class Tay(HazfZehaf):
+class Tay(BaseHazfZehaf):
     affected_index = 4
 
 
-class Waqas(HazfZehaf):
+class Waqas(BaseHazfZehaf):
     affected_index = 1
 
 
-class Qabadh(HazfZehaf):
+class Qabadh(BaseHazfZehaf):
     affected_index = 4
 
 
-class Kaff(HazfZehaf):
+class Kaff(BaseHazfZehaf):
     affected_index = 6
 
 
-class Akal(HazfZehaf):
+class Akal(BaseHazfZehaf):
     affected_index = 4
 
 
-class Edmaar(TaskeenZehaf):
+class Edmaar(BaseTaskeenZehaf):
     affected_index = 1
 
 
-class Asab(TaskeenZehaf):
+class Asab(BaseTaskeenZehaf):
     affected_index = 4
 
 
@@ -73,21 +86,22 @@ class Asab(TaskeenZehaf):
 class BaseDoubledZehaf(BaseEllahZehaf):
     zehafs = []
 
-    @property
-    def modified_tafeela(self):
+    def modify_tafeela(self):
         assert len(self.zehafs) == 2, "maximum allowed zehafs should be 2"
-        hazf_zehafs = filter(lambda zehaf: isinstance(zehaf, HazfZehaf), self.zehafs)
-        taskeen_zehafs = filter(
-            lambda zehaf: isinstance(zehaf, TaskeenZehaf), self.zehafs,
+        hazf_zehafs = filter(
+            lambda zehaf: isinstance(zehaf, BaseHazfZehaf), self.zehafs
         )
-        for zehaf in taskeen_zehafs:
-            self.tafeela = zehaf.modified_tafeela
+        taskeen_zehafs = filter(
+            lambda zehaf: isinstance(zehaf, BaseTaskeenZehaf), self.zehafs,
+        )
         # https://stackoverflow.com/a/28697246/4412324
         deletion_indices = sorted(
             [zehaf.affected_index for zehaf in hazf_zehafs], reverse=True,
         )
         for index in deletion_indices:
             del self.tafeela.pattern[index]
+        for zehaf in taskeen_zehafs:
+            self.tafeela = zehaf.modified_tafeela
 
 
 class Khabal(BaseDoubledZehaf):
