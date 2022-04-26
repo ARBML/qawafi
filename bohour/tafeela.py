@@ -17,7 +17,10 @@ from bohour.zehaf import (
 class Tafeela:
     name = ""
     allwed_zehafs = list()
+    allowed_ellas = []
+    allowed_dharbs = []
     pattern_int = 0
+    applied_zehaf = None
 
     def __init__(self, *args, **kwargs):
         self.original_pattern = list(map(int, str(self.pattern_int)))
@@ -71,18 +74,24 @@ class Fawlon(Tafeela):
 class Faelon(Tafeela):
     name = "فاعلن"
     allowed_zehafs = [Khaban]
+    allowed_ellas = [Khaban]
+    allowed_dharbs = [Khaban, Qataa]
     pattern_int = 10110
 
 
 class Mafaeelon(Tafeela):
     name = "مفاعيلن"
     allowed_zehafs = [Qabadh, Kaff]
+    allowed_ellas = [Qabadh]
+    allowed_dharbs = [Qabadh, Hadhf]
     pattern_int = 1101010
 
 
 class Mustafelon(Tafeela):
     name = "مستفعلن"
     allowed_zehafs = [Khaban, Tay, Khabal]
+    allowed_ellas = [Qataa, KhabanAndQataa]
+    allowed_dharbs = [Tatheel, Qataa, KhabanAndQataa]
     pattern_int = 1010110
 
 
@@ -120,3 +129,5 @@ class Faelaton(Tafeela):
     name = "فاعلاتن"
     allowed_zehafs = [Khaban, Kaff, Shakal]
     pattern_int = 1011010
+    allowed_ellas = [Hadhf, HadhfAndKhaban]
+    allowed_dharbs = [Qataa, HadhfAndKhaban]
