@@ -46,7 +46,7 @@ class Khaban(BaseSingleHazfZehaf):
 
 
 class Tay(BaseSingleHazfZehaf):
-    affected_index = 4
+    affected_index = 3
 
 
 class Waqas(BaseSingleHazfZehaf):
@@ -92,7 +92,7 @@ class BaseDoubledZehaf(BaseEllahZehaf):
     def modify_tafeela(self):
         assert len(self.zehafs) == 2, "maximum allowed zehafs should be 2"
         assert all(
-            zehaf in [BaseSingleHazfZehaf, BaseSingleTaskeenZehaf]
+            issubclass(zehaf, (BaseSingleHazfZehaf, BaseSingleTaskeenZehaf))
             for zehaf in self.zehafs
         ), "zehafs should be derived either from BaseSingleHadhfZehaf or BaseSingleTaskeenZehaf"
         hazf_zehafs = filter(
@@ -131,10 +131,6 @@ class Nakas(BaseDoubledZehaf):
 
 class TayAndKasf(BaseDoubledZehaf):
     zehafs = [Tay, Kasf]
-
-
-class khabalAndKasf(BaseDoubledZehaf):
-    zehafs = [Khabal, Kasf]
 
 
 ## Added Ellal
@@ -358,3 +354,13 @@ class WaqfAndTay(BaseEllahZehaf):
         # Waqf
         waqf = Waqf(self.tafeela)
         self.tafeela = waqf.modified_tafeela
+
+
+class khabalAndKasf(BaseEllahZehaf):
+    def modify_tafeela(self):
+        # Khabal
+        khabal = Khabal(self.tafeela)
+        self.tafeela = khabal.modified_tafeela
+        # Kasf
+        kasf = Kasf(self.tafeela)
+        self.tafeela = kasf.modified_tafeela
