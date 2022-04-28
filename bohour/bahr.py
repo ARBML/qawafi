@@ -35,6 +35,7 @@ from bohour.zehaf import (
     Tarfeel,
     TarfeelAndEdmaar,
     Tasbeegh,
+    Tasheeth,
     Tatheel,
     TatheelAndEdmaar,
     Tay,
@@ -410,8 +411,35 @@ class Munsareh(BaseBahr):
     sub_bahrs = (MunsarehManhook,)
 
 
-class Khafeef:
+class KhafeefMajzoo(BaseBahr):
     tafeelat = (Faelaton, Mustafe_lon, Faelaton)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Khaban,
+            KhabanAndQataa,
+        ),
+        Khaban: (Khaban,),
+    }
+
+
+class Khafeef(BaseBahr):
+    tafeelat = (Faelaton, Mustafe_lon, Faelaton)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Tasheeth,
+            Hadhf,
+            HadhfAndKhaban,
+        ),
+        Khaban: (
+            NoZehafNorEllah,
+            Tasheeth,
+            Hadhf,
+            HadhfAndKhaban,
+        ),
+    }
+    sub_bahrs = (KhafeefMajzoo,)
 
 
 class Mudhare:

@@ -69,6 +69,10 @@ class Kasf(BaseSingleHazfZehaf):
     affected_index = 6
 
 
+class Tasheeth(BaseSingleHazfZehaf):
+    affected_index = 2
+
+
 class Edmaar(BaseSingleTaskeenZehaf):
     affected_index = 1
 
