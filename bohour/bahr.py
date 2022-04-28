@@ -15,21 +15,33 @@ from bohour.tafeela import (
 )
 from bohour.zehaf import (
     Asab,
+    Edmaar,
     Hadhf,
     HadhfAndKhaban,
+    Hathath,
+    HathathAndEdmaar,
+    Kaff,
+    Khabal,
     Khaban,
     KhabanAndQataa,
     NoZehafNorEllah,
     Qabadh,
     Qataa,
+    QataaAndEdmaar,
     Qataf,
+    Shakal,
+    Tarfeel,
+    TarfeelAndEdmaar,
+    Tasbeegh,
     Tatheel,
+    TatheelAndEdmaar,
+    Tay,
 )
 
 
 class BaseBahr:
     tafeelat = tuple()
-    ella_dharbs_map = dict()
+    arod_dharbs_map = dict()
     sub_bahrs = tuple()
     only_one_shatr = False
 
@@ -395,4 +407,3 @@ class Mutaqareb:
 
 class Mutadarak:
     tafeelat = (Faelon, Faelon, Faelon, Faelon)
-

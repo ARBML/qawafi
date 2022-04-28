@@ -4,6 +4,8 @@ from bohour.zehaf import (
     Edmaar,
     Hadhf,
     HadhfAndKhaban,
+    Hathath,
+    HathathAndEdmaar,
     Kaff,
     Khabal,
     KhabanAndQataa,
@@ -12,9 +14,13 @@ from bohour.zehaf import (
     Qabadh,
     Khaban,
     Qataa,
+    QataaAndEdmaar,
     Qataf,
     Shakal,
+    Tarfeel,
+    TarfeelAndEdmaar,
     Tatheel,
+    TatheelAndEdmaar,
     Tay,
     Waqas,
 )
@@ -23,8 +29,6 @@ from bohour.zehaf import (
 class Tafeela:
     name = ""
     allwed_zehafs = list()
-    allowed_ellas = []
-    allowed_dharbs = []
     pattern_int = 0
     applied_zehaf = None
 
