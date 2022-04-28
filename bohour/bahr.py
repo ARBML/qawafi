@@ -324,8 +324,45 @@ class Rajaz(BaseBahr):
     sub_bahrs = (RajazMajzoo, RajazMashtoor, RajazManhook)
 
 
-class Ramal:
+class RamalMajzoo(BaseBahr):
     tafeelat = (Faelaton, Faelaton, Faelaton)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Khaban,
+            Tasbeegh,
+            Hadhf,
+        ),
+        Khaban: {
+            NoZehafNorEllah,
+            Khaban,
+            Tasbeegh,
+            Hadhf,
+        },
+    }
+
+
+class Ramal(BaseBahr):
+    tafeelat = (Faelaton, Faelaton, Faelaton)
+    arod_dharbs_map = {
+        Hadhf: (
+            NoZehafNorEllah,
+            Khaban,
+            Hadhf,
+            HadhfAndKhaban,
+            Qataa,  # originally Qasar, bu they are technically the same
+            KhabanAndQataa,
+        ),
+        HadhfAndKhaban: {
+            NoZehafNorEllah,
+            Khaban,
+            Hadhf,
+            HadhfAndKhaban,
+            Qataa,
+            KhabanAndQataa,
+        },
+    }
+    sub_bahrs = (RamalMajzoo,)
 
 
 class Saree:
