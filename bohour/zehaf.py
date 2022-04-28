@@ -1,4 +1,5 @@
 import copy
+from functools import cached_property
 
 
 class BaseEllahZehaf:
@@ -8,7 +9,7 @@ class BaseEllahZehaf:
     def modify_tafeela(self):
         """This method needs to be overridden. If not, it will return the tafeela unchanged"""
 
-    @property
+    @cached_property
     def modified_tafeela(self):
         if hasattr(self, "assertions"):
             assert all(self.assertions), "assertions failed"
@@ -18,7 +19,7 @@ class BaseEllahZehaf:
 
 
 class NoZehafNorEllah(BaseEllahZehaf):
-    @property
+    @cached_property
     def modified_tafeela(self):
         self.tafeela.applied_zehaf = None
         return self.tafeela
@@ -368,3 +369,15 @@ class khabalAndKasf(BaseEllahZehaf):
         # Kasf
         kasf = Kasf(self.tafeela)
         self.tafeela = kasf.modified_tafeela
+
+
+class Batr(BaseEllahZehaf):
+    """الحذف والقطع معا"""
+
+    def modify_tafeela(self):
+        # Hadhf
+        hadhf = Hadhf(self.tafeela)
+        self.tafeela = hadhf.modified_tafeela
+        # Qataa
+        qataa = Qataa(self.tafeela)
+        self.tafeela = qataa.modified_tafeela
