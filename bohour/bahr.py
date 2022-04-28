@@ -31,6 +31,7 @@ class BaseBahr:
     tafeelat = tuple()
     ella_dharbs_map = dict()
     sub_bahrs = tuple()
+    only_one_shatr = False
 
     @property
     def all_shatr_combinations(self):
@@ -54,6 +55,7 @@ class BaseBahr:
         last_tafeela_class = self.tafeelat[-1]
         last_tafeela = last_tafeela_class()
         return last_tafeela
+
     @property
     def _one_shatr_combinations(self):
         assert isinstance(
@@ -68,6 +70,14 @@ class BaseBahr:
                 ]
             )
         )
+
+    @property
+    def all_combinations(self):
+        combinations = list()
+        if self.only_one_shatr:
+            return self._one_shatr_combinations
+        for ella_class, dharb_classes in self.arod_dharbs_map.items():
+            ella = ella_class(self.last_tafeela)
             first_shatr_combinations = list(
                 itertools.product(*self.all_shatr_combinations, [ella.modified_tafeela])
             )
@@ -75,7 +85,7 @@ class BaseBahr:
                 itertools.product(
                     *self.all_shatr_combinations,
                     [
-                        dharb_class(last_tafeela).modified_tafeela
+                        dharb_class(self.last_tafeela).modified_tafeela
                         for dharb_class in dharb_classes
                     ]
                 )
@@ -83,7 +93,8 @@ class BaseBahr:
             combinations.extend(
                 list(
                     itertools.product(
-                        first_shatr_combinations, second_shatr_combinations,
+                        first_shatr_combinations,
+                        second_shatr_combinations,
                     )
                 )
             )
