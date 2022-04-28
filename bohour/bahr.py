@@ -398,8 +398,16 @@ class Saree(BaseBahr):
     sub_bahrs = (SareehMashtoor,)
 
 
-class Munsareh:
+class MunsarehManhook(BaseBahr):
+    tafeelat = (Mustafelon, Mafoolato)
+    arod_dharbs_map = {Waqf, Kasf}
+    only_one_shatr = True
+
+
+class Munsareh(BaseBahr):
     tafeelat = (Mustafelon, Mafoolato, Mustafelon)
+    arod_dharbs_map = {Tay: (Tay, Qataa)}
+    sub_bahrs = (MunsarehManhook,)
 
 
 class Khafeef:
