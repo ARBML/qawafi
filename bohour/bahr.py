@@ -218,8 +218,16 @@ class Kamel(BaseBahr):
     sub_bahrs = (KamelMajzoo,)
 
 
-class Hazag:
+class Hazaj(BaseBahr):
     tafeelat = (Mafaeelon, Mafaeelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (NoZehafNorEllah, Hadhf),
+        Kaff: (
+            NoZehafNorEllah,
+            Hadhf,
+        ),
+    }
+
 
 
 class Rajaz:
