@@ -442,16 +442,46 @@ class Khafeef(BaseBahr):
     sub_bahrs = (KhafeefMajzoo,)
 
 
-class Mudhare:
+class Mudhare(BaseBahr):
     tafeelat = (Mafaeelon, Fae_laton)
+    arod_dharbs_map = {NoZehafNorEllah: (NoZehafNorEllah,)}
+
+    @property
+    def all_combinations(self):
+        """
+        this bahr, unlike other bahrs, its hashaw should
+        have zehaf!
+        """
+        combinations = super().all_combinations
+        zehafed_combinations = list(
+            filter(
+                lambda combination: combination[0][0].applied_zehaf is not None
+                and combination[1][0].applied_zehaf is not None,
+                combinations,
+            )
+        )
+        return zehafed_combinations
 
 
-class Muqtadheb:
+class Muqtadheb(BaseBahr):
     tafeelat = (Mafoolato, Mustafelon)
+    arod_dharbs_map = {Tay: (Tay,)}
 
 
-class Mujtath:
+class Mujtath(BaseBahr):
     tafeelat = (Mustafe_lon, Faelaton)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Khaban,
+            Tasheeth,
+        ),
+        Khaban: (
+            NoZehafNorEllah,
+            Khaban,
+            Tasheeth,
+        ),
+    }
 
 
 class Mutaqareb:
