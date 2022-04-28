@@ -54,6 +54,20 @@ class BaseBahr:
         last_tafeela_class = self.tafeelat[-1]
         last_tafeela = last_tafeela_class()
         return last_tafeela
+    @property
+    def _one_shatr_combinations(self):
+        assert isinstance(
+            self.arod_dharbs_map, set
+        ), "if only_one_shatr is true, arood_dharbs_map should be a set"
+        return list(
+            itertools.product(
+                *self.all_shatr_combinations,
+                [
+                    arood_class(self.last_tafeela).modified_tafeela
+                    for arood_class in self.arod_dharbs_map
+                ]
+            )
+        )
             first_shatr_combinations = list(
                 itertools.product(*self.all_shatr_combinations, [ella.modified_tafeela])
             )
