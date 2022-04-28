@@ -229,9 +229,99 @@ class Hazaj(BaseBahr):
     }
 
 
+class RajazManhook(BaseBahr):
+    tafeelat = (Mustafelon, Mustafelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah,
+        Khaban,
+        Tay,
+        Khabal,
+        Qataa,
+        KhabanAndQataa,
+    }
+    only_one_shatr = True
 
-class Rajaz:
+
+class RajazMashtoor(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon, Mustafelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah,
+        Khaban,
+        Tay,
+        Khabal,
+        Qataa,
+        KhabanAndQataa,
+    }
+    only_one_shatr = True
+
+
+class RajazMajzoo(BaseBahr):
+    tafeelat = (Mustafelon, Mustafelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+        ),
+        Khaban: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+        ),
+        Tay: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+        ),
+        Khabal: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+        ),
+    }
+
+
+class Rajaz(BaseBahr):
+    tafeelat = (Mustafelon, Mustafelon, Mustafelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+            Qataa,
+            KhabanAndQataa,
+        ),
+        Khaban: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+            Qataa,
+            KhabanAndQataa,
+        ),
+        Tay: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+            Qataa,
+            KhabanAndQataa,
+        ),
+        Khabal: (
+            NoZehafNorEllah,
+            Khaban,
+            Tay,
+            Khabal,
+            Qataa,
+            KhabanAndQataa,
+        ),
+    }
+    sub_bahrs = (RajazMajzoo, RajazMashtoor, RajazManhook)
 
 
 class Ramal:
