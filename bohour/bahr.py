@@ -120,12 +120,18 @@ class BaseBahr:
 
 class Taweel(BaseBahr):
     tafeelat = (Fawlon, Mafaeelon, Fawlon, Mafaeelon)
-    ella_dharbs_map = {Qabadh: (Qabadh, Hadhf, NoZehafNorEllah,)}
+    arod_dharbs_map = {
+        Qabadh: (
+            Qabadh,
+            Hadhf,
+            NoZehafNorEllah,
+        )
+    }
 
 
 class Madeed(BaseBahr):
     tafeelat = (Faelaton, Faelon, Faelaton)
-    ella_dharbs_map = {
+    arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah,),
         Hadhf: (Qataa,),
         HadhfAndKhaban: (HadhfAndKhaban,),
@@ -134,25 +140,25 @@ class Madeed(BaseBahr):
 
 class BaseetMajzoo(BaseBahr):
     tafeelat = (Mustafelon, Faelon, Mustafelon)
-    ella_dharbs_map = {
+    arod_dharbs_map = {
         Qataa: (NoZehafNorEllah,),
         NoZehafNorEllah: (NoZehafNorEllah, Tatheel, Qataa),
     }
 
 
 class BaseetMukhalla(BaseetMajzoo):
-    ella_dharbs_map = {KhabanAndQataa: (KhabanAndQataa,)}
+    arod_dharbs_map = {KhabanAndQataa: (KhabanAndQataa,)}
 
 
 class Baseet(BaseBahr):
     tafeelat = (Mustafelon, Faelon, Mustafelon, Faelon)
-    ella_dharbs_map = {Khaban: (Khaban, Qataa)}
+    arod_dharbs_map = {Khaban: (Khaban, Qataa)}
     sub_bahrs = (BaseetMajzoo, BaseetMukhalla)
 
 
 class WaferMajzoo(BaseBahr):
     tafeelat = (Mafaelaton, Mafaelaton)
-    ella_dharbs_map = {
+    arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Asab),
         Asab: (NoZehafNorEllah, Asab),
     }
@@ -160,7 +166,7 @@ class WaferMajzoo(BaseBahr):
 
 class Wafer(BaseBahr):
     tafeelat = (Mafaelaton, Mafaelaton, Mafaelaton)
-    ella_dharbs_map = {Qataf: (Qataf,)}
+    arod_dharbs_map = {Qataf: (Qataf,)}
     sub_bahrs = (WaferMajzoo,)
 
 
