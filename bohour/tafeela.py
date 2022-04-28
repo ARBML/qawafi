@@ -80,30 +80,25 @@ class Fawlon(Tafeela):
 class Faelon(Tafeela):
     name = "فاعلن"
     allowed_zehafs = [Khaban]
-    allowed_ellas = [Khaban]
-    allowed_dharbs = [Khaban, Qataa]
     pattern_int = 10110
 
 
 class Mafaeelon(Tafeela):
     name = "مفاعيلن"
     allowed_zehafs = [Qabadh, Kaff]
-    allowed_ellas = [Qabadh]
-    allowed_dharbs = [Qabadh, Hadhf]
     pattern_int = 1101010
 
 
 class Mustafelon(Tafeela):
     name = "مستفعلن"
     allowed_zehafs = [Khaban, Tay, Khabal]
-    allowed_ellas = [Qataa, KhabanAndQataa]
-    allowed_dharbs = [Tatheel, Qataa, KhabanAndQataa]
     pattern_int = 1010110
 
 
 class Mutafaelon(Tafeela):
     name = "متفاعلن"
-    allowed_zehafs = [Edmaar, Waqas, Khazal]
+    # allowed_zehafs = [Edmaar, Waqas, Khazal]
+    allowed_zehafs = [Edmaar]
     pattern_int = 1110110
 
 
@@ -111,8 +106,6 @@ class Mafaelaton(Tafeela):
     name = "مفاعلتن"
     # allowed_zehafs = [Asab, Akal, Nakas]
     allowed_zehafs = [Asab]
-    allowed_ellas = [Asab, Qataf]
-    allowed_dharbs = [Asab, Qataf]
     pattern_int = 1101110
 
 
@@ -138,5 +131,3 @@ class Faelaton(Tafeela):
     name = "فاعلاتن"
     allowed_zehafs = [Khaban, Kaff, Shakal]
     pattern_int = 1011010
-    allowed_ellas = [Hadhf, HadhfAndKhaban]
-    allowed_dharbs = [Qataa, HadhfAndKhaban]

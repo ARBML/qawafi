@@ -10,12 +10,6 @@ class BaseEllahZehaf:
 
     @property
     def modified_tafeela(self):
-        assert (
-            self.__class__ in self.tafeela.allowed_zehafs
-            or self.__class__ in self.tafeela.allowed_ellas
-            or self.__class__ in self.tafeela.allowed_dharbs
-            or self.__class__.__name__ == "NoZehafNorEllah"
-        ), f"The zehaf/ella/dharb {self.__class__.__name__} is not allowed for {self.tafeela}"
         if hasattr(self, "assertions"):
             assert all(self.assertions), "assertions failed"
         self.modify_tafeela()
