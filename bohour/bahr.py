@@ -15,6 +15,7 @@ from bohour.tafeela import (
 )
 from bohour.zehaf import (
     Asab,
+    Batr,
     Edmaar,
     Hadhf,
     HadhfAndKhaban,
@@ -31,7 +32,6 @@ from bohour.zehaf import (
     QataaAndEdmaar,
     Qataf,
     Salam,
-    Shakal,
     Tarfeel,
     TarfeelAndEdmaar,
     Tasbeegh,
@@ -139,13 +139,7 @@ class BaseBahr:
 
 class Taweel(BaseBahr):
     tafeelat = (Fawlon, Mafaeelon, Fawlon, Mafaeelon)
-    arod_dharbs_map = {
-        Qabadh: (
-            Qabadh,
-            Hadhf,
-            NoZehafNorEllah,
-        )
-    }
+    arod_dharbs_map = {Qabadh: (Qabadh, Hadhf, NoZehafNorEllah)}
 
 
 class Madeed(BaseBahr):
@@ -225,13 +219,7 @@ class Kamel(BaseBahr):
             QataaAndEdmaar,
             HathathAndEdmaar,
         ),
-        Edmaar: (
-            NoZehafNorEllah,
-            Edmaar,
-            Qataa,
-            QataaAndEdmaar,
-            HathathAndEdmaar,
-        ),
+        Edmaar: (NoZehafNorEllah, Edmaar, Qataa, QataaAndEdmaar, HathathAndEdmaar),
         Hathath: (Hathath, HathathAndEdmaar),
     }
     sub_bahrs = (KamelMajzoo,)
@@ -241,104 +229,39 @@ class Hazaj(BaseBahr):
     tafeelat = (Mafaeelon, Mafaeelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Hadhf),
-        Kaff: (
-            NoZehafNorEllah,
-            Hadhf,
-        ),
+        Kaff: (NoZehafNorEllah, Hadhf),
     }
 
 
 class RajazManhook(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon)
-    arod_dharbs_map = {
-        NoZehafNorEllah,
-        Khaban,
-        Tay,
-        Khabal,
-        Qataa,
-        KhabanAndQataa,
-    }
+    arod_dharbs_map = {NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa}
     only_one_shatr = True
 
 
 class RajazMashtoor(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon, Mustafelon)
-    arod_dharbs_map = {
-        NoZehafNorEllah,
-        Khaban,
-        Tay,
-        Khabal,
-        Qataa,
-        KhabanAndQataa,
-    }
+    arod_dharbs_map = {NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa}
     only_one_shatr = True
 
 
 class RajazMajzoo(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-        ),
-        Khaban: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-        ),
-        Tay: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-        ),
-        Khabal: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-        ),
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tay, Khabal),
+        Khaban: (NoZehafNorEllah, Khaban, Tay, Khabal),
+        Tay: (NoZehafNorEllah, Khaban, Tay, Khabal),
+        Khabal: (NoZehafNorEllah, Khaban, Tay, Khabal),
     }
 
 
 class Rajaz(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon, Mustafelon)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-            Qataa,
-            KhabanAndQataa,
-        ),
-        Khaban: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-            Qataa,
-            KhabanAndQataa,
-        ),
-        Tay: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-            Qataa,
-            KhabanAndQataa,
-        ),
-        Khabal: (
-            NoZehafNorEllah,
-            Khaban,
-            Tay,
-            Khabal,
-            Qataa,
-            KhabanAndQataa,
-        ),
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa),
+        Khaban: (NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa),
+        Tay: (NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa),
+        Khabal: (NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa),
     }
     sub_bahrs = (RajazMajzoo, RajazMashtoor, RajazManhook)
 
@@ -346,18 +269,8 @@ class Rajaz(BaseBahr):
 class RamalMajzoo(BaseBahr):
     tafeelat = (Faelaton, Faelaton, Faelaton)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Khaban,
-            Tasbeegh,
-            Hadhf,
-        ),
-        Khaban: {
-            NoZehafNorEllah,
-            Khaban,
-            Tasbeegh,
-            Hadhf,
-        },
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasbeegh, Hadhf),
+        Khaban: {NoZehafNorEllah, Khaban, Tasbeegh, Hadhf},
     }
 
 
@@ -414,11 +327,7 @@ class Munsareh(BaseBahr):
 class KhafeefMajzoo(BaseBahr):
     tafeelat = (Faelaton, Mustafe_lon, Faelaton)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Khaban,
-            KhabanAndQataa,
-        ),
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, KhabanAndQataa),
         Khaban: (Khaban,),
     }
 
@@ -426,18 +335,8 @@ class KhafeefMajzoo(BaseBahr):
 class Khafeef(BaseBahr):
     tafeelat = (Faelaton, Mustafe_lon, Faelaton)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Tasheeth,
-            Hadhf,
-            HadhfAndKhaban,
-        ),
-        Khaban: (
-            NoZehafNorEllah,
-            Tasheeth,
-            Hadhf,
-            HadhfAndKhaban,
-        ),
+        NoZehafNorEllah: (NoZehafNorEllah, Tasheeth, Hadhf, HadhfAndKhaban),
+        Khaban: (NoZehafNorEllah, Tasheeth, Hadhf, HadhfAndKhaban),
     }
     sub_bahrs = (KhafeefMajzoo,)
 
@@ -471,22 +370,31 @@ class Muqtadheb(BaseBahr):
 class Mujtath(BaseBahr):
     tafeelat = (Mustafe_lon, Faelaton)
     arod_dharbs_map = {
-        NoZehafNorEllah: (
-            NoZehafNorEllah,
-            Khaban,
-            Tasheeth,
-        ),
-        Khaban: (
-            NoZehafNorEllah,
-            Khaban,
-            Tasheeth,
-        ),
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasheeth),
+        Khaban: (NoZehafNorEllah, Khaban, Tasheeth),
     }
 
 
-class Mutaqareb:
+class MutaqarebMajzoo(BaseBahr):
+    tafeelat = (Fawlon, Fawlon, Fawlon)
+    arod_dharbs_map = {Hadhf: (Hadhf, Batr)}
+
+
+class Mutaqareb(BaseBahr):
     tafeelat = (Fawlon, Fawlon, Fawlon, Fawlon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (NoZehafNorEllah, Hadhf, Qataa, Batr),
+        Qabadh: (NoZehafNorEllah, Hadhf, Qataa, Batr),
+        Hadhf: (NoZehafNorEllah, Hadhf, Qataa, Batr),
+    }
+    sub_bahrs = (MutaqarebMajzoo,)
 
 
 class Mutadarak:
     tafeelat = (Faelon, Faelon, Faelon, Faelon)
+    arod_dharbs_map = {
+        arod: dharb
+        for arod, dharb in itertools.product(
+            (NoZehafNorEllah, Khaban, Tasheeth), repeat=2
+        )
+    }
