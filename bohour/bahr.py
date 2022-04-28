@@ -21,6 +21,7 @@ from bohour.zehaf import (
     Hathath,
     HathathAndEdmaar,
     Kaff,
+    Kasf,
     Khabal,
     Khaban,
     KhabanAndQataa,
@@ -29,6 +30,7 @@ from bohour.zehaf import (
     Qataa,
     QataaAndEdmaar,
     Qataf,
+    Salam,
     Shakal,
     Tarfeel,
     TarfeelAndEdmaar,
@@ -36,6 +38,10 @@ from bohour.zehaf import (
     Tatheel,
     TatheelAndEdmaar,
     Tay,
+    TayAndKasf,
+    Waqf,
+    WaqfAndTay,
+    khabalAndKasf,
 )
 
 

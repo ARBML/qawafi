@@ -24,14 +24,14 @@ class NoZehafNorEllah(BaseEllahZehaf):
         return self.tafeela
 
 
-class BaseHazfZehaf(BaseEllahZehaf):
+class BaseSingleHazfZehaf(BaseEllahZehaf):
     affected_index = None
 
     def modify_tafeela(self):
         self.tafeela.delete_from_pattern(self.affected_index)
 
 
-class BaseTaskeenZehaf(BaseEllahZehaf):
+class BaseSingleTaskeenZehaf(BaseEllahZehaf):
     affected_index = None
 
     def modify_tafeela(self):
@@ -41,35 +41,39 @@ class BaseTaskeenZehaf(BaseEllahZehaf):
         self.tafeela.edit_pattern_at_index(index=self.affected_index, number=0)
 
 
-class Khaban(BaseHazfZehaf):
+class Khaban(BaseSingleHazfZehaf):
     affected_index = 1
 
 
-class Tay(BaseHazfZehaf):
+class Tay(BaseSingleHazfZehaf):
     affected_index = 4
 
 
-class Waqas(BaseHazfZehaf):
+class Waqas(BaseSingleHazfZehaf):
     affected_index = 1
 
 
-class Qabadh(BaseHazfZehaf):
+class Qabadh(BaseSingleHazfZehaf):
     affected_index = 4
 
 
-class Kaff(BaseHazfZehaf):
+class Kaff(BaseSingleHazfZehaf):
     affected_index = 6
 
 
-class Akal(BaseHazfZehaf):
+class Akal(BaseSingleHazfZehaf):
     affected_index = 4
 
 
-class Edmaar(BaseTaskeenZehaf):
+class Kasf(BaseSingleHazfZehaf):
+    affected_index = 6
+
+
+class Edmaar(BaseSingleTaskeenZehaf):
     affected_index = 1
 
 
-class Asab(BaseTaskeenZehaf):
+class Asab(BaseSingleTaskeenZehaf):
     affected_index = 4
 
 
@@ -77,15 +81,25 @@ class Asab(BaseTaskeenZehaf):
 
 
 class BaseDoubledZehaf(BaseEllahZehaf):
+
+    """
+    This base class only includes zehafs that affect on single index,
+    i.e. derived from BaseSingleHadhfZehaf and BaseSingleTaskeenZehaf
+    """
+
     zehafs = []
 
     def modify_tafeela(self):
         assert len(self.zehafs) == 2, "maximum allowed zehafs should be 2"
+        assert all(
+            zehaf in [BaseSingleHazfZehaf, BaseSingleTaskeenZehaf]
+            for zehaf in self.zehafs
+        ), "zehafs should be derived either from BaseSingleHadhfZehaf or BaseSingleTaskeenZehaf"
         hazf_zehafs = filter(
-            lambda zehaf: isinstance(zehaf, BaseHazfZehaf), self.zehafs
+            lambda zehaf: isinstance(zehaf, BaseSingleHazfZehaf), self.zehafs
         )
         taskeen_zehafs = filter(
-            lambda zehaf: isinstance(zehaf, BaseTaskeenZehaf),
+            lambda zehaf: isinstance(zehaf, BaseSingleTaskeenZehaf),
             self.zehafs,
         )
         # https://stackoverflow.com/a/28697246/4412324
@@ -113,6 +127,14 @@ class Shakal(BaseDoubledZehaf):
 
 class Nakas(BaseDoubledZehaf):
     zehafs = [Asab, Kaff]
+
+
+class TayAndKasf(BaseDoubledZehaf):
+    zehafs = [Tay, Kasf]
+
+
+class khabalAndKasf(BaseDoubledZehaf):
+    zehafs = [Khabal, Kasf]
 
 
 ## Added Ellal
