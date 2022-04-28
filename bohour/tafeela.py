@@ -19,6 +19,7 @@ from bohour.zehaf import (
     Shakal,
     Tarfeel,
     TarfeelAndEdmaar,
+    Tasheeth,
     Tatheel,
     TatheelAndEdmaar,
     Tay,
@@ -133,5 +134,6 @@ class Mustafe_lon(Tafeela):
 
 class Faelaton(Tafeela):
     name = "فاعلاتن"
-    allowed_zehafs = [Khaban, Kaff, Shakal]
+    # allowed_zehafs = [Khaban, Kaff, Shakal, Tasheeth]
+    allowed_zehafs = [Khaban, Kaff]
     pattern_int = 1011010
