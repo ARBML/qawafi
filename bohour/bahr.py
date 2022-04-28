@@ -170,8 +170,52 @@ class Wafer(BaseBahr):
     sub_bahrs = (WaferMajzoo,)
 
 
-class Kamel:
+class KamelMajzoo(BaseBahr):
+    tafeelat = (Mutafaelon, Mutafaelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Edmaar,
+            Qataa,
+            QataaAndEdmaar,
+            Tatheel,
+            TatheelAndEdmaar,
+            Tarfeel,
+            TarfeelAndEdmaar,
+        ),
+        Edmaar: (
+            NoZehafNorEllah,
+            Edmaar,
+            Qataa,
+            QataaAndEdmaar,
+            Tatheel,
+            TatheelAndEdmaar,
+            Tarfeel,
+            TarfeelAndEdmaar,
+        ),
+    }
+
+
+class Kamel(BaseBahr):
     tafeelat = (Mutafaelon, Mutafaelon, Mutafaelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (
+            NoZehafNorEllah,
+            Edmaar,
+            Qataa,
+            QataaAndEdmaar,
+            HathathAndEdmaar,
+        ),
+        Edmaar: (
+            NoZehafNorEllah,
+            Edmaar,
+            Qataa,
+            QataaAndEdmaar,
+            HathathAndEdmaar,
+        ),
+        Hathath: (Hathath, HathathAndEdmaar),
+    }
+    sub_bahrs = (KamelMajzoo,)
 
 
 class Hazag:
