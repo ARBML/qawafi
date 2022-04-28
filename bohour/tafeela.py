@@ -45,9 +45,19 @@ class Tafeela:
             == len(str(self.pattern_int))
         ), "pattern and name should have the same length"
 
+    def _delete_from_name(self, index):
+        if " " in self.name:
+            non_spaced_name = self.name.replace(" ", "")
+            new_name = non_spaced_name[:index] + non_spaced_name[index + 1 :]
+            space_index = self.name.index(" ")
+            new_name = new_name[:space_index] + " " + new_name[space_index:]
+            self.name = new_name
+        else:
+            self.name = self.name[:index] + self.name[index + 1 :]
+
     def delete_from_pattern(self, index):
         del self.pattern[index]
-        self.name = self.name[:index] + self.name[index + 1 :]
+        self._delete_from_name(index=index)
         self.pattern_int = int("".join(map(str, self.pattern)))
         self._assert_length_consistency()
 
