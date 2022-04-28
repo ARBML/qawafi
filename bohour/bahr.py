@@ -50,12 +50,10 @@ class BaseBahr:
         return combinations
 
     @property
-    def all_combinations(self):
-        combinations = list()
-        for ella_class, dharb_classes in self.ella_dharbs_map.items():
-            last_tafeela_class = self.tafeelat[-1]
-            last_tafeela = last_tafeela_class()
-            ella = ella_class(last_tafeela)
+    def last_tafeela(self):
+        last_tafeela_class = self.tafeelat[-1]
+        last_tafeela = last_tafeela_class()
+        return last_tafeela
             first_shatr_combinations = list(
                 itertools.product(*self.all_shatr_combinations, [ella.modified_tafeela])
             )
