@@ -26,6 +26,8 @@ from bohour.zehaf import (
     Waqas,
 )
 
+SUKUN_CHAR = "ْ"
+
 
 class Tafeela:
     name = ""
@@ -37,17 +39,29 @@ class Tafeela:
         self.original_pattern = list(map(int, str(self.pattern_int)))
         self.pattern = self.original_pattern[:]
         self._assert_length_consistency()
+        self._manage_sukun_char()
+
+    def _manage_sukun_char(self):
+        clean_name = self.name.replace(SUKUN_CHAR, "")
+        new_name = ""
+        for pattern_num, name_index in zip(self.pattern, range(len(clean_name))):
+            char = self.name[name_index]
+            new_name += char
+            if pattern_num == 0:
+                if char not in "اوي" and name_index:
+                    new_name += SUKUN_CHAR
+        self.name = new_name
 
     def _assert_length_consistency(self):
         assert (
             len(self.pattern)
-            == len(self.name.replace(" ", ""))
+            == len(self.name.replace(" ", "").replace(SUKUN_CHAR, ""))
             == len(str(self.pattern_int))
         ), "pattern and name should have the same length"
 
     def _delete_from_name(self, index):
         if " " in self.name:
-            non_spaced_name = self.name.replace(" ", "")
+            non_spaced_name = self.name.replace(" ", "").replace(SUKUN_CHAR, "")
             new_name = non_spaced_name[:index] + non_spaced_name[index + 1 :]
             space_index = self.name.index(" ")
             new_name = new_name[:space_index] + " " + new_name[space_index:]
@@ -60,17 +74,20 @@ class Tafeela:
         self._delete_from_name(index=index)
         self.pattern_int = int("".join(map(str, self.pattern)))
         self._assert_length_consistency()
+        self._manage_sukun_char()
 
     def add_to_pattern(self, index, number, char_mask):
         self.pattern.insert(index, number)
         self.name = self.name[:index] + char_mask + self.name[index:]
         self.pattern_int = int("".join(map(str, self.pattern)))
         self._assert_length_consistency()
+        self._manage_sukun_char()
 
     def edit_pattern_at_index(self, index, number):
         self.pattern[index] = number
         self.pattern_int = int("".join(map(str, self.pattern)))
-        self._assert_length_consistency
+        self._assert_length_consistency()
+        self._manage_sukun_char()
 
     def all_zehaf_tafeela_forms(self):
         forms = [self]
