@@ -297,3 +297,42 @@ class HathathAndEdmaar(BaseEllahZehaf):
         # Edmaar
         edmaar = Edmaar(self.tafeela)
         self.tafeela = edmaar.modified_tafeela
+
+
+class Salam(BaseEllahZehaf):
+    """حذف الوتد المفروق الأخير من التفعيلة"""
+
+    def modify_tafeela(self):
+        assert self.tafeela.pattern[-3:] == [
+            1,
+            0,
+            1,
+        ], f"tafeela {self.tafeela}'s pattern should end with 1,0,1"
+        for _ in range(3):
+            index = len(self.tafeela.pattern) - 1
+            self.tafeela.delete_from_pattern(index=index)
+
+
+class Waqf(BaseEllahZehaf):
+    """تسكين أخر الوتد المفروق من آخر التفعيلة"""
+
+    def modify_tafeela(self):
+        assert self.tafeela.pattern[-3:] == [
+            1,
+            0,
+            1,
+        ], f"tafeela {self.tafeela}'s pattern should end with 1,0,1"
+        self.tafeela.edit_pattern_at_index(
+            index=len(self.tafeela.pattern) - 1,
+            number=0,
+        )
+
+
+class WaqfAndTay(BaseEllahZehaf):
+    def modify_tafeela(self):
+        # Tay
+        tay = Tay(self.tafeela)
+        self.tafeela = tay.modified_tafeela
+        # Waqf
+        waqf = Waqf(self.tafeela)
+        self.tafeela = waqf.modified_tafeela

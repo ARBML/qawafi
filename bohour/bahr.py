@@ -377,8 +377,19 @@ class Ramal(BaseBahr):
     sub_bahrs = (RamalMajzoo,)
 
 
-class Saree:
+class SareehMashtoor(BaseBahr):
     tafeelat = (Mustafelon, Mustafelon, Mafoolato)
+    arod_dharbs_map = {Waqf, Kasf}
+    only_one_shatr = True
+
+
+class Saree(BaseBahr):
+    tafeelat = (Mustafelon, Mustafelon, Mafoolato)
+    arod_dharbs_map = {
+        TayAndKasf: (TayAndKasf, Salam, WaqfAndTay),
+        khabalAndKasf: {khabalAndKasf, Salam},
+    }
+    sub_bahrs = (SareehMashtoor,)
 
 
 class Munsareh:
