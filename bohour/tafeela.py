@@ -2,27 +2,17 @@ from bohour.zehaf import (
     Akal,
     Asab,
     Edmaar,
-    Hadhf,
-    HadhfAndKhaban,
-    Hathath,
-    HathathAndEdmaar,
     Kaff,
     Khabal,
-    KhabanAndQataa,
+    Thalm,
     Khazal,
     Nakas,
     Qabadh,
     Khaban,
-    Qataa,
-    QataaAndEdmaar,
-    Qataf,
     Shakal,
-    Tarfeel,
-    TarfeelAndEdmaar,
     Tasheeth,
-    Tatheel,
-    TatheelAndEdmaar,
     Tay,
+    Tharm,
     Waqas,
 )
 
@@ -31,9 +21,9 @@ SUKUN_CHAR = "ْ"
 
 class Tafeela:
     name = ""
-    allwed_zehafs = list()
+    allowed_zehafs = list()
     pattern_int = 0
-    applied_zehaf = None
+    applied_ella_zehaf_class = None
 
     def __init__(self, *args, **kwargs):
         self.original_pattern = list(map(int, str(self.pattern_int)))
@@ -41,15 +31,21 @@ class Tafeela:
         self._assert_length_consistency()
         self._manage_sukun_char()
 
-    def _manage_sukun_char(self):
+    def _manage_sukun_char(self, deleted_char_index=None):
         clean_name = self.name.replace(SUKUN_CHAR, "")
+        space_index = clean_name.find(" ") if " " in self.name else None
+        clean_name = clean_name.replace(" ", "")
         new_name = ""
-        for pattern_num, name_index in zip(self.pattern, range(len(clean_name))):
-            char = self.name[name_index]
+        assert len(self.pattern) == len(clean_name)
+        for i, (pattern_num, char) in enumerate(zip(self.pattern, clean_name)):
             new_name += char
-            if pattern_num == 0:
-                if char not in "اوي" and name_index:
-                    new_name += SUKUN_CHAR
+            if pattern_num == 1 or char in "اوي":
+                continue
+            new_name += SUKUN_CHAR
+            if space_index and i != len(self.pattern) - 1:
+                space_index += 1
+        if space_index:
+            new_name = new_name[:space_index] + " " + new_name[space_index:]
         self.name = new_name
 
     def _assert_length_consistency(self):
@@ -60,25 +56,28 @@ class Tafeela:
         ), "pattern and name should have the same length"
 
     def _delete_from_name(self, index):
+        clean_name = self.name.replace(SUKUN_CHAR, "")
         if " " in self.name:
-            non_spaced_name = self.name.replace(" ", "").replace(SUKUN_CHAR, "")
-            new_name = non_spaced_name[:index] + non_spaced_name[index + 1 :]
-            space_index = self.name.index(" ")
-            new_name = new_name[:space_index] + " " + new_name[space_index:]
+            space_index = clean_name.index(" ")
+            if space_index < index:
+                new_name = clean_name[: index + 1] + clean_name[index + 2 :]
+            else:
+                new_name = clean_name[:index] + clean_name[index + 1 :]
             self.name = new_name
         else:
-            self.name = self.name[:index] + self.name[index + 1 :]
+            self.name = clean_name[:index] + clean_name[index + 1 :]
 
     def delete_from_pattern(self, index):
         del self.pattern[index]
         self._delete_from_name(index=index)
         self.pattern_int = int("".join(map(str, self.pattern)))
         self._assert_length_consistency()
-        self._manage_sukun_char()
+        self._manage_sukun_char(deleted_char_index=index)
 
     def add_to_pattern(self, index, number, char_mask):
         self.pattern.insert(index, number)
-        self.name = self.name[:index] + char_mask + self.name[index:]
+        clean_name = self.name.replace(SUKUN_CHAR, "")
+        self.name = clean_name[:index] + char_mask + clean_name[index:]
         self.pattern_int = int("".join(map(str, self.pattern)))
         self._assert_length_consistency()
         self._manage_sukun_char()
@@ -105,13 +104,13 @@ class Tafeela:
 
 class Fawlon(Tafeela):
     name = "فعولن"
-    allowed_zehafs = [Qabadh]
+    allowed_zehafs = [Qabadh, Thalm, Tharm]
     pattern_int = 11010
 
 
 class Faelon(Tafeela):
     name = "فاعلن"
-    allowed_zehafs = [Khaban]
+    allowed_zehafs = [Khaban, Tasheeth]
     pattern_int = 10110
 
 
@@ -129,8 +128,8 @@ class Mustafelon(Tafeela):
 
 class Mutafaelon(Tafeela):
     name = "متفاعلن"
-    # allowed_zehafs = [Edmaar, Waqas, Khazal]
-    allowed_zehafs = [Edmaar]
+    allowed_zehafs = [Edmaar, Waqas, Khazal]
+    # allowed_zehafs = [Edmaar]
     pattern_int = 1110110
 
 
@@ -143,7 +142,7 @@ class Mafaelaton(Tafeela):
 
 class Mafoolato(Tafeela):
     name = "مفعولات"
-    allowed_zehafs = [Khaban, Tay]
+    allowed_zehafs = [Khaban, Tay, Khabal]
     pattern_int = 1010101
 
 
@@ -161,6 +160,5 @@ class Mustafe_lon(Tafeela):
 
 class Faelaton(Tafeela):
     name = "فاعلاتن"
-    # allowed_zehafs = [Khaban, Kaff, Shakal, Tasheeth]
-    allowed_zehafs = [Khaban, Kaff]
+    allowed_zehafs = [Khaban, Kaff, Shakal, Tasheeth]
     pattern_int = 1011010

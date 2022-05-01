@@ -14,14 +14,14 @@ class BaseEllahZehaf:
         if hasattr(self, "assertions"):
             assert all(self.assertions), "assertions failed"
         self.modify_tafeela()
-        self.tafeela.applied_zehaf = self.__class__
+        self.tafeela.applied_ella_zehaf_class = self.__class__
         return self.tafeela
 
 
 class NoZehafNorEllah(BaseEllahZehaf):
     @cached_property
     def modified_tafeela(self):
-        self.tafeela.applied_zehaf = None
+        self.tafeela.applied_ella_zehaf_class = None
         return self.tafeela
 
 
@@ -29,7 +29,7 @@ class BaseSingleHazfZehaf(BaseEllahZehaf):
     affected_index = None
 
     def modify_tafeela(self):
-        self.tafeela.delete_from_pattern(self.affected_index)
+        self.tafeela.delete_from_pattern(index=self.affected_index)
 
 
 class BaseSingleTaskeenZehaf(BaseEllahZehaf):
@@ -74,6 +74,10 @@ class Tasheeth(BaseSingleHazfZehaf):
     affected_index = 2
 
 
+class Thalm(BaseSingleHazfZehaf):
+    affected_index = 0
+
+
 class Edmaar(BaseSingleTaskeenZehaf):
     affected_index = 1
 
@@ -101,10 +105,10 @@ class BaseDoubledZehaf(BaseEllahZehaf):
             for zehaf in self.zehafs
         ), "zehafs should be derived either from BaseSingleHadhfZehaf or BaseSingleTaskeenZehaf"
         hazf_zehafs = filter(
-            lambda zehaf: isinstance(zehaf, BaseSingleHazfZehaf), self.zehafs
+            lambda zehaf: issubclass(zehaf, BaseSingleHazfZehaf), self.zehafs
         )
         taskeen_zehafs = filter(
-            lambda zehaf: isinstance(zehaf, BaseSingleTaskeenZehaf),
+            lambda zehaf: issubclass(zehaf, BaseSingleTaskeenZehaf),
             self.zehafs,
         )
         # https://stackoverflow.com/a/28697246/4412324
@@ -113,8 +117,9 @@ class BaseDoubledZehaf(BaseEllahZehaf):
             reverse=True,
         )
         for index in deletion_indices:
-            del self.tafeela.pattern[index]
-        for zehaf in taskeen_zehafs:
+            self.tafeela.delete_from_pattern(index=index)
+        for zehaf_class in taskeen_zehafs:
+            zehaf = zehaf_class(self.tafeela)
             self.tafeela = zehaf.modified_tafeela
 
 
@@ -136,6 +141,10 @@ class Nakas(BaseDoubledZehaf):
 
 class TayAndKasf(BaseDoubledZehaf):
     zehafs = [Tay, Kasf]
+
+
+class Tharm(BaseDoubledZehaf):
+    zehafs = [Thalm, Qabadh]
 
 
 ## Added Ellal
@@ -260,7 +269,7 @@ class Tarfeel(BaseEllahZehaf):
     def modify_tafeela(self):
         for number, char_mask in zip((1, 0), "تن"):
             self.tafeela.add_to_pattern(
-                index=len(self.tafeela.pattern) - 1,
+                index=len(self.tafeela.pattern),
                 number=number,
                 char_mask=char_mask,
             )
@@ -276,6 +285,16 @@ class TarfeelAndEdmaar(BaseEllahZehaf):
         # Edmaar
         edmaar = Edmaar(self.tafeela)
         self.tafeela = edmaar.modified_tafeela
+
+
+class TarfeelAndKhaban(BaseEllahZehaf):
+    def modify_tafeela(self):
+        # Khaban
+        khaban = Khaban(self.tafeela)
+        self.tafeela = khaban.modified_tafeela
+        # Tarfeel
+        tarfeel = Tarfeel(self.tafeela)
+        self.tafeela = tarfeel.modified_tafeela
 
 
 class KhabanAndQataa(BaseEllahZehaf):
@@ -361,13 +380,14 @@ class WaqfAndTay(BaseEllahZehaf):
         self.tafeela = waqf.modified_tafeela
 
 
-class khabalAndKasf(BaseEllahZehaf):
+class KhabalAndKasf(BaseEllahZehaf):
     def modify_tafeela(self):
         # Khabal
         khabal = Khabal(self.tafeela)
         self.tafeela = khabal.modified_tafeela
         # Kasf
         kasf = Kasf(self.tafeela)
+        kasf.affected_index -= 2
         self.tafeela = kasf.modified_tafeela
 
 
