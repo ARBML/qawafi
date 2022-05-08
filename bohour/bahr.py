@@ -145,7 +145,11 @@ class Bahr:
             first_shatr_combinations = list(
                 itertools.product(
                     *self.get_shatr_hashw_combinations(shatr_index=0),
-                    [ella.modified_tafeela],
+                    [ella.modified_tafeela]
+                    + [  # for tasree patterns
+                        dharb_class(self.last_tafeela).modified_tafeela
+                        for dharb_class in dharb_classes
+                    ],
                 )
             )
             second_shatr_combinations = list(
@@ -167,6 +171,8 @@ class Bahr:
             )
         # add combinations for sub bahrs
         combinations.extend(self.sub_bahrs_combinations)
+        # remove duplicates, if any
+        combinations = list(set(combinations))
         return combinations
 
     @property
