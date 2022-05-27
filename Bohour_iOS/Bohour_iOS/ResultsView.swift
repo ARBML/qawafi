@@ -94,6 +94,7 @@ struct ResultsView : View {
                                         .background(asr == response.era[0].name ? Color.myPrimary : Color.myLight)
                                         .cornerRadius(8)
                                         .foregroundColor(asr == response.era[0].name ? Color.myLight : Color.myDark)
+                                        .opacity(asr == response.era[0].name ? 1 : 0.4)
                                 }
                             }
                         }

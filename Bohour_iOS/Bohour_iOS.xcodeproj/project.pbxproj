@@ -122,6 +122,7 @@
 				0712E3DD2825650C00902604 /* ContentView.swift */,
 				07597FD4283F1088009D91FD /* ResultsView.swift */,
 				07597FCF283F0FEA009D91FD /* TestLetters.swift */,
+				749E853228416EB9006E147A /* AboutView.swift */,
 				07E5BFDE2825D9BC00B78BBA /* API */,
 				07597FD1283F102D009D91FD /* Components */,
 				0712E3DF2825651200902604 /* Assets.xcassets */,
@@ -129,7 +130,6 @@
 				0712E3E12825651200902604 /* Preview Content */,
 				07E5BFDF28264F4E00B78BBA /* Drawing.swift */,
 				07597FCD283F0FAB009D91FD /* Helping.swift */,
-				749E853228416EB9006E147A /* AboutView.swift */,
 			);
 			path = Bohour_iOS;
 			sourceTree = "<group>";

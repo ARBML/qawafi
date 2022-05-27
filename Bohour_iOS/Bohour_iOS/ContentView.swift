@@ -15,13 +15,29 @@ struct ContentView: View {
     @State var errorMessage = ""
     var placeholderText = "الشطر الأول \nالشطر الثاني \n..."
     @State var numOfBayts = 0
+    @State var aboutShown = false
     
     var body: some View {
         VStack{
-            Image("qawafi")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .padding(-16)
+            HStack{
+                Image(systemName: "info.circle")
+                    .font(.system(size: 20))
+                    .padding()
+                    .opacity(0)
+                Spacer()
+                Image("qawafi")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .padding(-16)
+                Spacer()
+                Image(systemName: "info.circle")
+                    .font(.system(size: 20))
+                    .foregroundColor(.myPrimary)
+                    .padding()
+                    .onTapGesture {
+                        aboutShown = true
+                    }
+            }
             VStack(alignment:.leading){
                 Spacer()
                 Text("اكتب قصيدة لتحليلها")
@@ -125,6 +141,12 @@ struct ContentView: View {
                 .environment(\.locale,.init(identifier: "ar"))
                 .preferredColorScheme(.light)
         }
+        .sheet(isPresented: $aboutShown, content: {
+            AboutView()
+                .environment(\.layoutDirection, .rightToLeft)
+                .environment(\.locale,.init(identifier: "ar"))
+                .preferredColorScheme(.light)
+        })
         .onAppear {
             //load json
             if let data = readLocalFile(forName: "anlss") {
