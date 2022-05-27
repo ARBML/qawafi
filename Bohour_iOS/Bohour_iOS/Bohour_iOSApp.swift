@@ -14,6 +14,7 @@ struct Bohour_iOSApp: App {
             ContentView()
             .environment(\.layoutDirection, .rightToLeft)
             .environment(\.locale,.init(identifier: "ar"))
+            .preferredColorScheme(.light)
         }
     }
 }
