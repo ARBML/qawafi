@@ -1,0 +1,7 @@
+sentence-transformers
+datasets
+git+https://github.com/ARBML/tkseem.git
+tnkeeh
+pyarabic
+git+https://www.github.com/keras-team/keras-contrib.git
+h5py==2.10.0
