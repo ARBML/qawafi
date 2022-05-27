@@ -11,7 +11,7 @@ import SwiftUI
 struct Bohour_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            BadgeBackground()
+            ContentView()
             .environment(\.layoutDirection, .rightToLeft)
             .environment(\.locale,.init(identifier: "ar"))
         }

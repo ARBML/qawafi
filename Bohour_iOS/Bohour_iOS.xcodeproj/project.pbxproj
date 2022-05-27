@@ -15,7 +15,13 @@
 		0712E3F72825651300902604 /* Bohour_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0712E3F62825651300902604 /* Bohour_iOSUITests.swift */; };
 		0712E3F92825651300902604 /* Bohour_iOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0712E3F82825651300902604 /* Bohour_iOSUITestsLaunchTests.swift */; };
 		0712E40728257B9600902604 /* SwiftfulLoadingIndicators in Frameworks */ = {isa = PBXBuildFile; productRef = 0712E40628257B9600902604 /* SwiftfulLoadingIndicators */; };
-		07E5BFDB2825D85200B78BBA /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDA2825D85200B78BBA /* Sample.swift */; };
+		07597FCA283F02CB009D91FD /* anlss.json in Resources */ = {isa = PBXBuildFile; fileRef = 07597FC9283F02CB009D91FD /* anlss.json */; };
+		07597FCC283F0848009D91FD /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FCB283F0848009D91FD /* Response.swift */; };
+		07597FCE283F0FAB009D91FD /* Helping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FCD283F0FAB009D91FD /* Helping.swift */; };
+		07597FD0283F0FEA009D91FD /* TestLetters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FCF283F0FEA009D91FD /* TestLetters.swift */; };
+		07597FD3283F1054009D91FD /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FD2283F1054009D91FD /* LoadingView.swift */; };
+		07597FD5283F1088009D91FD /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FD4283F1088009D91FD /* ResultsView.swift */; };
+		07597FD7283F10B7009D91FD /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FD6283F10B7009D91FD /* Modifiers.swift */; };
 		07E5BFDD2825D8A600B78BBA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDC2825D8A600B78BBA /* API.swift */; };
 		07E5BFE028264F4E00B78BBA /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDF28264F4E00B78BBA /* Drawing.swift */; };
 /* End PBXBuildFile section */
@@ -48,7 +54,14 @@
 		0712E3F22825651300902604 /* Bohour_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Bohour_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0712E3F62825651300902604 /* Bohour_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bohour_iOSUITests.swift; sourceTree = "<group>"; };
 		0712E3F82825651300902604 /* Bohour_iOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bohour_iOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		07E5BFDA2825D85200B78BBA /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
+		07597FC9283F02CB009D91FD /* anlss.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = anlss.json; sourceTree = "<group>"; };
+		07597FCB283F0848009D91FD /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		07597FCD283F0FAB009D91FD /* Helping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helping.swift; sourceTree = "<group>"; };
+		07597FCF283F0FEA009D91FD /* TestLetters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLetters.swift; sourceTree = "<group>"; };
+		07597FD2283F1054009D91FD /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		07597FD4283F1088009D91FD /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
+		07597FD6283F10B7009D91FD /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
+		07597FD828404DE0009D91FD /* Bohour-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Bohour-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		07E5BFDC2825D8A600B78BBA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		07E5BFDF28264F4E00B78BBA /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,6 +95,7 @@
 		0712E3CF2825650C00902604 = {
 			isa = PBXGroup;
 			children = (
+				07597FC9283F02CB009D91FD /* anlss.json */,
 				0712E3DA2825650C00902604 /* Bohour_iOS */,
 				0712E3EB2825651300902604 /* Bohour_iOSTests */,
 				0712E3F52825651300902604 /* Bohour_iOSUITests */,
@@ -104,10 +118,15 @@
 			children = (
 				0712E3DB2825650C00902604 /* Bohour_iOSApp.swift */,
 				0712E3DD2825650C00902604 /* ContentView.swift */,
-				0712E3DF2825651200902604 /* Assets.xcassets */,
-				0712E3E12825651200902604 /* Preview Content */,
+				07597FD4283F1088009D91FD /* ResultsView.swift */,
+				07597FCF283F0FEA009D91FD /* TestLetters.swift */,
 				07E5BFDE2825D9BC00B78BBA /* API */,
+				07597FD1283F102D009D91FD /* Components */,
+				0712E3DF2825651200902604 /* Assets.xcassets */,
+				07597FD828404DE0009D91FD /* Bohour-iOS-Info.plist */,
+				0712E3E12825651200902604 /* Preview Content */,
 				07E5BFDF28264F4E00B78BBA /* Drawing.swift */,
+				07597FCD283F0FAB009D91FD /* Helping.swift */,
 			);
 			path = Bohour_iOS;
 			sourceTree = "<group>";
@@ -137,11 +156,20 @@
 			path = Bohour_iOSUITests;
 			sourceTree = "<group>";
 		};
+		07597FD1283F102D009D91FD /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				07597FD2283F1054009D91FD /* LoadingView.swift */,
+				07597FD6283F10B7009D91FD /* Modifiers.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		07E5BFDE2825D9BC00B78BBA /* API */ = {
 			isa = PBXGroup;
 			children = (
 				07E5BFDC2825D8A600B78BBA /* API.swift */,
-				07E5BFDA2825D85200B78BBA /* Sample.swift */,
+				07597FCB283F0848009D91FD /* Response.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -256,6 +284,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07597FCA283F02CB009D91FD /* anlss.json in Resources */,
 				0712E3E32825651200902604 /* Preview Assets.xcassets in Resources */,
 				0712E3E02825651200902604 /* Assets.xcassets in Resources */,
 			);
@@ -283,10 +312,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				0712E3DE2825650C00902604 /* ContentView.swift in Sources */,
-				07E5BFDB2825D85200B78BBA /* Sample.swift in Sources */,
 				07E5BFDD2825D8A600B78BBA /* API.swift in Sources */,
+				07597FD5283F1088009D91FD /* ResultsView.swift in Sources */,
+				07597FD0283F0FEA009D91FD /* TestLetters.swift in Sources */,
+				07597FD7283F10B7009D91FD /* Modifiers.swift in Sources */,
 				0712E3DC2825650C00902604 /* Bohour_iOSApp.swift in Sources */,
+				07597FCC283F0848009D91FD /* Response.swift in Sources */,
+				07597FD3283F1054009D91FD /* LoadingView.swift in Sources */,
 				07E5BFE028264F4E00B78BBA /* Drawing.swift in Sources */,
+				07597FCE283F0FAB009D91FD /* Helping.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,9 +484,9 @@
 				DEVELOPMENT_TEAM = 98Y7S9MWGY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Bohour-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -479,9 +513,9 @@
 				DEVELOPMENT_TEAM = 98Y7S9MWGY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Bohour-iOS-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
