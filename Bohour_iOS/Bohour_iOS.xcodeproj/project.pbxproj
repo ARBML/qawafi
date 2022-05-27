@@ -24,6 +24,7 @@
 		07597FD7283F10B7009D91FD /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07597FD6283F10B7009D91FD /* Modifiers.swift */; };
 		07E5BFDD2825D8A600B78BBA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDC2825D8A600B78BBA /* API.swift */; };
 		07E5BFE028264F4E00B78BBA /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDF28264F4E00B78BBA /* Drawing.swift */; };
+		749E853328416EB9006E147A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E853228416EB9006E147A /* AboutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		07597FD828404DE0009D91FD /* Bohour-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Bohour-iOS-Info.plist"; sourceTree = SOURCE_ROOT; };
 		07E5BFDC2825D8A600B78BBA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		07E5BFDF28264F4E00B78BBA /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
+		749E853228416EB9006E147A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +129,7 @@
 				0712E3E12825651200902604 /* Preview Content */,
 				07E5BFDF28264F4E00B78BBA /* Drawing.swift */,
 				07597FCD283F0FAB009D91FD /* Helping.swift */,
+				749E853228416EB9006E147A /* AboutView.swift */,
 			);
 			path = Bohour_iOS;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 			files = (
 				0712E3DE2825650C00902604 /* ContentView.swift in Sources */,
 				07E5BFDD2825D8A600B78BBA /* API.swift in Sources */,
+				749E853328416EB9006E147A /* AboutView.swift in Sources */,
 				07597FD5283F1088009D91FD /* ResultsView.swift in Sources */,
 				07597FD0283F0FEA009D91FD /* TestLetters.swift in Sources */,
 				07597FD7283F10B7009D91FD /* Modifiers.swift in Sources */,

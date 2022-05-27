@@ -14,6 +14,7 @@ struct ResultsView : View {
     private let innerSpacing = 8.0
     @State var selectedBait:BaitsAnalysis
     @Namespace var firstPartId
+    let osoor = ["الجاهلي", "الإسلامي", "الأموي", "العباسي", "العثماني", "الحديث"]
     
     var body : some View {
         
@@ -63,18 +64,6 @@ struct ResultsView : View {
                         .opacity(showDetails ?  1 : 0)
                         .transition(.scale)
                         
-                        //era
-                        VStack{
-                            Text("العصر")
-                            Text(response.era[0].name)
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(maxWidth:.infinity)
-                                .foregroundColor(Color.myDark)
-                        }
-                        .modifier(BoxModifier())
-                        .opacity(showDetails ?  1 : 0)
-                        .transition(.scale)
-                        
                         //topic
                         VStack{
                             Text("الموضوع")
@@ -88,6 +77,31 @@ struct ResultsView : View {
                         .transition(.scale)
                         
                     }
+                    
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(Color.myLight)
+                        .padding(.horizontal)
+                    
+                    //era
+                    VStack{
+                        Text("العصر")
+                        ScrollView(.horizontal){
+                            HStack{
+                                ForEach(osoor,id:\.self){ asr in
+                                    Text(asr)
+                                        .padding(8)
+                                        .background(asr == response.era[0].name ? Color.myPrimary : Color.myLight)
+                                        .cornerRadius(8)
+                                        .foregroundColor(asr == response.era[0].name ? Color.myLight : Color.myDark)
+                                }
+                            }
+                        }
+                    }
+                    .opacity(showDetails ?  1 : 0)
+                    .transition(.scale)
+                    .padding()
+                    
                 }
                 .background(Color.white)
                 .cornerRadius(12)
