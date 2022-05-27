@@ -27,7 +27,7 @@ majority_vote = lambda a: Counter(a).most_common()[0][0]
 class BaitAnalyzerAPIView(View):
     def diacritize(self, baits):
         response = requests.post(
-            "http://127.0.0.1:8080/api/diacritize",
+            f"{settings.DIACRITIZER_HOST_URL}/api/diacritize",
             data={"baits": json.dumps(baits, ensure_ascii=False)},
         )
         if response.ok:

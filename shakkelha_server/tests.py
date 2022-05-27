@@ -5,6 +5,7 @@ import time
 import json
 
 sys.path.append("..")
+sys.path.append("../qawafi_server")
 from bohour.poem_samples_large import samples
 
 random.seed(1)

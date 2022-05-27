@@ -15,10 +15,10 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#import sys
+# import sys
 
 # add base dir parent to path to include bohour package
-#sys.path.append(f"{BASE_DIR}/..")
+# sys.path.append(f"{BASE_DIR}/..")
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,8 @@ SECRET_KEY = "django-insecure-ufma(6oiywi6lused#m%nfg7nx#3q8d=&4$4ojr_ittmvml+9v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -129,6 +130,9 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# DIACRITIZER_HOST_URL = "http://172.18.0.22:8080"
+DIACRITIZER_HOST_URL = "http://host.docker.internal:8080"
+
 # meters related
 
 import glob
@@ -224,4 +228,6 @@ THEME_MODEL = create_era_theme_model()
 THEME_MODEL.load_weights("./deep-learning-models/theme_classification_model/cp.ckpt")
 
 THEME_TOKENIZER = tk.SentencePieceTokenizer()
-THEME_TOKENIZER.load_model("./deep-learning-models/theme_classification_model/vocab.model")
+THEME_TOKENIZER.load_model(
+    "./deep-learning-models/theme_classification_model/vocab.model"
+)
