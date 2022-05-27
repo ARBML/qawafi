@@ -196,6 +196,14 @@ class Bahr:
                 patterns.append(pattern)
         return patterns
 
+    @property
+    def max_pattern_length(self):
+        return len(max(self.all_combinations_patterns, key=len))
+
+    @property
+    def min_pattern_length(self):
+        return len(min(self.all_combinations_patterns, key=len))
+
 
 class Taweel(Bahr):
     tafeelat = (Fawlon, Mafaeelon, Fawlon, Mafaeelon)
