@@ -43,3 +43,11 @@ BOHOUR_NAMES_AR = [
 char2idx = {u: i + 1 for i, u in enumerate(vocab)}
 
 label2name = BOHOUR_NAMES_AR
+
+def process_and_write(input):
+  lines = input.split("\n")[1:-1]
+  baits = []
+  for i in range(len(lines) // 2):
+    bait = ' # '.join(lines[i*2:(i+1)*2])
+    baits.append(bait)
+  open('/content/qawafi/demo/baits_input.txt', 'w').write('\n'.join(baits))
