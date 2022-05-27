@@ -1,5 +1,0 @@
-sentence-transformers
-datasets
-git+https://github.com/ARBML/tkseem.git
-tnkeeh
-pyarabic
