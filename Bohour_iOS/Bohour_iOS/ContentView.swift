@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var firstPart = "الشطر الأول \nالشطر الثاني \nالشطر الثالث \nالشطر الرابع \n..."
+    @State var firstPart = "الشطر الأول \nالشطر الثاني \n..."
     @State var response:Response? = nil
     @State var isloading = false
     @State var errorMessage = ""
-    var placeholderText = "الشطر الأول \nالشطر الثاني \nالشطر الثالث \nالشطر الرابع \n..."
+    var placeholderText = "الشطر الأول \nالشطر الثاني \n..."
     @State var numOfBayts = 0
     
     var body: some View {
@@ -23,6 +23,7 @@ struct ContentView: View {
                 .frame(width: 80, height: 80)
                 .padding(-16)
             VStack(alignment:.leading){
+                Spacer()
                 Text("اكتب قصيدة لتحليلها")
                     .font(.system(size: 32, weight: .bold))
                     .padding(.bottom,4)
@@ -59,6 +60,10 @@ struct ContentView: View {
                 Spacer()
                 Button {
                     
+                    if !isButtonEnabled() {
+                        return
+                    }
+                    
                     //1. check form
                     if firstPart.count < 10  {
                         errorMessage = "الرجاء التأكد من كتابة بيتي شعر"
@@ -75,21 +80,24 @@ struct ContentView: View {
                     //4.prep input
                     let body = getArrayOfParts(firstPart)
                     
+                    self.response = Response.getSample()
+                    
                     //5. call api
-                    Task{
-                        do{
-                            if let response = try? await API.getResults(part_1: firstPart, part_2: "") {
-                                //5. show results
-                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
-                                    isloading = false
-                                    self.response = response
-                                }
-                                
-                            }else{
-                                errorMessage = "الرجاء التأكد من الاتصال بالانترنت"
-                            }
-                        }
-                    }
+//                    Task{
+//                        do{
+//                            if let response = try? await API.getResults(part_1: firstPart, part_2: "") {
+//                                //5. show results
+//                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
+//                                    isloading = false
+//                                    self.response = response
+//                                }
+//
+//                            }else{
+//                                errorMessage = "الرجاء التأكد من الاتصال بالانترنت"
+//                                isloading = false
+//                            }
+//                        }
+//                    }
                     
                 } label: {
                     Group{
@@ -109,11 +117,13 @@ struct ContentView: View {
                 }
             }
             .padding()
-            //.background(Color.myLight)
         }
         .sheet(item: $response) {
         } content: { response in
             ResultsView(response: response, selectedBait: response.baits_analysis[0])
+                .environment(\.layoutDirection, .rightToLeft)
+                .environment(\.locale,.init(identifier: "ar"))
+                .preferredColorScheme(.light)
         }
         .onAppear {
             //load json

@@ -20,8 +20,11 @@ struct ResultsView : View {
         VStack(alignment:.leading, spacing: 24){
             //Top section
             VStack(alignment:.leading){
-               
-                
+                Text("تحليل القصيدة")
+                    .font(.system(size: 24))
+                    .bold()
+                    .foregroundColor(Color.myLight)
+                    .padding(.horizontal)
                 //top box
                 VStack(spacing:innerSpacing){
                     HStack(spacing:innerSpacing){
@@ -96,7 +99,7 @@ struct ResultsView : View {
                 
                 //title
                 Text("تحليل الأبيات")
-                    .font(.system(size: 32))
+                    .font(.system(size: 24))
                     .bold()
                     .foregroundColor(Color.myLight)
                     .padding(.horizontal)
