@@ -12,6 +12,7 @@ from bohour.tafeela import (
     Mustafe_lon,
     Mustafelon,
     Mutafaelon,
+    Tafeela,
 )
 from bohour.zehaf import (
     Asab,
@@ -32,33 +33,77 @@ from bohour.zehaf import (
     QataaAndEdmaar,
     Qataf,
     Salam,
+    Shakal,
     Tarfeel,
     TarfeelAndEdmaar,
+    TarfeelAndKhaban,
     Tasbeegh,
     Tasheeth,
     Tatheel,
     TatheelAndEdmaar,
     Tay,
     TayAndKasf,
+    Thalm,
+    Tharm,
     Waqf,
     WaqfAndTay,
-    khabalAndKasf,
+    KhabalAndKasf,
 )
 
 
-class BaseBahr:
+class Bahr:
     tafeelat = tuple()
     arod_dharbs_map = dict()
     sub_bahrs = tuple()
     only_one_shatr = False
 
     @property
-    def all_shatr_combinations(self):
-        tafeelas_forms = list()
-        for tafeela_class in self.tafeelat[:-1]:
+    def disallowed_zehafs_for_hashw(self):
+        """
+        This will be replaced by a class attr in subclasses
+        It was done this way here just to infere the size of tafeelat
+        """
+        return {
+            0: tuple([] for _ in range(len(self.tafeelat[:-1]))),
+            1: tuple([] for _ in range(len(self.tafeelat[:-1]))),
+        }
+
+    def remove_disallowed_tafeelas_in_hashw(
+        self,
+        tafeela_forms,
+        tafeela_hashw_index,
+        shatr_index,
+    ):
+        assert (
+            len(self.disallowed_zehafs_for_hashw[shatr_index]) == len(self.tafeelat) - 1
+        ), "hashw tafeelat and `disallowed_zehafs_for_hashw` list should match in size"
+        filtered_forms = list()
+        for tafeela in tafeela_forms:
+            assert (
+                tafeela.applied_ella_zehaf_class is None
+                or tafeela.applied_ella_zehaf_class in tafeela.allowed_zehafs
+            ), f"zehaf {tafeela.applied_ella_zehaf_class} is not allowed for {tafeela}"
+            if (
+                tafeela.applied_ella_zehaf_class
+                not in self.disallowed_zehafs_for_hashw[shatr_index][
+                    tafeela_hashw_index
+                ]
+            ):
+                filtered_forms.append(tafeela)
+        return filtered_forms
+
+    def get_shatr_hashw_combinations(self, shatr_index=0):
+        combinations = list()
+        for tafeela_index, tafeela_class in enumerate(self.tafeelat[:-1]):
             tafeela = tafeela_class()
-            tafeelas_forms.append(tafeela.all_zehaf_tafeela_forms())
-        return tafeelas_forms
+            all_tafeela_forms = tafeela.all_zehaf_tafeela_forms()
+            filtered_tafeela_forms = self.remove_disallowed_tafeelas_in_hashw(
+                tafeela_forms=all_tafeela_forms,
+                tafeela_hashw_index=tafeela_index,
+                shatr_index=shatr_index,
+            )
+            combinations.append(filtered_tafeela_forms)
+        return combinations
 
     @property
     def sub_bahrs_combinations(self):
@@ -82,11 +127,11 @@ class BaseBahr:
         ), "if only_one_shatr is true, arood_dharbs_map should be a set"
         return list(
             itertools.product(
-                *self.all_shatr_combinations,
+                *self.get_shatr_hashw_combinations(),
                 [
                     arood_class(self.last_tafeela).modified_tafeela
                     for arood_class in self.arod_dharbs_map
-                ]
+                ],
             )
         )
 
@@ -98,15 +143,22 @@ class BaseBahr:
         for ella_class, dharb_classes in self.arod_dharbs_map.items():
             ella = ella_class(self.last_tafeela)
             first_shatr_combinations = list(
-                itertools.product(*self.all_shatr_combinations, [ella.modified_tafeela])
+                itertools.product(
+                    *self.get_shatr_hashw_combinations(shatr_index=0),
+                    [ella.modified_tafeela]
+                    + [  # for tasree patterns
+                        dharb_class(self.last_tafeela).modified_tafeela
+                        for dharb_class in dharb_classes
+                    ],
+                )
             )
             second_shatr_combinations = list(
                 itertools.product(
-                    *self.all_shatr_combinations,
+                    *self.get_shatr_hashw_combinations(shatr_index=1),
                     [
                         dharb_class(self.last_tafeela).modified_tafeela
                         for dharb_class in dharb_classes
-                    ]
+                    ],
                 )
             )
             combinations.extend(
@@ -119,6 +171,8 @@ class BaseBahr:
             )
         # add combinations for sub bahrs
         combinations.extend(self.sub_bahrs_combinations)
+        # remove duplicates, if any
+        combinations = list(set(combinations))
         return combinations
 
     @property
@@ -126,50 +180,94 @@ class BaseBahr:
         patterns = list()
         for combination in self.all_combinations:
             pattern = ""
-            first_shatr, second_shatr = combination
-            pattern += "".join(
-                "".join(map(str, tafeela.pattern)) for tafeela in first_shatr
-            )
-            pattern += "".join(
-                "".join(map(str, tafeela.pattern)) for tafeela in second_shatr
-            )
-            patterns.append(pattern)
+            if isinstance(combination[0], Tafeela):
+                shatr = combination
+                pattern += "".join(
+                    "".join(map(str, tafeela.pattern)) for tafeela in shatr
+                )
+            else:
+                first_shatr, second_shatr = combination
+                pattern += "".join(
+                    "".join(map(str, tafeela.pattern)) for tafeela in first_shatr
+                )
+                pattern += "".join(
+                    "".join(map(str, tafeela.pattern)) for tafeela in second_shatr
+                )
+                patterns.append(pattern)
         return patterns
 
 
-class Taweel(BaseBahr):
+class Taweel(Bahr):
     tafeelat = (Fawlon, Mafaeelon, Fawlon, Mafaeelon)
     arod_dharbs_map = {Qabadh: (Qabadh, Hadhf, NoZehafNorEllah)}
+    disallowed_zehafs_for_hashw = {
+        0: ([], [], [Thalm, Tharm]),
+        1: ([Thalm, Tharm], [], [Thalm, Tharm]),
+    }
 
 
-class Madeed(BaseBahr):
+class Madeed(Bahr):
     tafeelat = (Faelaton, Faelon, Faelaton)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah,),
         Hadhf: (Qataa,),
         HadhfAndKhaban: (HadhfAndKhaban,),
     }
+    disallowed_zehafs_for_hashw = {
+        0: ([Shakal, Tasheeth], [Tasheeth]),
+        1: ([Shakal, Tasheeth], [Tasheeth]),
+    }
+
+    @property
+    def all_combinations(self):
+        """
+        تطبيق المعاقبة: وذلك أنه لا يجوز اجتماع خبن فاعلن وكف فاعلاتن،
+        """
+        combinations = super().all_combinations
+        filtered_combinations = list()
+        for combination in combinations:
+            first_shatr, second_shatr = combination
+            if first_shatr[0].applied_ella_zehaf_class == Kaff:
+                if first_shatr[1].applied_ella_zehaf_class == Khaban:
+                    continue
+            if second_shatr[0].applied_ella_zehaf_class == Kaff:
+                if second_shatr[1].applied_ella_zehaf_class == Khaban:
+                    continue
+            filtered_combinations.append(combination)
+        return filtered_combinations
 
 
-class BaseetMajzoo(BaseBahr):
+class BaseetMajzoo(Bahr):
     tafeelat = (Mustafelon, Faelon, Mustafelon)
     arod_dharbs_map = {
-        Qataa: (NoZehafNorEllah,),
         NoZehafNorEllah: (NoZehafNorEllah, Tatheel, Qataa),
+        Qataa: (NoZehafNorEllah,),
+    }
+    disallowed_zehafs_for_hashw = {
+        0: ([], [Tasheeth]),
+        1: ([], [Tasheeth]),
     }
 
 
 class BaseetMukhalla(BaseetMajzoo):
     arod_dharbs_map = {KhabanAndQataa: (KhabanAndQataa,)}
+    disallowed_zehafs_for_hashw = {
+        0: ([], [Tasheeth]),
+        1: ([], [Tasheeth]),
+    }
 
 
-class Baseet(BaseBahr):
+class Baseet(Bahr):
     tafeelat = (Mustafelon, Faelon, Mustafelon, Faelon)
     arod_dharbs_map = {Khaban: (Khaban, Qataa)}
+    disallowed_zehafs_for_hashw = {
+        0: ([], [Tasheeth], []),
+        1: ([], [Tasheeth], []),
+    }
     sub_bahrs = (BaseetMajzoo, BaseetMukhalla)
 
 
-class WaferMajzoo(BaseBahr):
+class WaferMajzoo(Bahr):
     tafeelat = (Mafaelaton, Mafaelaton)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Asab),
@@ -177,13 +275,13 @@ class WaferMajzoo(BaseBahr):
     }
 
 
-class Wafer(BaseBahr):
+class Wafer(Bahr):
     tafeelat = (Mafaelaton, Mafaelaton, Mafaelaton)
     arod_dharbs_map = {Qataf: (Qataf,)}
     sub_bahrs = (WaferMajzoo,)
 
 
-class KamelMajzoo(BaseBahr):
+class KamelMajzoo(Bahr):
     tafeelat = (Mutafaelon, Mutafaelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (
@@ -209,7 +307,7 @@ class KamelMajzoo(BaseBahr):
     }
 
 
-class Kamel(BaseBahr):
+class Kamel(Bahr):
     tafeelat = (Mutafaelon, Mutafaelon, Mutafaelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (
@@ -225,27 +323,31 @@ class Kamel(BaseBahr):
     sub_bahrs = (KamelMajzoo,)
 
 
-class Hazaj(BaseBahr):
+class Hazaj(Bahr):
     tafeelat = (Mafaeelon, Mafaeelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Hadhf),
         Kaff: (NoZehafNorEllah, Hadhf),
     }
+    disallowed_zehafs_for_hashw = {
+        0: ([Qabadh],),
+        1: ([Qabadh],),
+    }
 
 
-class RajazManhook(BaseBahr):
+class RajazManhook(Bahr):
     tafeelat = (Mustafelon, Mustafelon)
     arod_dharbs_map = {NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa}
     only_one_shatr = True
 
 
-class RajazMashtoor(BaseBahr):
+class RajazMashtoor(Bahr):
     tafeelat = (Mustafelon, Mustafelon, Mustafelon)
     arod_dharbs_map = {NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa}
     only_one_shatr = True
 
 
-class RajazMajzoo(BaseBahr):
+class RajazMajzoo(Bahr):
     tafeelat = (Mustafelon, Mustafelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tay, Khabal),
@@ -255,7 +357,7 @@ class RajazMajzoo(BaseBahr):
     }
 
 
-class Rajaz(BaseBahr):
+class Rajaz(Bahr):
     tafeelat = (Mustafelon, Mustafelon, Mustafelon)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tay, Khabal, Qataa, KhabanAndQataa),
@@ -266,15 +368,19 @@ class Rajaz(BaseBahr):
     sub_bahrs = (RajazMajzoo, RajazMashtoor, RajazManhook)
 
 
-class RamalMajzoo(BaseBahr):
-    tafeelat = (Faelaton, Faelaton, Faelaton)
+class RamalMajzoo(Bahr):
+    tafeelat = (Faelaton, Faelaton)
     arod_dharbs_map = {
-        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasbeegh, Hadhf),
-        Khaban: {NoZehafNorEllah, Khaban, Tasbeegh, Hadhf},
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasbeegh, Hadhf, HadhfAndKhaban),
+        Khaban: {NoZehafNorEllah, Khaban, Tasbeegh, Hadhf, HadhfAndKhaban},
+    }
+    disallowed_zehafs_for_hashw = {
+        0: ([Tasheeth],),
+        1: ([Tasheeth],),
     }
 
 
-class Ramal(BaseBahr):
+class Ramal(Bahr):
     tafeelat = (Faelaton, Faelaton, Faelaton)
     arod_dharbs_map = {
         Hadhf: (
@@ -295,53 +401,65 @@ class Ramal(BaseBahr):
         },
     }
     sub_bahrs = (RamalMajzoo,)
+    disallowed_zehafs_for_hashw = {
+        0: ([Tasheeth], [Tasheeth]),
+        1: ([Tasheeth], [Tasheeth]),
+    }
 
 
-class SareehMashtoor(BaseBahr):
+class SareeMashtoor(Bahr):
     tafeelat = (Mustafelon, Mustafelon, Mafoolato)
     arod_dharbs_map = {Waqf, Kasf}
     only_one_shatr = True
 
 
-class Saree(BaseBahr):
+class Saree(Bahr):
     tafeelat = (Mustafelon, Mustafelon, Mafoolato)
     arod_dharbs_map = {
         TayAndKasf: (TayAndKasf, Salam, WaqfAndTay),
-        khabalAndKasf: {khabalAndKasf, Salam},
+        KhabalAndKasf: {KhabalAndKasf, Salam},
     }
-    sub_bahrs = (SareehMashtoor,)
+    sub_bahrs = (SareeMashtoor,)
 
 
-class MunsarehManhook(BaseBahr):
+class MunsarehManhook(Bahr):
     tafeelat = (Mustafelon, Mafoolato)
     arod_dharbs_map = {Waqf, Kasf}
     only_one_shatr = True
 
 
-class Munsareh(BaseBahr):
+class Munsareh(Bahr):
     tafeelat = (Mustafelon, Mafoolato, Mustafelon)
     arod_dharbs_map = {Tay: (Tay, Qataa)}
     sub_bahrs = (MunsarehManhook,)
 
 
-class KhafeefMajzoo(BaseBahr):
-    tafeelat = (Faelaton, Mustafe_lon, Faelaton)
+class KhafeefMajzoo(Bahr):
+    tafeelat = (Faelaton, Mustafe_lon)
     arod_dharbs_map = {
-        NoZehafNorEllah: (NoZehafNorEllah, Khaban, KhabanAndQataa),
+        NoZehafNorEllah: (NoZehafNorEllah, KhabanAndQataa),
         Khaban: (Khaban,),
+    }
+    disallowed_zehafs_for_hashw = {
+        0: ([Kaff, Shakal, Tasheeth],),
+        1: ([Kaff, Shakal, Tasheeth],),
     }
 
 
-class Khafeef(BaseBahr):
+class Khafeef(Bahr):
     tafeelat = (Faelaton, Mustafe_lon, Faelaton)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Tasheeth, Hadhf, HadhfAndKhaban),
         Khaban: (NoZehafNorEllah, Tasheeth, Hadhf, HadhfAndKhaban),
     }
     sub_bahrs = (KhafeefMajzoo,)
+    disallowed_zehafs_for_hashw = {
+        0: ([Kaff, Shakal], []),
+        1: ([Kaff, Shakal], []),
+    }
 
 
-class Mudhare(BaseBahr):
+class Mudhare(Bahr):
     tafeelat = (Mafaeelon, Fae_laton)
     arod_dharbs_map = {NoZehafNorEllah: (NoZehafNorEllah,)}
 
@@ -354,47 +472,79 @@ class Mudhare(BaseBahr):
         combinations = super().all_combinations
         zehafed_combinations = list(
             filter(
-                lambda combination: combination[0][0].applied_zehaf is not None
-                and combination[1][0].applied_zehaf is not None,
+                lambda combination: combination[0][0].applied_ella_zehaf_class
+                is not None
+                and combination[1][0].applied_ella_zehaf_class is not None,
                 combinations,
             )
         )
         return zehafed_combinations
 
 
-class Muqtadheb(BaseBahr):
+class Muqtadheb(Bahr):
     tafeelat = (Mafoolato, Mustafelon)
     arod_dharbs_map = {Tay: (Tay,)}
+    disallowed_zehafs_for_hashw = {
+        0: ([Khabal],),
+        1: ([Khabal],),
+    }
 
 
-class Mujtath(BaseBahr):
+class Mujtath(Bahr):
     tafeelat = (Mustafe_lon, Faelaton)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasheeth),
         Khaban: (NoZehafNorEllah, Khaban, Tasheeth),
     }
+    disallowed_zehafs_for_hashw = {
+        0: ([Kaff],),
+        1: ([Kaff],),
+    }
 
 
-class MutaqarebMajzoo(BaseBahr):
+class MutaqarebMajzoo(Bahr):
     tafeelat = (Fawlon, Fawlon, Fawlon)
     arod_dharbs_map = {Hadhf: (Hadhf, Batr)}
+    disallowed_zehafs_for_hashw = {
+        0: ([], [Thalm, Tharm]),
+        1: ([Thalm, Tharm], [Thalm, Tharm]),
+    }
 
 
-class Mutaqareb(BaseBahr):
+class Mutaqareb(Bahr):
     tafeelat = (Fawlon, Fawlon, Fawlon, Fawlon)
     arod_dharbs_map = {
         NoZehafNorEllah: (NoZehafNorEllah, Hadhf, Qataa, Batr),
         Qabadh: (NoZehafNorEllah, Hadhf, Qataa, Batr),
         Hadhf: (NoZehafNorEllah, Hadhf, Qataa, Batr),
     }
+    disallowed_zehafs_for_hashw = {
+        0: ([], [Thalm, Tharm], [Thalm, Tharm]),
+        1: ([Thalm, Tharm], [Thalm, Tharm], [Thalm, Tharm]),
+    }
     sub_bahrs = (MutaqarebMajzoo,)
 
 
-class Mutadarak:
+class MutadarakMashtoor(Bahr):
+    tafeelat = (Faelon, Faelon, Faelon)
+    arod_dharbs_map = {NoZehafNorEllah, Khaban, Tasheeth, Tatheel, TarfeelAndKhaban}
+    only_one_shatr = True
+
+
+class MutadarakMajzoo(Bahr):
+    tafeelat = (Faelon, Faelon, Faelon)
+    arod_dharbs_map = {
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasheeth, Tatheel, TarfeelAndKhaban),
+        Khaban: (NoZehafNorEllah, Khaban, Tasheeth, Tatheel, TarfeelAndKhaban),
+        Tasheeth: (NoZehafNorEllah, Khaban, Tasheeth, Tatheel, TarfeelAndKhaban),
+    }
+
+
+class Mutadarak(Bahr):
     tafeelat = (Faelon, Faelon, Faelon, Faelon)
     arod_dharbs_map = {
-        arod: dharb
-        for arod, dharb in itertools.product(
-            (NoZehafNorEllah, Khaban, Tasheeth), repeat=2
-        )
+        NoZehafNorEllah: (NoZehafNorEllah, Khaban, Tasheeth),
+        Khaban: (NoZehafNorEllah, Khaban, Tasheeth),
+        Tasheeth: (NoZehafNorEllah, Khaban, Tasheeth),
     }
+    sub_bahrs = (MutadarakMajzoo, MutadarakMashtoor)
