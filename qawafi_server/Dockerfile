@@ -4,6 +4,8 @@ WORKDIR /opt/qawafi_server
 
 COPY . .
 
+RUN pip3 install -U pip
+
 RUN pip3 install -U setuptools
 
 RUN pip3 install -r qawafi_server_requirements.txt
