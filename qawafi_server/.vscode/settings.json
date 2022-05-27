@@ -1,0 +1,4 @@
+{
+    "python.sortImports.path": "isort",
+    "editor.formatOnSave": true
+}
