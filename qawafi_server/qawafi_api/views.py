@@ -17,6 +17,7 @@ from qawafi_server.meters import (
 from collections import Counter
 from difflib import SequenceMatcher
 from django.conf import settings
+from pyarabic.araby import strip_tashkeel
 
 # Create your views here.
 
@@ -72,8 +73,8 @@ class BaitAnalyzerAPIView(View):
         qafiyah = majority_vote(get_qafiyah(baits))
         # meters = get_meter(diacritized_baits)
         # res = get_closest_baits(baits)
-        era = predict_era(" ".join(baits))
-        theme = predict_theme(" ".join(baits))
+        era = predict_era(strip_tashkeel(" ".join(baits)))
+        theme = predict_theme(strip_tashkeel(" ".join(baits)))
         return JsonResponse(
             {
                 "diacritized": diacritized_baits,
