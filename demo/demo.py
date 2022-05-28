@@ -11,6 +11,7 @@ from bohour.arudi_style import get_arudi_style
 from bohour.qafiah import get_qafiah_type, get_qafiyah
 from collections import Counter
 from difflib import SequenceMatcher
+from pyarabic.araby import strip_tashkeel
 import pprint
 
 class BaitAnalysis:
@@ -46,10 +47,10 @@ class BaitAnalysis:
 
     print("load era classification model ...")
     self.ERA_MODEL = create_era_theme_model()
-    self.ERA_MODEL.load_weights(f"{abs_path}/deep-learning-models/era_classification_model/cp.ckpt")
+    self.ERA_MODEL.load_weights(f"{abs_path}/deep-learning-models/era_classification_models_shorter_context/cp.ckpt")
 
     self.ERA_TOKENIZER = tk.SentencePieceTokenizer()
-    self.ERA_TOKENIZER.load_model(f"{abs_path}/deep-learning-models/era_classification_model/vocab.model")
+    self.ERA_TOKENIZER.load_model(f"{abs_path}/deep-learning-models/era_classification_models_shorter_context/vocab.model")
 
     print("load theme classification model ...")
     self.THEME_MODEL = create_era_theme_model()
@@ -166,8 +167,8 @@ class BaitAnalysis:
     )
     qafiyah = self.majority_vote(get_qafiyah(baits))
     closest_baits = self.get_closest_baits(baits)
-    era = self.predict_era(" ".join(baits))
-    theme = self.predict_theme(" ".join(baits))
+    era = self.predict_era(strip_tashkeel(" ".join(baits)))
+    theme = self.predict_theme(strip_tashkeel(" ".join(baits)))
     pprint.pprint( 
         {
             "diacritized": diacritized_baits,
