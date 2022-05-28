@@ -78,7 +78,7 @@ class BaitAnalysis:
               },
               batched=True,
           )
-          zipped = zip(baits, sample_similarity["similarity"])
+          zipped = zip(sample_similarity["text"], sample_similarity["similarity"])
           closest_baits.append(sorted(zipped, key=lambda x: x[1])[::-1][:k])
       return closest_baits
 
