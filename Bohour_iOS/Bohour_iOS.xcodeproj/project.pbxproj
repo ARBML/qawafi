@@ -25,6 +25,8 @@
 		07E5BFDD2825D8A600B78BBA /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDC2825D8A600B78BBA /* API.swift */; };
 		07E5BFE028264F4E00B78BBA /* Drawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E5BFDF28264F4E00B78BBA /* Drawing.swift */; };
 		749E853328416EB9006E147A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E853228416EB9006E147A /* AboutView.swift */; };
+		749E85352841A527006E147A /* ResponseNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E85342841A527006E147A /* ResponseNew.swift */; };
+		749E85372841B4C8006E147A /* resp.json in Resources */ = {isa = PBXBuildFile; fileRef = 749E85362841B4C8006E147A /* resp.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +68,8 @@
 		07E5BFDC2825D8A600B78BBA /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		07E5BFDF28264F4E00B78BBA /* Drawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawing.swift; sourceTree = "<group>"; };
 		749E853228416EB9006E147A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		749E85342841A527006E147A /* ResponseNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNew.swift; sourceTree = "<group>"; };
+		749E85362841B4C8006E147A /* resp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = resp.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				07597FC9283F02CB009D91FD /* anlss.json */,
+				749E85362841B4C8006E147A /* resp.json */,
 				0712E3DA2825650C00902604 /* Bohour_iOS */,
 				0712E3EB2825651300902604 /* Bohour_iOSTests */,
 				0712E3F52825651300902604 /* Bohour_iOSUITests */,
@@ -173,6 +178,7 @@
 			children = (
 				07E5BFDC2825D8A600B78BBA /* API.swift */,
 				07597FCB283F0848009D91FD /* Response.swift */,
+				749E85342841A527006E147A /* ResponseNew.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -290,6 +296,7 @@
 				07597FCA283F02CB009D91FD /* anlss.json in Resources */,
 				0712E3E32825651200902604 /* Preview Assets.xcassets in Resources */,
 				0712E3E02825651200902604 /* Assets.xcassets in Resources */,
+				749E85372841B4C8006E147A /* resp.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +322,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0712E3DE2825650C00902604 /* ContentView.swift in Sources */,
+				749E85352841A527006E147A /* ResponseNew.swift in Sources */,
 				07E5BFDD2825D8A600B78BBA /* API.swift in Sources */,
 				749E853328416EB9006E147A /* AboutView.swift in Sources */,
 				07597FD5283F1088009D91FD /* ResultsView.swift in Sources */,
