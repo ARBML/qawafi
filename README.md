@@ -14,6 +14,10 @@
 * Extract the qafiyah قافية 
 * Extract the era and theme of a given poem 
 
+ <p align="center"> 
+ <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "200px"/>
+ </p>
+
 We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity. 
 
 ### Training 
@@ -29,14 +33,14 @@ We use the following notebooks for training
   <tr>
     <td class="tg-yw4l">Train meter classification models using Transformer </td>
     <td class="tg-yw4l">
-    <a href="https://colab.research.google.com/github/MagedSaeed/qawafi/blob/main/Notebooks/meter.ipynb">
+    <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/meter.ipynb">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" >
     </a></td>
   </tr>
   <tr>
     <td class="tg-yw4l"> Train Era classification using Bidirectional GRUs. </td>
     <td class="tg-yw4l">
-    <a href="https://colab.research.google.com/github/MagedSaeed/qawafi/blob/main/Notebooks/era.ipynb">
+    <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/era.ipynb">
     <img src="https://colab.research.google.com/assets/colab-badge.svg" >
     </a></td>
 
@@ -45,7 +49,7 @@ We use the following notebooks for training
   <tr>
     <td class="tg-yw4l">Train Theme classification using Bidirectional GRUs. </td>
     <td class="tg-yw4l">
-    <a href="https://colab.research.google.com/github/MagedSaeed/qawafi/blob/main/Notebooks/theme.ipynb">
+    <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/theme.ipynb">
     <img src="https://colab.research.google.com/assets/colab-badge.svg"  >
     </a></td>
   </tr>
@@ -53,7 +57,7 @@ We use the following notebooks for training
   <tr>
     <td class="tg-yw4l">Train the embedding model </td>
     <td class="tg-yw4l">
-    <a href="https://colab.research.google.com/github/MagedSaeed/qawafi/blob/main/Notebooks/embedding.ipynb">
+    <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/embedding.ipynb">
     <img src="https://colab.research.google.com/assets/colab-badge.svg"  >
     </a></td>
   </tr>
@@ -61,7 +65,7 @@ We use the following notebooks for training
 <table>
 
 ### Testing 
-You can test our modules using the following notebook <a href="https://colab.research.google.com/github/MagedSaeed/qawafi/blob/main/demo.ipynb">
+You can test our modules using the following notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/demo.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
 </a>. 
 
