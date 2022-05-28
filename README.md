@@ -15,7 +15,7 @@
 * Extract the era and theme of a given poem 
 
  <p align="center"> 
- <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "200px"/>
+ <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "400px"/>
  </p>
 
 We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity. 
