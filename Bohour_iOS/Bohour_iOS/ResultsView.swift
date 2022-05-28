@@ -65,6 +65,18 @@ struct ResultsView : View {
                         //qafiyah
                         VStack{
                             Text("القافية")
+                            Text(getQafiyahString(response.qafiyah))
+                                .font(.system(size: 24, weight: .bold))
+                                .frame(maxWidth:.infinity)
+                                .foregroundColor(Color.myDark)
+                        }
+                        .modifier(BoxModifier())
+                        .opacity(showDetails ?  1 : 0)
+                        .transition(.scale)
+                        
+                        //qafiyah
+                        VStack{
+                            Text("حرف الروي")
                             Text(response.qafiyah[0])
                                 .font(.system(size: 24, weight: .bold))
                                 .frame(maxWidth:.infinity)
@@ -179,8 +191,15 @@ struct ResultsView : View {
                 print("number")
             }
             
+            print(response.qafiyah[1])
+            
         }
     }
+    
+    func getQafiyahString(_ qfyz:[String]) -> String{
+        return qfyz[1..<qfyz.count].joined(separator: ",")
+    }
+
 }
 
 func getPart(_ partIndex:Int,  _ str:String) -> String {
