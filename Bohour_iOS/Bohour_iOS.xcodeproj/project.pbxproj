@@ -27,6 +27,7 @@
 		749E853328416EB9006E147A /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E853228416EB9006E147A /* AboutView.swift */; };
 		749E85352841A527006E147A /* ResponseNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E85342841A527006E147A /* ResponseNew.swift */; };
 		749E85372841B4C8006E147A /* resp.json in Resources */ = {isa = PBXBuildFile; fileRef = 749E85362841B4C8006E147A /* resp.json */; };
+		749E853928424EEA006E147A /* Intro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 749E853828424EEA006E147A /* Intro.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		749E853228416EB9006E147A /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		749E85342841A527006E147A /* ResponseNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseNew.swift; sourceTree = "<group>"; };
 		749E85362841B4C8006E147A /* resp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = resp.json; sourceTree = "<group>"; };
+		749E853828424EEA006E147A /* Intro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intro.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				0712E3E12825651200902604 /* Preview Content */,
 				07E5BFDF28264F4E00B78BBA /* Drawing.swift */,
 				07597FCD283F0FAB009D91FD /* Helping.swift */,
+				749E853828424EEA006E147A /* Intro.swift */,
 			);
 			path = Bohour_iOS;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				07E5BFDD2825D8A600B78BBA /* API.swift in Sources */,
 				749E853328416EB9006E147A /* AboutView.swift in Sources */,
 				07597FD5283F1088009D91FD /* ResultsView.swift in Sources */,
+				749E853928424EEA006E147A /* Intro.swift in Sources */,
 				07597FD0283F0FEA009D91FD /* TestLetters.swift in Sources */,
 				07597FD7283F10B7009D91FD /* Modifiers.swift in Sources */,
 				0712E3DC2825650C00902604 /* Bohour_iOSApp.swift in Sources */,

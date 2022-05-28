@@ -12,13 +12,28 @@ struct ResultsView : View {
     var response:ResponseNew
     @State private var showDetails = true
     private let innerSpacing = 8.0
-    let osoor = ["الجاهلي", "الإسلامي", "الأموي", "العباسي", "العثماني", "الحديث"]
+    let osoor = [
+"الجاهلي والإسلامي",
+        "العباسي",
+                    "المملوكي والفاطمي",
+        "العثماني والحديث"
+    ]
     @State var sha6rz:[String] = []
-    @State var asrs_short:[String] = []
     @State var tafeelat = ""
     
     func isAsr(_ asr:String) -> Bool{
-        return asrs_short.contains(asr)
+        switch response.era[0] {
+        case "العصر الجاهلي":
+            return asr == osoor[0]
+        case "العصر العباسي":
+            return asr == osoor[1]
+        case "العصر الفاطمي":
+            return asr == osoor[2]
+        case "العصر الحديث":
+            return asr == osoor[3]
+        default:
+            return false
+        }
     }
     
     var body : some View {
@@ -38,7 +53,7 @@ struct ResultsView : View {
                         //bahr
                         VStack{
                             Group{
-                                Text("البحر ") + Text(response.meter)
+                                Text("بحر ") + Text(response.meter)
                             }
                             .font(.system(size: 36, weight: .black))
                             .foregroundColor(Color.myDark)
@@ -51,7 +66,8 @@ struct ResultsView : View {
                         
                     }
                     
-                    Text("\(tafeelat)")
+                    Text("قصيدة بحرف الروي: \(response.qafiyah[0])")
+                        .padding(.top,-8)
                         .padding(.bottom)
                     
                     Rectangle()
@@ -74,17 +90,6 @@ struct ResultsView : View {
                         .opacity(showDetails ?  1 : 0)
                         .transition(.scale)
                         
-                        //qafiyah
-                        VStack{
-                            Text("حرف الروي")
-                            Text(response.qafiyah[0])
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(maxWidth:.infinity)
-                                .foregroundColor(Color.myDark)
-                        }
-                        .modifier(BoxModifier())
-                        .opacity(showDetails ?  1 : 0)
-                        .transition(.scale)
                         
                         //topic
                         VStack{
@@ -150,7 +155,7 @@ struct ResultsView : View {
                                 if (i % 2 != 0){
                                     Spacer()
                                 }
-                                PartView(bait_diacritized: sha6rz[i], arudi_style: response.arudi_style[i][0], tafeelat_pattern: response.arudi_style[i][1])
+                                PartView(bait_diacritized: sha6rz[i], arudi_style: response.arudi_style[i][0], tafeelat_pattern: response.arudi_style[i][1], tafeelatWord: getPart(i % 2, getTafeelatWord(response.closest_patterns[0][2])))
                                 if (i % 2 == 0){
                                     Spacer()
                                 }
@@ -178,11 +183,6 @@ struct ResultsView : View {
                 }
             }
             
-            //asrz
-            asrs_short = response.era.map{ s in
-                String(s.split(separator: " ")[1])
-            }
-            
             //tafeelat
             switch response.closest_patterns[0][2] {
             case .string(let name):
@@ -192,7 +192,18 @@ struct ResultsView : View {
             }
             
             print(response.qafiyah[1])
+            print(response.era[0])
             
+        }
+    }
+    
+    func getTafeelatWord(_ ptr:ClosestPattern) -> String{
+        switch ptr {
+        case .string(let name):
+            return name
+        case .double(_):
+            print("number")
+            return ""
         }
     }
     
@@ -213,6 +224,7 @@ struct PartView : View {
     var bait_diacritized:String
     var arudi_style:String
     var tafeelat_pattern:String
+    var tafeelatWord:String
     @State var tafeelatSpaced = ""
         
     var body : some View {
@@ -240,6 +252,8 @@ struct PartView : View {
                             .cornerRadius(4)
                     }
                 }
+                
+                Text(tafeelatWord)
                 
             }
         }
