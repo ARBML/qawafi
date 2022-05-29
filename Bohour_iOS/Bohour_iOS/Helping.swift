@@ -17,6 +17,10 @@ extension Color {
     static let gray_4 = Color(red: 0.70, green: 0.70, blue: 0.70)
     static let gray_5 = Color(red: 0.60, green: 0.60, blue: 0.60)
     static let gray_6 = Color(red: 0.50, green: 0.50, blue: 0.50)
+    static let gray_7 = Color(red: 0.40, green: 0.40, blue: 0.40)
+    static let gray_8 = Color(red: 0.30, green: 0.30, blue: 0.30)
+    static let gray_9 = Color(red: 0.20, green: 0.20, blue: 0.20)
+    static let gray_10 = Color(red: 0.10, green: 0.10, blue: 0.10)
     
     //selected pallete
     static let myPallete = pallete_1

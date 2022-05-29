@@ -85,7 +85,7 @@ class API {
         body += "--\(boundary)--\r\n";
         let postData = body.data(using: .utf8)
 
-        var request = URLRequest(url: URL(string: "https://92c3-170-133-89-186.eu.ngrok.io/api/analyze")!,timeoutInterval: Double.infinity)
+        var request = URLRequest(url: URL(string: "https://12c0-170-133-89-186.eu.ngrok.io/api/analyze")!,timeoutInterval: Double.infinity)
         request.addValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
         request.httpMethod = "POST"

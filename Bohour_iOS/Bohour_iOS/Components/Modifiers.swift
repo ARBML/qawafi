@@ -37,4 +37,15 @@ struct BoxModifier: ViewModifier {
     }
 }
 
+struct ButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(minHeight:54)
+            .frame(maxWidth:.infinity)
+            .background(Color.myPrimary)
+            .foregroundColor(.white)
+            .cornerRadius(8)
+    }
+}
+
 

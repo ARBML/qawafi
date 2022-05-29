@@ -20,6 +20,7 @@ struct ResultsView : View {
     ]
     @State var sha6rz:[String] = []
     @State var tafeelat = ""
+    @State var showContent = Array(repeating: false, count: 10)
     
     func isAsr(_ asr:String) -> Bool{
         switch response.era[0] {
@@ -46,115 +47,118 @@ struct ResultsView : View {
                 .foregroundColor(Color.mySecondary)
                 .padding(.top)
 
-            //Top section
-            VStack(alignment:.leading){
-                Text("تحليل القصيدة")
-                    .font(.system(size: 24))
-                    .bold()
-                    .foregroundColor(Color.myLight)
-                    .padding(.horizontal)
-                //top box
-                VStack(spacing:innerSpacing){
-                    HStack(spacing:innerSpacing){
-                        //bahr
-                        VStack{
-                            Group{
-                                Text("بحر ") + Text(response.meter)
+            
+            ScrollView{
+                //Top section
+                VStack(alignment:.leading){
+                    Text("تحليل القصيدة")
+                        .font(.system(size: 24))
+                        .bold()
+                        .foregroundColor(Color.myLight)
+                        .padding(.horizontal)
+                    //top box
+                    VStack(spacing:innerSpacing){
+                        HStack(spacing:innerSpacing){
+                            //bahr
+                            VStack{
+                                Group{
+                                    Text("بحر ") + Text(response.meter)
+                                }
+                                .font(.system(size: 36, weight: .black))
+                                .foregroundColor(Color.myDark)
+                                .padding(.top,12)
+                                    
                             }
-                            .font(.system(size: 36, weight: .black))
-                            .foregroundColor(Color.myDark)
-                            .padding(.top,12)
-                                
+                            .modifier(BoxModifier())
+                            .opacity(showDetails ?  1 : 0)
+                            .transition(.scale)
+                            
                         }
-                        .modifier(BoxModifier())
-                        .opacity(showDetails ?  1 : 0)
-                        .transition(.scale)
                         
-                    }
-                    
-                    Text("قصيدة بحرف الروي: \(response.qafiyah[0])")
-                        .padding(.top,-8)
-                        .padding(.bottom)
-                    
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(Color.myLight)
-                        .padding(.horizontal)
-                    
-                    //second row
-                    
-                    HStack(spacing:innerSpacing){
-                        //qafiyah
+                        Text("قصيدة بحرف الروي: \(response.qafiyah[0])")
+                            .padding(.top,-8)
+                            .padding(.bottom)
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(Color.myLight)
+                            .padding(.horizontal)
+                        
+                        //second row
+                        
+                        HStack(spacing:innerSpacing){
+                            //qafiyah
+                            VStack{
+                                Text("القافية")
+                                Text(getQafiyahString(response.qafiyah))
+                                    .font(.system(size: 24, weight: .bold))
+                                    .frame(maxWidth:.infinity)
+                                    .foregroundColor(Color.myDark)
+                                    .minimumScaleFactor(0.8)
+                            }
+                            .modifier(BoxModifier())
+                            .opacity(showDetails ?  1 : 0)
+                            .transition(.scale)
+                            
+                            
+                            //topic
+                            VStack{
+                                Text("الموضوع")
+                                Text(response.theme[0].split(separator: " ")[1])
+                                    .font(.system(size: 24, weight: .bold))
+                                    .frame(maxWidth:.infinity)
+                                    .foregroundColor(Color.myDark)
+                            }
+                            .modifier(BoxModifier())
+                            .opacity(showDetails ?  1 : 0)
+                            .transition(.scale)
+                            
+                        }
+                        
+                        Rectangle()
+                            .frame(height: 1)
+                            .foregroundColor(Color.myLight)
+                            .padding(.horizontal)
+                        
+                        //era
                         VStack{
-                            Text("القافية")
-                            Text(getQafiyahString(response.qafiyah))
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(maxWidth:.infinity)
-                                .foregroundColor(Color.myDark)
-                        }
-                        .modifier(BoxModifier())
-                        .opacity(showDetails ?  1 : 0)
-                        .transition(.scale)
-                        
-                        
-                        //topic
-                        VStack{
-                            Text("الموضوع")
-                            Text(response.theme[0].split(separator: " ")[1])
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(maxWidth:.infinity)
-                                .foregroundColor(Color.myDark)
-                        }
-                        .modifier(BoxModifier())
-                        .opacity(showDetails ?  1 : 0)
-                        .transition(.scale)
-                        
-                    }
-                    
-                    Rectangle()
-                        .frame(height: 1)
-                        .foregroundColor(Color.myLight)
-                        .padding(.horizontal)
-                    
-                    //era
-                    VStack{
-                        Text("أقرب لقصائد العصر")
-                        ScrollView(.horizontal){
-                            HStack{
-                                ForEach(osoor,id:\.self){ asr in
-                                    Text(asr)
-                                        .padding(8)
-                                        .background(isAsr(asr) ? Color.myPrimary : Color.myLight)
-                                        .cornerRadius(8)
-                                        .foregroundColor(isAsr(asr) ? Color.myLight : Color.myDark)
-                                        .opacity(isAsr(asr) ? 1 : 0.4)
+                            Text("أقرب لقصائد العصر")
+                            ScrollView(.horizontal){
+                                HStack{
+                                    ForEach(osoor,id:\.self){ asr in
+                                        Text(asr)
+                                            .padding(8)
+                                            .background(isAsr(asr) ? Color.myPrimary : Color.myLight)
+                                            .cornerRadius(8)
+                                            .foregroundColor(isAsr(asr) ? Color.myLight : Color.myDark)
+                                            .opacity(isAsr(asr) ? 1 : 0.4)
+                                    }
                                 }
                             }
                         }
+                        .opacity(showDetails ?  1 : 0)
+                        .transition(.scale)
+                        .padding()
+                        
                     }
-                    .opacity(showDetails ?  1 : 0)
-                    .transition(.scale)
-                    .padding()
-                    
+                    .background(Color.white)
+                    .cornerRadius(16)
+                    .opacity(showContent[0] ? 1 : 0)
                 }
-                .background(Color.white)
-                .cornerRadius(16)
-            }
-            .padding()
-            
-            //Bottom section
-            VStack(alignment:.leading){
+                .padding()
                 
-                //title
-                Text("تحليل الأبيات")
-                    .font(.system(size: 24))
-                    .bold()
-                    .foregroundColor(Color.myLight)
-                    .padding(.horizontal)
-                
-                //analysis
-                
-                ScrollView{
+                //Bottom section
+                VStack(alignment:.leading){
+                    
+                    //title
+                    Text("تحليل الأبيات")
+                        .font(.system(size: 24))
+                        .bold()
+                        .foregroundColor(Color.myLight)
+                        .padding(.horizontal)
+                    
+                    //analysis
+                    
                     VStack{
                         ForEach(0..<sha6rz.count, id:\.self){ i in
                             HStack{
@@ -166,18 +170,26 @@ struct ResultsView : View {
                                     Spacer()
                                 }
                             }
+                            .opacity(showContent[i < sha6rz.count ? i : 0] ? 1 : 0)
                         }
                     }
                     .padding(.horizontal)
-                }
-                
-        }
+                    
+                    
+            }
+            }
+            
         }
         .background(Color.myPrimary)
         .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { _ in
-                withAnimation {
-                    showDetails = true
+            
+            // Animation
+            let delay = 0.2
+            for i in 0..<showContent.count {
+                Timer.scheduledTimer(withTimeInterval: delay + Double(i)*delay, repeats: false) { _ in
+                    withAnimation {
+                        showContent[i] = true
+                    }
                 }
             }
             
@@ -234,11 +246,14 @@ struct PartView : View {
     @State var tafeelatSpaced = ""
         
     var body : some View {
-        VStack(alignment:.leading){
+        VStack(alignment:.leading, spacing: 8){
             Text(bait_diacritized)
                 .font(.system(size: 24))
                 .bold()
-                .padding(.bottom,8)
+            Text(tafeelatWord)
+                .font(.system(size: 20))
+                .foregroundColor(.mySecondary)
+            
             VStack(alignment:.leading){
                 //)parts
                 HStack(spacing:1){
@@ -259,9 +274,6 @@ struct PartView : View {
                     }
                 }
                 
-                Text(tafeelatWord)
-                    .font(.system(size: 20))
-                    .foregroundColor(.mySecondary)
                 
             }
         }

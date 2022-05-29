@@ -17,6 +17,9 @@ struct ContentView: View {
     @State var numOfBayts = 0
     @State var aboutShown = false
     @State var disableButton = false
+    @State var introViewShown = false
+    let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+    @FocusState private var nameIsFocused: Bool
     
     var body: some View {
         VStack{
@@ -60,22 +63,48 @@ struct ContentView: View {
                 ZStack(alignment:.bottomTrailing){
                     //editor
                     TextEditor(text: $firstPart)
-                        .frame(height:200)
+                        .frame(height:240)
                         .font(.system(size: 24))
                         .modifier(TextFieldModifier())
                         .foregroundColor(firstPart == placeholderText ? Color.gray_3 : Color.myDark)
                         .lineSpacing(8)
+                        .focused($nameIsFocused)
                         .onTapGesture {
                             if firstPart == placeholderText {
                                 firstPart = ""
                             }
                         }
                     //counter
-                    Text("عدد الأبيات \(numOfBayts)")
-                        .padding()
-                        .foregroundColor(Color.myPrimary)
+                    HStack{
+                        Button {
+                            let pb: UIPasteboard = UIPasteboard.general
+                            firstPart = pb.string ?? ""
+                        } label: {
+                            Label("لصق", systemImage: "doc.on.clipboard")
+                                .foregroundColor(.myPrimary)
+                                .padding(.horizontal,8)
+                        }
+                        
+                        Button {
+                            firstPart = ""
+                        } label: {
+                            Label("مسح", systemImage: "trash")
+                                .foregroundColor(firstPart.count == 0 || firstPart == placeholderText ? .white : .red.opacity(0.7))
+                                .padding(.horizontal,8)
+                        }
+
+                        Spacer()
+                        Text("عدد الأبيات \(numOfBayts)")
+                            .foregroundColor(numOfBayts == 0 ? Color.gray_3 : Color.myDark)
+                        
+                    }
+                    .padding()
                 }
                 Spacer()
+                Text("جاري تحليل الأبيات ...")
+                    .opacity(isloading ? 1 : 0)
+                    .foregroundColor(.myPrimary)
+                    .frame(maxWidth:.infinity)
                 Button {
                     
                     if !isButtonEnabled() {
@@ -97,12 +126,14 @@ struct ContentView: View {
                     //3. start loading
                     isloading = true
                     disableButton = true
+                    nameIsFocused = false
                     
                     
                     //4. call api
                     Task{
                         do{
                             if let response = try? await API.getAnalysis(firstPart) {
+                                
                                 //5. show results
                                 Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
                                     isloading = false
@@ -118,7 +149,8 @@ struct ContentView: View {
                                 }
                                 isloading = false
                                 disableButton = false
-                                Timer.scheduledTimer(withTimeInterval:2, repeats: false) { timer in
+                                nameIsFocused = true
+                                Timer.scheduledTimer(withTimeInterval:3, repeats: false) { timer in
                                     withAnimation {
                                         errorMessage = ""
                                     }
@@ -137,11 +169,7 @@ struct ContentView: View {
                         }
                     }
                     .disabled(!isButtonEnabled())
-                    .frame(minHeight:54)
-                    .frame(maxWidth:.infinity)
-                    .background(Color.myPrimary)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                    .modifier(ButtonModifier())
                     .opacity(isButtonEnabled() ? 1 : 0.5 )
                 }
             }
@@ -160,10 +188,31 @@ struct ContentView: View {
                 .environment(\.locale,.init(identifier: "ar"))
                 .preferredColorScheme(.light)
         })
-        .onAppear {}
+        .sheet(isPresented: $introViewShown, onDismiss: {
+            
+        }, content: {
+            IntroView()
+                .environment(\.layoutDirection, .rightToLeft)
+                .environment(\.locale,.init(identifier: "ar"))
+                .preferredColorScheme(.light)
+        })
+        .onAppear {
+            
+            //first launch
+            if !launchedBefore  {
+                //show first one
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { timer in
+                    withAnimation(Animation.spring()) {
+                        introViewShown = true
+                    }
+                }
+                UserDefaults.standard.set(true, forKey: "launchedBefore")
+            }
+        }
         .onChange(of: firstPart) { newValue in
             numOfBayts = firstPart.split(separator: "\n").count / 2
         }
+        
     }
     
     func isButtonEnabled() -> Bool {
