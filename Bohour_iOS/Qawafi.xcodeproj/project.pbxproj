@@ -48,7 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0712E3D82825650C00902604 /* Bohour_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bohour_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0712E3D82825650C00902604 /* Qawafi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Qawafi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0712E3DB2825650C00902604 /* Bohour_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bohour_iOSApp.swift; sourceTree = "<group>"; };
 		0712E3DD2825650C00902604 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		0712E3DF2825651200902604 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		0712E3D92825650C00902604 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0712E3D82825650C00902604 /* Bohour_iOS.app */,
+				0712E3D82825650C00902604 /* Qawafi.app */,
 				0712E3E82825651300902604 /* Bohour_iOSTests.xctest */,
 				0712E3F22825651300902604 /* Bohour_iOSUITests.xctest */,
 			);
@@ -189,9 +189,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0712E3D72825650C00902604 /* Bohour_iOS */ = {
+		0712E3D72825650C00902604 /* Qawafi */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0712E3FC2825651300902604 /* Build configuration list for PBXNativeTarget "Bohour_iOS" */;
+			buildConfigurationList = 0712E3FC2825651300902604 /* Build configuration list for PBXNativeTarget "Qawafi" */;
 			buildPhases = (
 				0712E3D42825650C00902604 /* Sources */,
 				0712E3D52825650C00902604 /* Frameworks */,
@@ -201,12 +201,12 @@
 			);
 			dependencies = (
 			);
-			name = Bohour_iOS;
+			name = Qawafi;
 			packageProductDependencies = (
 				0712E40628257B9600902604 /* SwiftfulLoadingIndicators */,
 			);
 			productName = Bohour_iOS;
-			productReference = 0712E3D82825650C00902604 /* Bohour_iOS.app */;
+			productReference = 0712E3D82825650C00902604 /* Qawafi.app */;
 			productType = "com.apple.product-type.application";
 		};
 		0712E3E72825651300902604 /* Bohour_iOSTests */ = {
@@ -268,7 +268,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0712E3D32825650C00902604 /* Build configuration list for PBXProject "Bohour_iOS" */;
+			buildConfigurationList = 0712E3D32825650C00902604 /* Build configuration list for PBXProject "Qawafi" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -284,7 +284,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0712E3D72825650C00902604 /* Bohour_iOS */,
+				0712E3D72825650C00902604 /* Qawafi */,
 				0712E3E72825651300902604 /* Bohour_iOSTests */,
 				0712E3F12825651300902604 /* Bohour_iOSUITests */,
 			);
@@ -362,12 +362,12 @@
 /* Begin PBXTargetDependency section */
 		0712E3EA2825651300902604 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0712E3D72825650C00902604 /* Bohour_iOS */;
+			target = 0712E3D72825650C00902604 /* Qawafi */;
 			targetProxy = 0712E3E92825651300902604 /* PBXContainerItemProxy */;
 		};
 		0712E3F42825651300902604 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 0712E3D72825650C00902604 /* Bohour_iOS */;
+			target = 0712E3D72825650C00902604 /* Qawafi */;
 			targetProxy = 0712E3F32825651300902604 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -496,12 +496,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Bohour_iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 98Y7S9MWGY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Bohour-iOS-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Qawafi;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -511,7 +512,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "omarhammad.Bohour-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -527,12 +528,13 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Bohour_iOS/Preview Content\"";
 				DEVELOPMENT_TEAM = 98Y7S9MWGY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Bohour-iOS-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Qawafi;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -542,7 +544,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "omarhammad.Bohour-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -630,7 +632,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0712E3D32825650C00902604 /* Build configuration list for PBXProject "Bohour_iOS" */ = {
+		0712E3D32825650C00902604 /* Build configuration list for PBXProject "Qawafi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0712E3FA2825651300902604 /* Debug */,
@@ -639,7 +641,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0712E3FC2825651300902604 /* Build configuration list for PBXNativeTarget "Bohour_iOS" */ = {
+		0712E3FC2825651300902604 /* Build configuration list for PBXNativeTarget "Qawafi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0712E3FD2825651300902604 /* Debug */,
