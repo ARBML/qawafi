@@ -185,7 +185,7 @@ class BaitAnalysis:
         read_from_path="/content/qawafi/demo",
         return_closest_baits=True,
         short_qafiyah=False,
-        override_auto_baits_tashkeel=False,
+        override_tashkeel=False,
     ):
         if baits is not None and diacritized_baits is not None:
             baits = baits
@@ -201,7 +201,7 @@ class BaitAnalysis:
             )
 
         shatrs_arudi_styles_and_patterns = list()
-        if override_auto_baits_tashkeel:
+        if override_tashkeel:
             diacritized_baits = override_auto_baits_tashkeel(diacritized_baits, baits)
         for bait in diacritized_baits:
             shatrs_arudi_styles_and_patterns.extend(get_arudi_style(bait.split("#")))
