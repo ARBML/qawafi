@@ -131,9 +131,10 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # DIACRITIZER_HOST_URL = "http://172.18.0.22:8080"
-# DIACRITIZER_HOST_URL = "http://127.0.0.1:8080"
-DIACRITIZER_HOST_URL = "http://host.docker.internal:8080"
+DIACRITIZER_HOST_URL = "http://127.0.0.1:8080"
+# DIACRITIZER_HOST_URL = "http://host.docker.internal:8080"
 
 # meters related
 from .bait_analysis import BaitAnalysis
+
 BAITS_ANALYZER = BaitAnalysis()
