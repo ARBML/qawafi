@@ -5,7 +5,6 @@
 
 import Foundation
 
-
 class Response: Identifiable, Codable {
     
     let baits_analysis: [BaitsAnalysis]

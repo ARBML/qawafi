@@ -10,20 +10,47 @@ import SwiftUI
 struct ContentView: View {
     
     @State var firstPart = "الشطر الأول \nالشطر الثاني \n..."
-    @State var response:Response? = nil
+    @State var response:ResponseNew? = nil
     @State var isloading = false
     @State var errorMessage = ""
     var placeholderText = "الشطر الأول \nالشطر الثاني \n..."
     @State var numOfBayts = 0
+    @State var aboutShown = false
+    @State var disableButton = false
     
     var body: some View {
         VStack{
-            Image("qawafi")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .padding(-16)
-            VStack(alignment:.leading){
+            HStack{
+                Image(systemName: "info.circle")
+                    .font(.system(size: 20))
+                    .padding()
+                    .opacity(0)
                 Spacer()
+                Image("qawafi")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .padding(-16)
+                Spacer()
+                Image(systemName: "info.circle")
+                    .font(.system(size: 20))
+                    .foregroundColor(.myPrimary)
+                    .padding()
+                    .onTapGesture {
+                        aboutShown = true
+                    }
+            }
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .font(.system(size: 12))
+                    .foregroundColor(.red)
+                    .frame(maxWidth:.infinity)
+                    .padding(12)
+                    .background(Color.red.opacity(0.2))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+
+            }
+            VStack(alignment:.leading){
                 Text("اكتب قصيدة لتحليلها")
                     .font(.system(size: 32, weight: .bold))
                     .padding(.bottom,4)
@@ -33,7 +60,7 @@ struct ContentView: View {
                 ZStack(alignment:.bottomTrailing){
                     //editor
                     TextEditor(text: $firstPart)
-                        .frame(height:240)
+                        .frame(height:200)
                         .font(.system(size: 24))
                         .modifier(TextFieldModifier())
                         .foregroundColor(firstPart == placeholderText ? Color.gray_3 : Color.myDark)
@@ -48,15 +75,6 @@ struct ContentView: View {
                         .padding()
                         .foregroundColor(Color.myPrimary)
                 }
-                if !errorMessage.isEmpty {
-                    Text(errorMessage)
-                        .font(.system(size: 12))
-                        .foregroundColor(.red)
-                        .frame(maxWidth:.infinity)
-                        .padding(12)
-                        .background(Color.red.opacity(0.2))
-                        .cornerRadius(8)
-                }
                 Spacer()
                 Button {
                     
@@ -66,7 +84,9 @@ struct ContentView: View {
                     
                     //1. check form
                     if firstPart.count < 10  {
-                        errorMessage = "الرجاء التأكد من كتابة بيتي شعر"
+                        withAnimation {
+                            errorMessage = "الرجاء التأكد من كتابة بيتي شعر"
+                        }
                         return
                     }
                     
@@ -76,28 +96,37 @@ struct ContentView: View {
                     
                     //3. start loading
                     isloading = true
+                    disableButton = true
                     
-                    //4.prep input
-                    let body = getArrayOfParts(firstPart)
                     
-                    self.response = Response.getSample()
-                    
-                    //5. call api
-//                    Task{
-//                        do{
-//                            if let response = try? await API.getResults(part_1: firstPart, part_2: "") {
-//                                //5. show results
-//                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
-//                                    isloading = false
-//                                    self.response = response
-//                                }
-//
-//                            }else{
-//                                errorMessage = "الرجاء التأكد من الاتصال بالانترنت"
-//                                isloading = false
-//                            }
-//                        }
-//                    }
+                    //4. call api
+                    Task{
+                        do{
+                            if let response = try? await API.getAnalysis(firstPart) {
+                                //5. show results
+                                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
+                                    isloading = false
+                                    disableButton = false
+                                    self.response = response
+                                    
+                                }
+                                
+
+                            }else{
+                                withAnimation {
+                                    errorMessage = "الرجاء التأكد من كتابة أبيات صحيحة"
+                                }
+                                isloading = false
+                                disableButton = false
+                                Timer.scheduledTimer(withTimeInterval:2, repeats: false) { timer in
+                                    withAnimation {
+                                        errorMessage = ""
+                                    }
+                                }
+                                
+                            }
+                        }
+                    }
                     
                 } label: {
                     Group{
@@ -116,28 +145,22 @@ struct ContentView: View {
                     .opacity(isButtonEnabled() ? 1 : 0.5 )
                 }
             }
-            .padding()
+            .padding(32)
         }
         .sheet(item: $response) {
         } content: { response in
-            ResultsView(response: response, selectedBait: response.baits_analysis[0])
+            ResultsView(response: response)
                 .environment(\.layoutDirection, .rightToLeft)
                 .environment(\.locale,.init(identifier: "ar"))
                 .preferredColorScheme(.light)
         }
-        .onAppear {
-            //load json
-            if let data = readLocalFile(forName: "anlss") {
-                let res = parse(jsonData: data)
-                self.response = response
-                print("loaded")
-            }else{
-                print("not loaded")
-            }
-            
-            //link num bayts to first name
-            
-        }
+        .sheet(isPresented: $aboutShown, content: {
+            AboutView()
+                .environment(\.layoutDirection, .rightToLeft)
+                .environment(\.locale,.init(identifier: "ar"))
+                .preferredColorScheme(.light)
+        })
+        .onAppear {}
         .onChange(of: firstPart) { newValue in
             numOfBayts = firstPart.split(separator: "\n").count / 2
         }
@@ -146,10 +169,15 @@ struct ContentView: View {
     func isButtonEnabled() -> Bool {
         return firstPart != placeholderText &&
         firstPart.count >= 20 &&
-        numOfBayts != 0
+        numOfBayts != 0 &&
+        !disableButton
     }
     
-    func getArrayOfParts(_ text:String){
+    func getBody(_ text:String) -> String {
+        return String(text.trimmingCharacters(in: .whitespacesAndNewlines))
+    }
+    
+    func getArrayOfParts(_ text:String) -> [String]{
         let parts = text.split(separator: "\n")
         var body:[String] = []
         var tempBait = ""
@@ -165,6 +193,8 @@ struct ContentView: View {
                 partIndex = 0
             }
         }
+        
+        return body
     }
 }
 

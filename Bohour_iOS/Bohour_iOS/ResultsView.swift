@@ -9,15 +9,22 @@ import SwiftUI
 
 struct ResultsView : View {
     
-    var response:Response
+    var response:ResponseNew
     @State private var showDetails = true
     private let innerSpacing = 8.0
-    @State var selectedBait:BaitsAnalysis
-    @Namespace var firstPartId
+    let osoor = ["الجاهلي", "الإسلامي", "الأموي", "العباسي", "العثماني", "الحديث"]
+    @State var sha6rz:[String] = []
+    @State var asrs_short:[String] = []
+    @State var tafeelat = ""
+    
+    func isAsr(_ asr:String) -> Bool{
+        return asrs_short.contains(asr)
+    }
     
     var body : some View {
         
         VStack(alignment:.leading, spacing: 24){
+            
             //Top section
             VStack(alignment:.leading){
                 Text("تحليل القصيدة")
@@ -30,18 +37,22 @@ struct ResultsView : View {
                     HStack(spacing:innerSpacing){
                         //bahr
                         VStack{
-                            Text(response.meter)
-                                .font(.system(size: 36, weight: .black))
-                                .bold()
-                                .frame(maxWidth:.infinity)
-                                .foregroundColor(Color.myDark)
-                                .padding(.top,12)
+                            Group{
+                                Text("البحر ") + Text(response.meter)
+                            }
+                            .font(.system(size: 36, weight: .black))
+                            .foregroundColor(Color.myDark)
+                            .padding(.top,12)
+                                
                         }
                         .modifier(BoxModifier())
                         .opacity(showDetails ?  1 : 0)
                         .transition(.scale)
                         
                     }
+                    
+                    Text("\(tafeelat)")
+                        .padding(.bottom)
                     
                     Rectangle()
                         .frame(height: 1)
@@ -54,7 +65,7 @@ struct ResultsView : View {
                         //qafiyah
                         VStack{
                             Text("القافية")
-                            Text(response.qafiah.type)
+                            Text(getQafiyahString(response.qafiyah))
                                 .font(.system(size: 24, weight: .bold))
                                 .frame(maxWidth:.infinity)
                                 .foregroundColor(Color.myDark)
@@ -63,10 +74,10 @@ struct ResultsView : View {
                         .opacity(showDetails ?  1 : 0)
                         .transition(.scale)
                         
-                        //era
+                        //qafiyah
                         VStack{
-                            Text("العصر")
-                            Text(response.era[0].name)
+                            Text("حرف الروي")
+                            Text(response.qafiyah[0])
                                 .font(.system(size: 24, weight: .bold))
                                 .frame(maxWidth:.infinity)
                                 .foregroundColor(Color.myDark)
@@ -78,7 +89,7 @@ struct ResultsView : View {
                         //topic
                         VStack{
                             Text("الموضوع")
-                            Text(response.topic[0].name)
+                            Text(response.theme[0].split(separator: " ")[1])
                                 .font(.system(size: 24, weight: .bold))
                                 .frame(maxWidth:.infinity)
                                 .foregroundColor(Color.myDark)
@@ -88,9 +99,35 @@ struct ResultsView : View {
                         .transition(.scale)
                         
                     }
+                    
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(Color.myLight)
+                        .padding(.horizontal)
+                    
+                    //era
+                    VStack{
+                        Text("أقرب لقصائد العصر")
+                        ScrollView(.horizontal){
+                            HStack{
+                                ForEach(osoor,id:\.self){ asr in
+                                    Text(asr)
+                                        .padding(8)
+                                        .background(isAsr(asr) ? Color.myPrimary : Color.myLight)
+                                        .cornerRadius(8)
+                                        .foregroundColor(isAsr(asr) ? Color.myLight : Color.myDark)
+                                        .opacity(isAsr(asr) ? 1 : 0.4)
+                                }
+                            }
+                        }
+                    }
+                    .opacity(showDetails ?  1 : 0)
+                    .transition(.scale)
+                    .padding()
+                    
                 }
                 .background(Color.white)
-                .cornerRadius(12)
+                .cornerRadius(16)
             }
             .padding()
             
@@ -108,69 +145,22 @@ struct ResultsView : View {
                 
                 ScrollView{
                     VStack{
-                        ForEach(response.baits_analysis){ bayt in
-                            VStack(alignment: .leading){
-                                ScrollViewReader { p in
-                                    ScrollView(.horizontal){
-                                        HStack{
-                                            PartView(partIndex: 0, selectedBait: bayt)
-                                                .padding(.leading)
-                                                .id(firstPartId)
-                                            PartView(partIndex: 1, selectedBait: bayt)
-                                        }
-                                    }
-                                    .onAppear {
-                                        p.scrollTo(firstPartId)
-                                    }
+                        ForEach(0..<sha6rz.count, id:\.self){ i in
+                            HStack{
+                                if (i % 2 != 0){
+                                    Spacer()
                                 }
-                                .padding(.bottom,12)
+                                PartView(bait_diacritized: sha6rz[i], arudi_style: response.arudi_style[i][0], tafeelat_pattern: response.arudi_style[i][1])
+                                if (i % 2 == 0){
+                                    Spacer()
+                                }
                             }
                         }
                     }
+                    .padding(.horizontal)
                 }
                 
-                //abyat
-                
-//                ScrollView {
-//
-//                    VStack{
-//                        ForEach(response.baits_analysis){ bayt in
-//                            VStack(spacing:innerSpacing){
-//                                HStack{
-//                                    Text("\(String(bayt.bait_diacritized.split(separator: "#")[0]))")
-//                                        .opacity(showDetails ?  1 : 0)
-//                                        .transition(.scale)
-//                                    Spacer()
-//                                }
-//                                HStack{
-//                                    Spacer()
-//                                    Text("\(String(bayt.bait_diacritized.split(separator: "#")[1]))")
-//                                        .opacity(showDetails ?  1 : 0)
-//                                        .transition(.scale)
-//                                }
-//                            }
-//                            .modifier(BoxModifier())
-//                            .font(.system(size: 18, weight: .bold))
-//                            .foregroundColor(Color.myPrimary)
-//                        }
-//
-//                    }
-//
-//                }
-                
-                
-            }
-
-            
-            
-            //bayte
-//            Text("\(response.baitsAnalysis[0].baitDiacritized)")
-//                .font(.system(size: 18, weight: .bold))
-//                .multilineTextAlignment(.center)
-//                .foregroundColor(Color.myLight)
-//                .lineSpacing(10)
-//                .frame(maxWidth:.infinity)
-//                .padding()
+        }
         }
         .background(Color.myPrimary)
         .onAppear {
@@ -179,8 +169,37 @@ struct ResultsView : View {
                     showDetails = true
                 }
             }
+            
+            //SHA6rz
+            for b in response.diacritized {
+                let bayteParts = b.split(separator: "#")
+                for part in bayteParts {
+                    sha6rz.append(String(part).trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+            }
+            
+            //asrz
+            asrs_short = response.era.map{ s in
+                String(s.split(separator: " ")[1])
+            }
+            
+            //tafeelat
+            switch response.closest_patterns[0][2] {
+            case .string(let name):
+                tafeelat = name.replacingOccurrences(of: "#", with: " ")
+            case .double(_):
+                print("number")
+            }
+            
+            print(response.qafiyah[1])
+            
         }
     }
+    
+    func getQafiyahString(_ qfyz:[String]) -> String{
+        return qfyz[1..<qfyz.count].joined(separator: ",")
+    }
+
 }
 
 func getPart(_ partIndex:Int,  _ str:String) -> String {
@@ -191,19 +210,21 @@ func getPart(_ partIndex:Int,  _ str:String) -> String {
 
 struct PartView : View {
     
-    var partIndex:Int
-    var selectedBait:BaitsAnalysis
-    
+    var bait_diacritized:String
+    var arudi_style:String
+    var tafeelat_pattern:String
+    @State var tafeelatSpaced = ""
+        
     var body : some View {
         VStack(alignment:.leading){
-            Text(getPart(partIndex, selectedBait.bait_diacritized))
+            Text(bait_diacritized)
                 .font(.system(size: 24))
                 .bold()
                 .padding(.bottom,8)
             VStack(alignment:.leading){
                 //)parts
                 HStack(spacing:1){
-                    ForEach(Array(getPart(partIndex, selectedBait.arudi_style)), id:\.self){ c in
+                    ForEach(Array(arudi_style), id:\.self){ c in
                         Text(String(c))
                             .frame(width:10)
                             .font(.system(size: 12))
@@ -211,7 +232,7 @@ struct PartView : View {
                 }
                 
                 HStack(spacing:1){
-                    ForEach(Array(getPart(partIndex, selectedBait.tafeelat_pattern)), id:\.self){ c in
+                    ForEach(Array(tafeelatSpaced), id:\.self){ c in
                         Circle()
                             .frame(width:10, height:8)
                             .foregroundColor(c == "1" ? Color.myPrimary : Color.myLight)
@@ -220,20 +241,35 @@ struct PartView : View {
                     }
                 }
                 
-                // failatun
-                
-                
             }
         }
         .padding()
         .background(Color.white)
         .cornerRadius(12)
+        .onAppear{
+            
+            addSpacesToPattern()
+            
+        }
+    }
+    
+    func addSpacesToPattern(){
+        var spaceIndecies:[Int] = []
+        for i in 0..<arudi_style.count{
+            if arudi_style[i] == " " {
+                spaceIndecies.append(i)
+            }
+        }
+        tafeelatSpaced = tafeelat_pattern
+        for i in spaceIndecies {
+            tafeelatSpaced.insert(" ", at: tafeelatSpaced.index(tafeelatSpaced.startIndex, offsetBy: i))
+        }
     }
 }
 
 struct ResultsView_Previews: PreviewProvider {
     static var previews: some View {
-        ResultsView(response: Response.getSample()!, selectedBait: Response.getSample()!.baits_analysis[0])
+        ResultsView(response: ResponseNew.getSample()!)
             .environment(\.layoutDirection, .rightToLeft)
             .environment(\.locale,.init(identifier: "ar"))
     }

@@ -219,10 +219,10 @@ BAITS_EMBEDDINGS = load_from_disk("./deep-learning-models/baits_embeddings")
 import tkseem as tk
 
 ERA_MODEL = create_era_theme_model()
-ERA_MODEL.load_weights("./deep-learning-models/era_classification_model/cp.ckpt")
+ERA_MODEL.load_weights("./deep-learning-models/era_classification_models_shorter_context/cp.ckpt")
 
 ERA_TOKENIZER = tk.SentencePieceTokenizer()
-ERA_TOKENIZER.load_model("./deep-learning-models/era_classification_model/vocab.model")
+ERA_TOKENIZER.load_model("./deep-learning-models/era_classification_models_shorter_context/vocab.model")
 
 
 THEME_MODEL = create_era_theme_model()
