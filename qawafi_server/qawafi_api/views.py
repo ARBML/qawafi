@@ -69,7 +69,8 @@ class BaitAnalyzerAPIView(View):
             patterns=[pattern for (arudiy_style, pattern) in arudi_styles_and_patterns],
             meter=meter,
         )
-        qafiyah = majority_vote(get_qafiyah(baits))
+        # qafiyah = majority_vote(get_qafiyah(baits))
+        qafiyah = majority_vote(get_qafiyah(baits, short=True))
         # meters = get_meter(diacritized_baits)
         # res = get_closest_baits(baits)
         era = predict_era(" ".join(baits))
