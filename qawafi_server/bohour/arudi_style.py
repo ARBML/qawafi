@@ -25,8 +25,20 @@ def handle_space(plain_chars):
     else:
         return plain_chars[:-1]
 
+def remove_extra_harakat(pred):
+    out = ""
+    i = 0 
+    while( i < len(pred)):
+        if i < len(pred) - 1:
+          if pred[i] in harakat and pred[i+1] in harakat:
+            i += 1
+            continue
+        out += pred[i]
+        i += 1
+    return out
 
 def extract_tf3eelav3(pred, verbose=False):
+    pred = remove_extra_harakat(pred)
     chars = list(pred.replace("\u0622", "ءَا").strip())
     chars = [c for c in chars if c in prem_chars]
     chars = list(re.sub(" +", " ", "".join(chars).strip()))
@@ -34,7 +46,8 @@ def extract_tf3eelav3(pred, verbose=False):
     i = 0
     plain_chars = ""
     j = 0
-    while i < len(chars) - 1:
+    flag = True
+    while i < len(chars) - 1 and flag:
         j += 1
         char = chars[i]
         if verbose:
@@ -138,8 +151,9 @@ def extract_tf3eelav3(pred, verbose=False):
                 i -= 1
             i += 2
         if j > 2 * len(chars):
-            print(pred)
-            raise Exception("error")
+            print("something might be wrong!")
+            flag = False
+            
     # if chars[-1] in all_chars:
     #   if out[-1] == '1':
     #     out += '0'
@@ -169,9 +183,9 @@ def extract_tf3eelav3(pred, verbose=False):
     # if out[-1] != '0': #always add sukun to the end of baits if mutaharek
     #   out += '0'
     plain_chars_no_space = plain_chars.replace(" ", "")
-    assert len(plain_chars_no_space) == len(
-        out
-    ), f"{len(plain_chars_no_space)},{len(out)},\n{plain_chars}\n{out}"
+    # assert len(plain_chars_no_space) == len(
+    #     out
+    # ), f"{len(plain_chars_no_space)},{len(out)},\n{plain_chars}\n{out}"
     return plain_chars, out
 
 
