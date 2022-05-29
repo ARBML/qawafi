@@ -68,7 +68,14 @@ def override_auto_tashkeel(auto_diacritized_bait, user_diacritized_bait):
 
 
 def override_auto_baits_tashkeel(auto_diacritized_baits, user_diacritized_baits):
+    overridden = list()
     for auto_diacritized_bait, user_diacritized_bait in zip(
         auto_diacritized_baits, user_diacritized_baits
     ):
-        pass
+        overridden.append(
+            override_auto_tashkeel(
+                auto_diacritized_bait,
+                user_diacritized_bait,
+            )
+        )
+    return overridden
