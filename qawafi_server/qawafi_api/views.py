@@ -59,10 +59,21 @@ class BaitAnalyzerAPIView(View):
             )
         return most_similar_patterns
 
+    def process_baits_string(self, input):
+        lines = input.strip().split("\n")
+        baits = []
+        for i in range(len(lines) // 2):
+            bait = " # ".join(lines[i * 2 : (i + 1) * 2])
+            baits.append(bait)
+        return baits
+
     def post(self, request, *args, **kwargs):
-        baits = json.loads(request.POST.get("baits"))
-        baits = [baits[0]]
+        baits = self.process_baits_string(request.POST.get("baits"))
+        # baits = [baits[0]]
         diacritized_baits = self.diacritize(baits)["diacritized"]
+        shatrs_arudi_styles_and_patterns = list()
+        for bait in diacritized_baits:
+            shatrs_arudi_styles_and_patterns.extend(get_arudi_style(bait.split("#")))
         arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
         meter = majority_vote(get_meter(baits))
         most_closest_patterns = self.get_closest_patterns(
@@ -79,6 +90,7 @@ class BaitAnalyzerAPIView(View):
             {
                 "diacritized": diacritized_baits,
                 "arudi_style": arudi_styles_and_patterns,
+                "arudi_style": shatrs_arudi_styles_and_patterns,
                 "qafiyah": qafiyah,
                 "meter": meter,
                 # "closest_baits": res,
