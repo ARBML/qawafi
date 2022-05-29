@@ -38,8 +38,14 @@ struct ResultsView : View {
     
     var body : some View {
         
-        VStack(alignment:.leading, spacing: 24){
+        VStack(alignment:.center, spacing: 24){
             
+            //close
+            Capsule()
+                .frame(width: 50, height: 10)
+                .foregroundColor(Color.mySecondary)
+                .padding(.top)
+
             //Top section
             VStack(alignment:.leading){
                 Text("تحليل القصيدة")
@@ -254,6 +260,8 @@ struct PartView : View {
                 }
                 
                 Text(tafeelatWord)
+                    .font(.system(size: 20))
+                    .foregroundColor(.mySecondary)
                 
             }
         }
