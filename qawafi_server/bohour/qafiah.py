@@ -91,6 +91,43 @@ def get_qafiah_type(bait):
     return qafiyh_type
 
 
+def get_qafiah_type_short(bait):
+    clean_bait = normalize(bait)
+    rawwy, rawwy_index = get_rawwy_char(bait, with_index=True)
+    qafiyh_type = f""
+    if rawwy_index == len(clean_bait) - 1 or (
+        rawwy_index == len(clean_bait) - 2 and clean_bait[-1] in "ىاوي"
+    ):
+        if remove_unaccepted_chars(bait).strip()[-1] != SUKUN:
+            remove_unaccepted_chars(bait).strip()[-1]
+            qafiyh_type += "الوصل "
+    if (
+        rawwy_index == len(clean_bait) - 2
+        and clean_bait[-1] in "كهة"
+        and remove_unaccepted_chars(bait).strip()[-1] == SUKUN
+    ):
+        qafiyh_type += f"الوصل "
+    elif (
+        rawwy_index == len(clean_bait) - 3
+        and clean_bait[-2] in "كهة"
+        and clean_bait[-1] in "اوي"
+    ):
+        qafiyh_type += f"الوصل والخَروج "
+
+    elif (
+        rawwy_index == len(clean_bait) - 2
+        and clean_bait[-1] in "كهة"
+        and remove_unaccepted_chars(bait).strip()[-1] != SUKUN
+    ):
+        qafiyh_type += "الوصل والخَروج "
+
+    if clean_bait[rawwy_index - 1] in "اويآى":
+        qafiyh_type += "والردف "
+    elif clean_bait[rawwy_index - 2] in "اآ":
+        qafiyh_type += "والتأسيس "
+    return qafiyh_type
+
+
 # from poem_samples_large import samples
 
 # jump = 111
@@ -110,8 +147,9 @@ def get_qafiah_type(bait):
 #         pass
 
 
-def get_qafiyah(baits):
+def get_qafiyah(baits, short=False):
     results = []
+    get_qafiah = get_qafiah_type_short if short is True else get_qafiah_type
     for bait in baits:
-        results.append((get_rawwy_char(bait), get_qafiah_type(bait)))
+        results.append((get_rawwy_char(bait), get_qafiah(bait)))
     return results

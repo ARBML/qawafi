@@ -16,10 +16,18 @@ qasaed = [random.choice(samples) for _ in range(10)]
 
 for qaseeda in qasaed:
     pprint(qaseeda)
+    payload = ""
+    for bait in qaseeda:
+        payload += "\n".join(bait.split("#"))
+        payload += "\n"
+    print("*" * 80)
+    print(payload)
+    print("*" * 80)
     response = requests.post(
         "http://127.0.0.1:8000/api/analyze",
-        data={"baits": json.dumps(qaseeda, ensure_ascii=False)},
+        data={"baits": payload},
     )
     time.sleep(5)
     if response.ok:
         pprint(response.json())
+    break

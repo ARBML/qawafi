@@ -1,5 +1,6 @@
 import copy
-from django.utils.functional import cached_property
+
+# from django.utils.functional import cached_property
 
 
 class BaseEllahZehaf:
@@ -9,7 +10,7 @@ class BaseEllahZehaf:
     def modify_tafeela(self):
         """This method needs to be overridden. If not, it will return the tafeela unchanged"""
 
-    @cached_property
+    @property
     def modified_tafeela(self):
         if hasattr(self, "assertions"):
             assert all(self.assertions), "assertions failed"
@@ -19,7 +20,7 @@ class BaseEllahZehaf:
 
 
 class NoZehafNorEllah(BaseEllahZehaf):
-    @cached_property
+    @property
     def modified_tafeela(self):
         self.tafeela.applied_ella_zehaf_class = None
         return self.tafeela
