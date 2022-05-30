@@ -130,14 +130,6 @@ def extract_tf3eelav3(pred, verbose=False):
                         plain_chars += "ن"
                         # out += '10'
                         out += "0"
-            elif next_next_char == " ":
-                if char == "ه":
-                    out += "0"
-                    plain_chars += char
-                    if next_char == harakat[0]:
-                        plain_chars += "ي"
-                    if next_char == harakat[2]:
-                        plain_chars += "و"
             elif next_char in all_chars:
                 if prev_char != "0":
                     out += "0"
@@ -149,6 +141,14 @@ def extract_tf3eelav3(pred, verbose=False):
                     plain_chars = handle_space(plain_chars) + char
                     # plain_chars += char
                 i -= 1
+            if next_next_char == " ":
+                if char == "ه":
+                    if next_char == harakat[0]:
+                        plain_chars += "ي"
+                        out += "0"
+                    if next_char == harakat[2]:
+                        plain_chars += "و"
+                        out += "0"
             i += 2
         if j > 2 * len(chars):
             print("something might be wrong!")
