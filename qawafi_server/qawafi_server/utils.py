@@ -65,8 +65,6 @@ def clean(text):
 
 
 def override_auto_tashkeel(auto_diacritized_bait, user_diacritized_bait):
-    print(auto_diacritized_bait)
-    print(user_diacritized_bait)
     _, user_undiacritized_bait, user_tashkeelat = extract_haraqat(user_diacritized_bait)
     _, auto_undiacritized_bait, auto_tashkeelat = extract_haraqat(auto_diacritized_bait)
     try:

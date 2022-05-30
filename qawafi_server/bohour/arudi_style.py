@@ -192,7 +192,6 @@ def extract_tf3eelav3(pred, verbose=False):
 
 
 def process_specials_before(bait):
-    print("in preprocess", bait, list(bait))
     if bait[0] == "ا":
         bait = random.choice(["أَ", "إِ"]) + bait[1:]
     bait = bait.replace("وا ", "و ")
@@ -226,7 +225,6 @@ def process_specials_before(bait):
             bait = bait[:tanween_index] + tnween_chars[2] + bait[tanween_index + 2 :]
     if bait[1] in all_chars:
         bait = bait[0] + harakat[1] + bait[1:]
-    print("getting out of preprocess", bait, list(bait))
     return bait
 
 

@@ -1,6 +1,10 @@
 import glob
+
+from bohour import tafeela
 from .utils import (
     BOHOUR_NAMES,
+    find_baits_mismatch,
+    find_mismatch,
     label2name,
     char2idx,
     override_auto_baits_tashkeel,
@@ -22,25 +26,25 @@ from pyarabic.araby import strip_tashkeel
 
 class BaitAnalysis:
     def __init__(self):
+
         self.BOHOUR_PATTERNS = {}
+        self.BOHOUR_TAFEELAT = {}
         # abs_path = "/content/qawafi/qawafi_server"
         abs_path = "."
-        for bahr_file in glob.glob(f"{abs_path}/bohour_patterns/ints/*.txt"):
-            patterns = open(bahr_file, "r").read().splitlines()
+        for bahr_file in glob.glob(f"{abs_path}/bohour_patterns_shatr/*.txt"):
+            # patterns = open(bahr_file, "r").read().splitlines()
+            patterns = list()
+            tafeelat = list()
+            for line in open(bahr_file, "r").read().splitlines():
+                pattern, tafela = line.split(",")
+                patterns.append(pattern)
+                tafeelat.append(tafela)
             bahr_name = bahr_file.split("/")[-1].split(".")[0]
             if bahr_name not in BOHOUR_NAMES:
                 # print(bahr_name)
                 continue
             self.BOHOUR_PATTERNS[bahr_name] = patterns
-
-        self.BOHOUR_TAFEELAT = {}
-        for bahr_file in glob.glob(f"{abs_path}/bohour_patterns/strs/*.txt"):
-            patterns = open(bahr_file, "r").read().splitlines()
-            bahr_name = bahr_file.split("/")[-1].split(".")[0]
-            if bahr_name not in BOHOUR_NAMES:
-                # print(bahr_name)
-                continue
-            self.BOHOUR_TAFEELAT[bahr_name] = patterns
+            self.BOHOUR_TAFEELAT[bahr_name] = tafeelat
 
         print("load meter classification model ...")
         self.METERS_MODEL = create_transformer_model()
@@ -212,46 +216,45 @@ class BaitAnalysis:
                 (second_shatr_arudi_style, second_shatr_pattern),
             ) = results
             shatrs_arudi_styles_and_patterns.extend(results)
-            constructed_patterns_from_shatrs.append(
-                first_shatr_pattern + second_shatr_pattern
-            )
+            constructed_patterns_from_shatrs.append(first_shatr_pattern)
+            constructed_patterns_from_shatrs.append(second_shatr_pattern)
 
-        baits_arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
+        # baits_arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
 
         qafiyah = self.majority_vote(get_qafiyah(baits, short=short_qafiyah))
 
         meter = self.majority_vote(self.get_meter(baits))
-        closest_patterns_from_bait = self.get_closest_patterns(
-            patterns=[
-                pattern for (arudiy_style, pattern) in baits_arudi_styles_and_patterns
-            ],
-            meter=meter,
-        )
+
         closest_patterns_from_shatrs = self.get_closest_patterns(
             patterns=constructed_patterns_from_shatrs,
             meter=meter,
         )
-        final_closest_patterns = [
-            max(bait_arudi_analysis, shatr_arudi_analysis, key=lambda item: item[1]) # arudi analysis is a tuple of (pattern,matching_percentage,tafeelat)
-            for (bait_arudi_analysis, shatr_arudi_analysis) in zip(
-                closest_patterns_from_bait,
-                closest_patterns_from_shatrs,
-            )
-        ]
+
         # qafiyah = self.majority_vote(get_qafiyah(baits))
         closest_baits = []
         if return_closest_baits:
             closest_baits = self.get_closest_baits(baits)
         era = self.predict_era(strip_tashkeel(" ".join(baits)))
         theme = self.predict_theme(strip_tashkeel(" ".join(baits)))
+        gold_patterns = [
+            pattern for (pattern, ratio, tafeelat) in closest_patterns_from_shatrs
+        ]
+
+        patterns_mismatches = find_baits_mismatch(
+            gold_patterns=gold_patterns,
+            predicted_patterns=constructed_patterns_from_shatrs,
+            highlight_output=False,
+        )
+
         analysis = {
             "diacritized": diacritized_baits,
             "arudi_style": shatrs_arudi_styles_and_patterns,
+            "patterns_mismatches": patterns_mismatches,
             "qafiyah": qafiyah,
             "meter": meter,
             "closest_baits": closest_baits,
             "era": era,
-            "closest_patterns": final_closest_patterns,
+            "closest_patterns": closest_patterns_from_shatrs,
             "theme": theme,
         }
         return analysis
