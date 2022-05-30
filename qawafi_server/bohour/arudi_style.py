@@ -25,17 +25,19 @@ def handle_space(plain_chars):
     else:
         return plain_chars[:-1]
 
+
 def remove_extra_harakat(pred):
     out = ""
-    i = 0 
-    while( i < len(pred)):
+    i = 0
+    while i < len(pred):
         if i < len(pred) - 1:
-          if pred[i] in harakat and pred[i+1] in harakat:
-            i += 1
-            continue
+            if pred[i] in harakat and pred[i + 1] in harakat:
+                i += 1
+                continue
         out += pred[i]
         i += 1
     return out
+
 
 def extract_tf3eelav3(pred, verbose=False):
     pred = remove_extra_harakat(pred)
@@ -153,7 +155,7 @@ def extract_tf3eelav3(pred, verbose=False):
         if j > 2 * len(chars):
             print("something might be wrong!")
             flag = False
-            
+
     # if chars[-1] in all_chars:
     #   if out[-1] == '1':
     #     out += '0'
@@ -217,6 +219,8 @@ def process_specials_before(bait):
         tanween_index = bait.index(tnween_chars[2])
         if bait[tanween_index + 1] == "ا":
             bait = bait[:tanween_index] + tnween_chars[2] + bait[tanween_index + 2 :]
+    if bait[1] in all_chars:
+        bait = bait[0] + harakat[1] + bait[1:]
     return bait
 
 
@@ -229,6 +233,7 @@ def process_specials_after(bait):
 def get_arudi_style(baits):
     results = []
     for bait in baits:
+        bait = bait.strip()
         arudi_style, pattern = extract_tf3eelav3(process_specials_before(bait))
         results.append([process_specials_after(arudi_style), pattern])
     return results
