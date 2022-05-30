@@ -172,7 +172,8 @@ class Bahr:
         # add combinations for sub bahrs
         combinations.extend(self.sub_bahrs_combinations)
         # remove duplicates, if any
-        combinations = list(set(combinations))
+        # combinations = list(set(combinations))
+        combinations = list(dict.fromkeys(combinations)) # remove and maintain the order
         return combinations
 
     @property
@@ -193,7 +194,7 @@ class Bahr:
                 pattern += "".join(
                     "".join(map(str, tafeela.pattern)) for tafeela in second_shatr
                 )
-                patterns.append(pattern)
+            patterns.append(pattern)
         return patterns
 
     @property
