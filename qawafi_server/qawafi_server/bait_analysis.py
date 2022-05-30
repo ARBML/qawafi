@@ -201,19 +201,43 @@ class BaitAnalysis:
             )
 
         shatrs_arudi_styles_and_patterns = list()
+        constructed_patterns_from_shatrs = list()
         if override_tashkeel:
             diacritized_baits = override_auto_baits_tashkeel(diacritized_baits, baits)
+
         for bait in diacritized_baits:
-            shatrs_arudi_styles_and_patterns.extend(get_arudi_style(bait.split("#")))
-        arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
+            results = get_arudi_style(bait.split("#"))
+            (
+                (first_shatr_arudi_style, first_shatr_pattern),
+                (second_shatr_arudi_style, second_shatr_pattern),
+            ) = results
+            shatrs_arudi_styles_and_patterns.extend(results)
+            constructed_patterns_from_shatrs.append(
+                first_shatr_pattern + second_shatr_pattern
+            )
+
+        baits_arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
 
         qafiyah = self.majority_vote(get_qafiyah(baits, short=short_qafiyah))
 
         meter = self.majority_vote(self.get_meter(baits))
-        most_closest_patterns = self.get_closest_patterns(
-            patterns=[pattern for (arudiy_style, pattern) in arudi_styles_and_patterns],
+        closest_patterns_from_bait = self.get_closest_patterns(
+            patterns=[
+                pattern for (arudiy_style, pattern) in baits_arudi_styles_and_patterns
+            ],
             meter=meter,
         )
+        closest_patterns_from_shatrs = self.get_closest_patterns(
+            patterns=constructed_patterns_from_shatrs,
+            meter=meter,
+        )
+        final_closest_patterns = [
+            max(bait_arudi_analysis, shatr_arudi_analysis, key=lambda item: item[1]) # arudi analysis is a tuple of (pattern,matching_percentage,tafeelat)
+            for (bait_arudi_analysis, shatr_arudi_analysis) in zip(
+                closest_patterns_from_bait,
+                closest_patterns_from_shatrs,
+            )
+        ]
         # qafiyah = self.majority_vote(get_qafiyah(baits))
         closest_baits = []
         if return_closest_baits:
@@ -227,7 +251,7 @@ class BaitAnalysis:
             "meter": meter,
             "closest_baits": closest_baits,
             "era": era,
-            "closest_patterns": most_closest_patterns,
+            "closest_patterns": final_closest_patterns,
             "theme": theme,
         }
         return analysis
