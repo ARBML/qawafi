@@ -1,4 +1,8 @@
 from diacritization_evaluation.util import extract_haraqat, combine_txt_and_haraqat
+import difflib
+from termcolor import colored
+from pyarabic.araby import strip_tatweel
+import re
 
 vocab = list("إةابتثجحخدذرزسشصضطظعغفقكلمنهويىأءئؤ#آ ")
 vocab += list("ًٌٍَُِّ") + ["ْ"] + ["ٓ"]
@@ -56,10 +60,20 @@ def process_and_write(input):
     open("/content/qawafi/demo/baits_input.txt", "w").write("\n".join(baits))
 
 
+def clean(text):
+    return re.sub(" +", " ", strip_tatweel(text)).strip()
+
+
 def override_auto_tashkeel(auto_diacritized_bait, user_diacritized_bait):
+    print(auto_diacritized_bait)
+    print(user_diacritized_bait)
     _, user_undiacritized_bait, user_tashkeelat = extract_haraqat(user_diacritized_bait)
     _, auto_undiacritized_bait, auto_tashkeelat = extract_haraqat(auto_diacritized_bait)
-    assert len(user_tashkeelat) == len(auto_tashkeelat)
+    try:
+        assert len(user_tashkeelat) == len(auto_tashkeelat)
+    except Exception as e:
+        print(len(user_tashkeelat), len(auto_tashkeelat))
+        raise e
     for index in range(len(user_tashkeelat)):
         if len(user_tashkeelat[index]) > 0:
             auto_tashkeelat[index] = user_tashkeelat[index]
@@ -79,3 +93,76 @@ def override_auto_baits_tashkeel(auto_diacritized_baits, user_diacritized_baits)
             )
         )
     return overridden
+
+
+###--- sequence matching ---###
+
+
+def highlight_difference(colored_string):
+    highlighted = ""
+    for i in range(0, len(colored_string), 2):
+        if colored_string[i] == "R":
+            highlighted += colored(colored_string[i + 1], "red")
+        elif colored_string[i] == "B":
+            highlighted += colored(colored_string[i + 1], "blue")
+        elif colored_string[i] == "Y":
+            highlighted += colored(colored_string[i + 1], "yellow")
+        elif colored_string[i] == "G":
+            highlighted += colored(colored_string[i + 1], "green")
+    return highlighted
+
+
+def find_mismatch(a, b, highlight_output=True):
+    print("Y:flipped, R:Removed, B:Added, G:Correct")
+    print("origina: ", a)
+    print("Predict: ", b)
+    out = ""
+    if len(a) == len(b):
+        for i in range(len(a)):
+            if a[i] != b[i]:
+                out += "Y" + str(b[i])
+            else:
+                out += "G" + str(b[i])
+    else:
+        s = difflib.SequenceMatcher(None, a, b)
+
+        b_block = []
+        a_block = []
+
+        for block in s.get_matching_blocks():
+            a_block += list(range(block.a, block.a + block.size))
+            b_block += list(range(block.b, block.b + block.size))
+
+        added_indices = set(list(range(len(b)))).difference(set(b_block))
+        removed_indices = set(list(range(len(a)))).difference(set(a_block))
+
+        i = 0
+        while i < len(b):
+            if i in removed_indices:
+                out += "B" + str(a[i])
+                removed_indices.remove(i)
+                continue
+            elif i in added_indices:
+                out += "R" + str(b[i])
+            else:
+                out += "G" + str(b[i])
+            i += 1
+        if len(removed_indices) > 0:
+            for i in removed_indices:
+                out += "B" + str(a[i])
+    if highlight_output:
+        return highlight_difference(out)
+    return out
+
+
+def find_baits_mismatch(gold_patterns, predicted_patterns, highlight_output=True):
+    mismatched_baits = list()
+    for gold_pattern, predicted_pattern in zip(gold_patterns, predicted_patterns):
+        mismatched_baits.append(
+            find_mismatch(
+                gold_pattern,
+                predicted_pattern,
+                highlight_output,
+            )
+        )
+    return mismatched_baits
