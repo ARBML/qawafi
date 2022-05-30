@@ -6,7 +6,8 @@
 import Foundation
 
 // MARK: - Response
-class ResponseNew: Identifiable, Codable {
+class ResponseNew: Identifiable, Codable, Equatable  {
+    
             
     let diacritized: [String]
     let arudi_style: [[String]]
@@ -34,6 +35,10 @@ class ResponseNew: Identifiable, Codable {
             print("decode error")
             return nil
         }
+    }
+    
+    static func == (lhs: ResponseNew, rhs: ResponseNew) -> Bool {
+        return lhs.diacritized == rhs.diacritized
     }
 }
 

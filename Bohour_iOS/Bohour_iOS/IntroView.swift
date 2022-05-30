@@ -28,8 +28,7 @@ struct IntroView: View {
                             .frame(width: 120, height: 120)
                             .padding(-20)
                         Text("مرحباً بك في قوافي")
-                            .font(.title)
-                            .bold()
+                            .font(.system(size: 28, weight: .black))
                         Text("يمكّنك تطبيق قوافي من تحليل قصيدة أو بيت أو مجموعة أبيات من الشعر العربي، من تأليفك أو من القصائد المشهورة")
                             .font(.title3)
                         

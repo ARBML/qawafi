@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject var previousItems = PreviousResults()
+        
     @State var firstPart = "الشطر الأول \nالشطر الثاني \n..."
     @State var response:ResponseNew? = nil
     @State var isloading = false
@@ -20,27 +22,35 @@ struct ContentView: View {
     @State var introViewShown = false
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
     @FocusState private var nameIsFocused: Bool
+    @State var showHistory = false
     
     var body: some View {
         ZStack(alignment:.top){
             HStack{
-                Image(systemName: "info.circle")
-                    .font(.system(size: 20))
-                    .padding()
-                    .opacity(0)
+                Button {
+                    showHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .font(.system(size: 20))
+                        .padding()
+                        .foregroundColor(.myPrimary)
+                        .opacity(previousItems.items.count > 0 ? 1.0 : 0.0)
+                }
+
                 Spacer()
                 Image("qawafi")
                     .resizable()
                     .frame(width: 80, height: 80)
                     .padding(-16)
+                    .onTapGesture {
+                        aboutShown = true
+                    }
                 Spacer()
                 Image(systemName: "info.circle")
                     .font(.system(size: 20))
                     .foregroundColor(.myPrimary)
                     .padding()
-                    .onTapGesture {
-                        aboutShown = true
-                    }
+                    .opacity(0)
             }
             VStack{
                 if !errorMessage.isEmpty {
@@ -56,7 +66,7 @@ struct ContentView: View {
                 }
                 VStack(alignment:.leading){
                     Text("اكتب قصيدة لتحليلها")
-                        .font(.system(size: 32, weight: .bold))
+                        .font(.system(size: 28, weight: .black))
                         .padding(.bottom,4)
                     Text("اكتب نص القصيدة وافصل كل شطر في سطر جديد")
                         .foregroundColor(Color.gray_6)
@@ -139,6 +149,9 @@ struct ContentView: View {
                                     Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { timer in
                                         isloading = false
                                         disableButton = false
+                                        
+                                        //add to history and show
+                                        self.previousItems.items.append(response)
                                         self.response = response
                                         
                                     }
@@ -190,10 +203,14 @@ struct ContentView: View {
                     .environment(\.locale,.init(identifier: "ar"))
                     .preferredColorScheme(.light)
             })
-            .sheet(isPresented: $introViewShown, onDismiss: {
-                
-            }, content: {
+            .sheet(isPresented: $introViewShown, content: {
                 IntroView()
+                    .environment(\.layoutDirection, .rightToLeft)
+                    .environment(\.locale,.init(identifier: "ar"))
+                    .preferredColorScheme(.light)
+            })
+            .sheet(isPresented: $showHistory, content: {
+                HistoryView(previousItems: previousItems)
                     .environment(\.layoutDirection, .rightToLeft)
                     .environment(\.locale,.init(identifier: "ar"))
                     .preferredColorScheme(.light)
@@ -214,7 +231,8 @@ struct ContentView: View {
             .onChange(of: firstPart) { newValue in
                 numOfBayts = firstPart.split(separator: "\n").count / 2
                 firstPart = firstPart.replacingOccurrences(of: "\n\n", with: "\n")
-        }
+            }
+
         }
         
     }

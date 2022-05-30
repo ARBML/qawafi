@@ -64,12 +64,12 @@ struct ResultsView : View {
                                 Group{
                                     Text("بحر ") + Text(response.meter)
                                 }
-                                .font(.system(size: 36, weight: .black))
+                                .font(.system(size: 28, weight: .black))
                                 .foregroundColor(Color.myDark)
                                 .padding(.top,12)
                                     
                             }
-                            .modifier(BoxModifier())
+                            .padding(20)
                             .opacity(showDetails ?  1 : 0)
                             .transition(.scale)
                             
@@ -96,7 +96,7 @@ struct ResultsView : View {
                                     .foregroundColor(Color.myDark)
                                     .minimumScaleFactor(0.8)
                             }
-                            .modifier(BoxModifier())
+                            .padding(20)
                             .opacity(showDetails ?  1 : 0)
                             .transition(.scale)
                             
@@ -109,7 +109,7 @@ struct ResultsView : View {
                                     .frame(maxWidth:.infinity)
                                     .foregroundColor(Color.myDark)
                             }
-                            .modifier(BoxModifier())
+                            .padding(20)
                             .opacity(showDetails ?  1 : 0)
                             .transition(.scale)
                             

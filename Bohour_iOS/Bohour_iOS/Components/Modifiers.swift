@@ -16,12 +16,12 @@ struct TextFieldModifier: ViewModifier {
             .accentColor(Color.myPrimary)
             .overlay{
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray_1, lineWidth: 1)
+                    .stroke(Color.myLight, lineWidth: 1)
             }
             .background(
                 Color.white
                     .cornerRadius(8)
-                    .shadow(color: Color.gray_1, radius: 10, x: 0, y: 10)
+                    .shadow(color: Color.myLight.opacity(0.7), radius: 8, x: 0, y: 8)
             )
             
 
