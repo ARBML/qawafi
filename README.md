@@ -109,7 +109,7 @@ tester.infer("لا تعذل المشتاق في أشواقه حتى يكون ح�
 ```
 Gives the output   `لا تَعْذَلُ الْمُشْتَاقَ فِي أَشْوَاقِهِ حَتَّى يَكُونَ حَشَاكَ فِي أَحْشَائِهِ`
 
-You can use the notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Barmajan_Diacrtization_Inference.ipynb">
+You can use the notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/diac_inference.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
 </a> to test more. 
 ### iOS APP 
@@ -128,12 +128,17 @@ https://user-images.githubusercontent.com/15667714/170814102-4c7da967-8009-4ed9-
 ├── qawafi_server           # qawafi server for extracting main analysis
 |
 ├── shakkelha_server        # server for diacritization fork of https://github.com/AliOsm/shakkelha
-|
+│
 ├── Notebooks
 │   ├── theme.ipynb         # theme classification training
 │   ├── era.ipynb           # era classification training
 │   ├── meter.ipynb         # meter classification training
 │   └── embedding.ipynb     # embedding training
 ├── demo.ipynb              # main demo notebook
+│
+├── diac_inference.ipynb    # diacritization inference
+│
+├── demo_requirements.txt   # requirements to run demo.ipynb
+│
 └── README.md
 ```
