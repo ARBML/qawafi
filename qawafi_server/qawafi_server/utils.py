@@ -411,3 +411,11 @@ def get_output_df(output):
           full_df['القافية'].append('')
   return pd.DataFrame(full_df)
 
+def process_and_write(input,output_file_path='/content/baits_input.txt'):
+  lines = input.split("\n")[1:-1]
+  baits = []
+  for i in range(len(lines) // 2):
+    bait = ' # '.join(lines[i*2:(i+1)*2])
+    baits.append(bait)
+  open(output_file_path, 'w').write('\n'.join(baits))
+
