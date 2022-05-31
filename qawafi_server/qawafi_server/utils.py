@@ -4,6 +4,7 @@ from termcolor import colored
 from pyarabic.araby import strip_tatweel
 import re
 from pprint import pprint
+import pandas as pd
 
 vocab = list("إةابتثجحخدذرزسشصضطظعغفقكلمنهويىأءئؤ#آ ")
 vocab += list("ًٌٍَُِّ") + ["ْ"] + ["ٓ"]
@@ -180,3 +181,42 @@ def beautiful_print(output):
                 print(mismatch[-1])
         else:
             pprint(output[key])
+
+def get_output_df(output):
+  baits_df = {'المشكل':[], 'أقرب بيت':[], 'الكتابة العروضية':[], 'التفعيله':[], 'النمط':[] }
+  poems_df = {'البحر':[], 'الحقبة الزمنية':[], 'العاطفة':[]}
+  full_df = {**baits_df, **poems_df}
+  for key in ['diacritized', 'closest_baits', 'arudi_style', 'meter', 'era', 'theme',]:
+    if key == 'arudi_style':
+      for style, mismatch, pattern in zip(output[key], output['patterns_mismatches'], output['closest_patterns']):
+        full_df['الكتابة العروضية'].append(style[0])
+        full_df['التفعيله'].append(pattern[-1])
+        full_df['النمط'].append(style[1])
+
+    elif key == 'diacritized':
+      for diac_bait in output[key]:
+        for shatr in diac_bait.split("#"):
+          full_df['المشكل'].append(shatr.strip())
+    elif key == 'closest_baits':
+      for bait in output[key]:
+        for shatr in bait[0][0].split("#"):
+          full_df['أقرب بيت'].append(shatr.strip())
+    elif key =='meter':
+      for i in range(len(output['arudi_style'])):
+        if i == 0:
+          full_df['البحر'].append(output[key])
+        else:
+          full_df['البحر'].append('')
+    elif key =='era':
+      for i in range(len(output['arudi_style'])):
+        if i == 0:
+          full_df['الحقبة الزمنية'].append(output[key][0])
+        else:
+          full_df['الحقبة الزمنية'].append('')
+    elif key =='theme':
+      for i in range(len(output['arudi_style'])):
+        if i == 0:
+          full_df['العاطفة'].append(output[key][0])
+        else:
+          full_df['العاطفة'].append('')
+  return pd.DataFrame(full_df)
