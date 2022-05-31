@@ -3,6 +3,7 @@ import difflib
 from termcolor import colored
 from pyarabic.araby import strip_tatweel
 import re
+from pprint import pprint
 
 vocab = list("إةابتثجحخدذرزسشصضطظعغفقكلمنهويىأءئؤ#آ ")
 vocab += list("ًٌٍَُِّ") + ["ْ"] + ["ٓ"]
@@ -111,9 +112,9 @@ def highlight_difference(colored_string):
 
 
 def find_mismatch(a, b, highlight_output=True):
-    print("Y:flipped, R:Removed, B:Added, G:Correct")
-    print("origina: ", a)
-    print("Predict: ", b)
+    # print("Y:flipped, R:Removed, B:Added, G:Correct")
+    # print("origina: ", a)
+    # print("Predict: ", b)
     out = ""
     if len(a) == len(b):
         for i in range(len(a)):
@@ -164,3 +165,18 @@ def find_baits_mismatch(gold_patterns, predicted_patterns, highlight_output=True
             )
         )
     return mismatched_baits
+
+def beautiful_print(output):
+    for key in output:
+        print(key)
+        if key == 'patterns_mismatches':
+            for mismatch in output[key]:
+                print(mismatch)
+        elif key == 'diacritized':
+            for diac_bait in output[key]:
+                print(diac_bait)
+        elif key == 'closest_baits':
+            for mismatch in output[key]:
+                print(mismatch[-1])
+        else:
+            pprint(output[key])
