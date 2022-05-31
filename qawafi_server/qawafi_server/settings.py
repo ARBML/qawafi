@@ -134,6 +134,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 DIACRITIZER_HOST_URL = "http://127.0.0.1:8080"
 # DIACRITIZER_HOST_URL = "http://host.docker.internal:8080"
 
+# limit GPU usage by tensorflow
+# https://www.tensorflow.org/guide/gpu
+
+import tensorflow as tf
+
+gpus = tf.config.list_physical_devices("GPU")
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.list_logical_devices("GPU")
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
+
 # meters related
 from .bait_analysis import BaitAnalysis
 
