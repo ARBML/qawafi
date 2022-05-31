@@ -13,6 +13,7 @@
 * Extract the meter بحر
 * Extract the qafiyah قافية 
 * Extract the era and theme of a given poem 
+* Diacritize a given bait
 
  <p align="center"> 
  <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "400px"/>
@@ -115,8 +116,6 @@ You can use the notebook <a href="https://colab.research.google.com/github/ARBML
 ### iOS APP 
 
 We developed an iOS app that interacts with the server
-
-
 
 https://user-images.githubusercontent.com/15667714/171204487-fa47f86e-8753-44fc-b0e8-24934540030d.mp4
 
