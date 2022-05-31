@@ -116,7 +116,10 @@ You can use the notebook <a href="https://colab.research.google.com/github/ARBML
 
 We developed an iOS app that interacts with the server
 
-https://user-images.githubusercontent.com/15667714/170814102-4c7da967-8009-4ed9-a5dd-047e15f05831.mp4
+
+
+https://user-images.githubusercontent.com/15667714/171204487-fa47f86e-8753-44fc-b0e8-24934540030d.mp4
+
 
 
 ### Project Structure
