@@ -19,7 +19,18 @@
  <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "400px"/>
  </p>
 
-We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity. 
+We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity.
+
+### Datasets
+
+For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted from 5 well-known Arabic poetry websites. The datatset is uploaded to [Huggingface Datasets Hub](https://huggingface.co/datasets/MagedSaeed/ashaar). The dataset can be downloaded as:
+
+```python
+# pip install datasets
+import datastes
+ashaar = datasets.load_dataset('MagedSaeed/ashaar')
+ashaar
+```
 
 ### Training 
 
