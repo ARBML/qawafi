@@ -190,6 +190,7 @@ class BaitAnalysis:
         return_closest_baits=True,
         short_qafiyah=False,
         override_tashkeel=False,
+        highlight_output = False,
     ):
         if baits is not None and diacritized_baits is not None:
             baits = baits
@@ -243,7 +244,7 @@ class BaitAnalysis:
         patterns_mismatches = find_baits_mismatch(
             gold_patterns=gold_patterns,
             predicted_patterns=constructed_patterns_from_shatrs,
-            highlight_output=False,
+            highlight_output=highlight_output,
         )
 
         analysis = {
