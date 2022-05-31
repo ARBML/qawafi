@@ -69,6 +69,15 @@ You can test our modules using the following notebook <a href="https://colab.res
   <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
 </a>. 
 
+You can use the following code snippet to analyze a given diacritized input inside `baits_input.txt`
+
+```python
+from qawafi_server.bait_analysis import BaitAnalysis
+
+analysis = BaitAnalysis()
+output = analysis.analyze(read_from_path='baits_input.txt', override_tashkeel=True)
+```
+
 Sample output 
 
 ```
@@ -90,7 +99,19 @@ Sample output
                      'التأسيس'),
  'theme'           : ['قصيدة رومنسيه', 'قصيدة شوق', 'قصيدة غزل']}
 ```
+### Diacritization Model 
+Clone the directory `https://github.com/zaidalyafeai/Arabic_Diacritization`
 
+```python
+from predict import DiacritizationTester
+tester = DiacritizationTester('config/test.yml', 'cbhg')
+tester.infer("لا تعذل المشتاق في أشواقه حتى يكون حشاك في أحشائه")
+```
+Gives the output   `لا تَعْذَلُ الْمُشْتَاقَ فِي أَشْوَاقِهِ حَتَّى يَكُونَ حَشَاكَ فِي أَحْشَائِهِ`
+
+You can use the notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Barmajan_Diacrtization_Inference.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
+</a> to test more. 
 ### iOS APP 
 
 We developed an iOS app that interacts with the server
@@ -102,20 +123,11 @@ https://user-images.githubusercontent.com/15667714/170814102-4c7da967-8009-4ed9-
 
 
 ```
-
-
-
 ├── Bohour_iOS              # iOS app 
-├── demo
-│   ├── bohour              # main functionalities 
-│   ├── demo.py             # main demo 
-│   ├── models.py           # model architectures 
-│   ├── utils.py            # helper functions
-│   └── diacritizer.py      # diacritization module
 |
 ├── qawafi_server           # qawafi server for extracting main analysis
 |
-├── shakkelha_server        # server for diacritization
+├── shakkelha_server        # server for diacritization fork of https://github.com/AliOsm/shakkelha
 |
 ├── Notebooks
 │   ├── theme.ipynb         # theme classification training

@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 .vscode/settings.json
 qawafi_server/deep-learning-models/baits_embeddings/*.arrow
+
+*Zone.Identifier
