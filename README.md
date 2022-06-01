@@ -43,7 +43,7 @@ ashaar is collected from mainly six online sources. There are other sources but 
 - adab.com
 - diwany.org
 
-# General Statistics
+##### General Statistics
 
 | metric          | value     |
 |-----------------|-----------|
