@@ -13,12 +13,136 @@
 * Extract the meter بحر
 * Extract the qafiyah قافية 
 * Extract the era and theme of a given poem 
+* Diacritize a given bait
 
  <p align="center"> 
  <img src = "https://raw.githubusercontent.com/ARBML/qawafi/main/media/pipeline.png" width = "400px"/>
  </p>
 
-We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity. 
+We use deep learning for meter classification, theme and era classification. For closest bait we used our pretrained embeddings to find the closest bait using cosine similarity.
+
+### Datasets
+
+#### ashaar
+
+For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted from 5 well-known Arabic poetry websites. The datatset is uploaded to [Huggingface Datasets Hub](https://huggingface.co/datasets/MagedSaeed/ashaar). The dataset can be downloaded as:
+
+```python
+# pip install datasets
+import datastes
+ashaar = datasets.load_dataset('MagedSaeed/ashaar')
+ashaar
+```
+
+ashaar is collected from mainly six online sources. There are other sources but with limited contribution to the dataset. These sources are:
+
+- www.aldiwan.net
+- poetry.dctabudhabi.ae
+- www.poetsgate.com
+- www.aldiwanalarabi.com
+- adab.com
+- diwany.org
+
+##### General Statistics
+
+| metric          | value     |
+|-----------------|-----------|
+| number of poems | 254630    |
+| number of baits | 3,857,429 |
+| number of poets | 7167      |
+
+
+#### Bohour
+
+qawafi implements the arudi rules related to tafeelat (تفعيلات). These rules include all the special cases related to each tafeela. As an example, we will work on Fawlon (فعولن) tafeela.
+
+```python
+# to avoid the pain of paths, add qawafi_server to your python path
+# in the current working directory of qawafi, do:
+import sys
+sys.path.append('qawafi_server/bohour')
+# bohour should be in your  path now.
+from qawafi_server.bohour.tafeela import Fawlon
+
+fawlon = Fawlon()
+fawlon.allowed_zehafs
+# >> [bohour.zehaf.Qabadh, bohour.zehaf.Thalm, bohour.zehaf.Tharm]
+fawlon.fawlon.all_zehaf_tafeela_forms()
+# >> [فعولنْ, فعول, عولنْ, عول]
+# for the 0/1 pattern
+fawlon.pattern_int
+# >> 11010
+# to be arabic friendly :)
+fawlon.name
+# >> 'فعولنْ'
+```
+
+As meters (بحر الشعر) are constructed from tafeelat, we can build up meters with high flexibility specifiing the allowed special cases for each tafeela subjected to the constrains of that bahr. Consider the following example on kamel meter (بحر الكامل):
+
+```python
+# continuing from the previous session
+
+from bohour.bahr import Kamel
+
+kamel = Kamel()
+
+# this gives all the possible related bahrs to this bahr, like majzoo and mashtoor, etc.
+kamel.sub_bahrs
+# >> (bohour.bahr.KamelMajzoo,)
+
+# this gives all the special cases related to this bahr at the end of each of each shatr
+# this has been implemented as a mapping as follows
+kamel.arod_dharbs_map
+"""
+>>>
+{
+ bohour.zehaf.NoZehafNorEllah: (
+  bohour.zehaf.NoZehafNorEllah,
+  bohour.zehaf.Edmaar,
+  bohour.zehaf.Qataa,
+  bohour.zehaf.QataaAndEdmaar,
+  bohour.zehaf.HathathAndEdmaar
+  ),
+ bohour.zehaf.Edmaar: (
+  bohour.zehaf.NoZehafNorEllah,
+  bohour.zehaf.Edmaar,
+  bohour.zehaf.Qataa,
+  bohour.zehaf.QataaAndEdmaar,
+  bohour.zehaf.HathathAndEdmaar
+ ),
+ bohour.zehaf.Hathath: (bohour.zehaf.Hathath, bohour.zehaf.HathathAndEdmaar)
+}
+"""
+# to show all the possible combinations of tafeelat of this bahr:
+kamel.all_combinations
+# >>
+"""
+((متفاعلنْ, متفاعلنْ, متفاعلنْ), (متفاعلنْ, متفاعلنْ, متفاعلنْ)),
+ ((متفاعلنْ, متفاعلنْ, متفاعلنْ), (متفاعلنْ, متفاعلنْ, متْفاعلنْ)),
+ ((متفاعلنْ, متفاعلنْ, متفاعلنْ), (متفاعلنْ, متفاعلنْ, متفاعلْ)),
+ ((متفاعلنْ, متفاعلنْ, متفاعلنْ), (متفاعلنْ, متفاعلنْ, متْفاعلْ)),
+ ((متفاعلنْ, متفاعلنْ, متفاعلنْ), (متفاعلنْ, متفاعلنْ, متْفا)),
+... etc
+"""
+# to show the 0/1 combinations of the previous tafeelat:
+kamel.all_combinations_patterns
+# >> # 
+"""
+'111011011101101110110111011011101101110110',
+ '111011011101101110110111011011101101010110',
+ '11101101110110111011011101101110110111010',
+ '11101101110110111011011101101110110101010',
+ '111011011101101110110111011011101101010',
+ '111011011101101110110111011010101101110110',
+ '111011011101101110110111011010101101010110',
+ '11101101110110111011011101101010110111010',
+... etc
+"""
+```
+
+We collected and built a dataset of these tafeelat along with their patterns for the purpose of writing the comparing the arudi style to find out the broken places in the verse (البيت).
+
+This resource is engineered to be easy to build with, customize and work on for eager developers to work on Arabic arud, the science of Arabic poetry.
 
 ### Training 
 
@@ -116,7 +240,8 @@ You can use the notebook <a href="https://colab.research.google.com/github/ARBML
 
 We developed an iOS app that interacts with the server
 
-https://user-images.githubusercontent.com/15667714/170814102-4c7da967-8009-4ed9-a5dd-047e15f05831.mp4
+https://user-images.githubusercontent.com/15667714/171204487-fa47f86e-8753-44fc-b0e8-24934540030d.mp4
+
 
 
 ### Project Structure
