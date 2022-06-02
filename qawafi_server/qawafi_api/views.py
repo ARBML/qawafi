@@ -35,7 +35,7 @@ class BaitAnalyzerAPIView(View):
         lines = input.strip().split("\n")
         baits = []
         for i in range(len(lines) // 2):
-            bait = "#".join(lines[i * 2 : (i + 1) * 2])
+            bait = " # ".join(lines[i * 2 : (i + 1) * 2])
             bait = clean(bait)
             baits.append(bait)
         return baits
