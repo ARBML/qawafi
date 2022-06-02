@@ -221,7 +221,7 @@ def process_specials_before(bait):
     # check tanween fath not being at last of the word
     if bait.find(tnween_chars[2]) != -1:
         tanween_index = bait.index(tnween_chars[2])
-        if bait[tanween_index + 1] == "ا":
+        if tanween_index != len(bait) - 1 and bait[tanween_index + 1] == "ا":
             bait = bait[:tanween_index] + tnween_chars[2] + bait[tanween_index + 2 :]
     if bait[1] in all_chars:
         bait = bait[0] + harakat[1] + bait[1:]
