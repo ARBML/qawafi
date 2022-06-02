@@ -190,7 +190,7 @@ class BaitAnalysis:
         return_closest_baits=True,
         short_qafiyah=False,
         override_tashkeel=False,
-        highlight_output = False,
+        highlight_output=False,
     ):
         if baits is not None and diacritized_baits is not None:
             baits = baits
@@ -209,9 +209,15 @@ class BaitAnalysis:
         constructed_patterns_from_shatrs = list()
         if override_tashkeel:
             try:
-                diacritized_baits = override_auto_baits_tashkeel(diacritized_baits, baits)
+                overridden_diacritized_baits = override_auto_baits_tashkeel(
+                    diacritized_baits,
+                    baits,
+                )
+                diacritized_baits = overridden_diacritized_baits
             except:
-                print('Error in override_auto_baits_tashkeel, rolling back to auto translation')
+                print(
+                    "Error in override_auto_baits_tashkeel, rolling back to auto diacritization"
+                )
 
         for bait in diacritized_baits:
             results = get_arudi_style(bait.split("#"))
