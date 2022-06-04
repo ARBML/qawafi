@@ -44,13 +44,13 @@ class BaitAnalyzerAPIView(View):
         baits = self.process_baits_string(request.POST.get("baits"))
         analyzer = settings.BAITS_ANALYZER
         # baits = [baits[0]]
-        diacritized_baits = self.diacritize(baits)["diacritized"]
+        # diacritized_baits = self.diacritize(baits)["diacritized"]
         analysis = analyzer.analyze(
             baits=baits,
-            diacritized_baits=diacritized_baits,
+            diacritized_baits=None,
             return_closest_baits=False,
             short_qafiyah=True,
-            override_tashkeel=True,
+            override_tashkeel=False,
         )
         return JsonResponse(
             analysis,

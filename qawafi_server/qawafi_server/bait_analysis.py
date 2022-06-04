@@ -211,12 +211,10 @@ class BaitAnalysis:
         override_tashkeel=False,
         highlight_output=False,
     ):
-        print("here")
         if self.use_cbhg:
             proc_baits = baits[:]
             diacritized_baits = []
             for bait in baits:
-                print("bait to be diacritized", bait)
                 diacritized_bait = []
                 proc_bait = []
                 for shatr in bait.split("#"):
@@ -241,7 +239,7 @@ class BaitAnalysis:
                 raise Exception(
                     "either baits list should be provided or read_from_file should be True"
                 )
-        print("diacritized baits:", diacritized_baits)
+
         shatrs_arudi_styles_and_patterns = list()
         constructed_patterns_from_shatrs = list()
         if override_tashkeel:
