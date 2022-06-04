@@ -153,5 +153,10 @@ if gpus:
 
 # meters related
 from .bait_analysis import BaitAnalysis
+import sys
 
-BAITS_ANALYZER = BaitAnalysis()
+try:
+    BAITS_ANALYZER = BaitAnalysis()
+except Exception as e:
+    print(e)
+    sys.exit()
