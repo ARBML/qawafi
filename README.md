@@ -196,7 +196,10 @@ We use the following notebooks for training
 
 <table>
 
+You can find all the pretrained models [here](https://drive.google.com/file/d/1iV2xXRIhBMyIkaXWAC5y_tcke5H2OqET/view?usp=sharing).
+
 ### Testing 
+
 You can test our modules using the following notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/demo.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
 </a>. 
@@ -232,6 +235,7 @@ Sample output
  'theme'           : ['قصيدة رومنسيه', 'قصيدة شوق', 'قصيدة غزل']}
 ```
 ### Diacritization Model 
+
 Clone the directory `https://github.com/zaidalyafeai/Arabic_Diacritization`
 
 ```python
@@ -244,12 +248,12 @@ Gives the output   `لا تَعْذَلُ الْمُشْتَاقَ فِي أَش
 You can use the notebook <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/diac_inference.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" width = '100px' >
 </a> to test more. 
+
 ### iOS APP 
 
 We developed an iOS app that interacts with the server
 
 https://user-images.githubusercontent.com/15667714/171204487-fa47f86e-8753-44fc-b0e8-24934540030d.mp4
-
 
 
 ### Project Structure
