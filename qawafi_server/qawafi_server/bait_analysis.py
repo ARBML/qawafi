@@ -27,7 +27,7 @@ import sys
 
 
 class BaitAnalysis:
-    def __init__(self, use_cbhg = True):
+    def __init__(self, use_cbhg=True):
 
         self.BOHOUR_PATTERNS = {}
         self.BOHOUR_TAFEELAT = {}
@@ -104,16 +104,6 @@ class BaitAnalysis:
         self.THEME_TOKENIZER.load_model(
             f"{abs_path}/deep-learning-models/theme_classification_model/vocab.model"
         )
-
-        self.use_cbhg = use_cbhg
-        if self.use_cbhg:
-            print("load diacritization model ... ")
-            try:
-                from predict import DiacritizationTester
-                self.diac_model = DiacritizationTester('config/test.yml', 'cbhg')
-                self.text_encoder = self.text_encoder
-            except:
-                raise("Git clone https://github.com/zaidalyafeai/Arabic_Diacritization")
 
     def extract_features(self, x):
         x = [[char2idx[char] for char in self.preprocess(line)] for line in x]
@@ -221,25 +211,29 @@ class BaitAnalysis:
         override_tashkeel=False,
         highlight_output=False,
     ):
+        print("here")
         if self.use_cbhg:
-            proc_baits = baits
+            proc_baits = baits[:]
             diacritized_baits = []
             for bait in baits:
+                print("bait to be diacritized", bait)
                 diacritized_bait = []
                 proc_bait = []
                 for shatr in bait.split("#"):
                     diacritized_bait.append(self.diac_model.infer(shatr).strip())
                     proc_bait.append(self.text_encoder.clean(shatr).strip())
-                
-                proc_baits.append(' # '.join(proc_bait))
-                diacritized_baits.append(' # '.join(diacritized_bait))
+
+                proc_baits.append(" # ".join(proc_bait))
+                diacritized_baits.append(" # ".join(diacritized_bait))
             baits = proc_baits
         else:
             if baits is not None and diacritized_baits is not None:
                 baits = baits
                 diacritized_baits = diacritized_baits
             elif read_from_path:
-                baits = open(f"{read_from_path}/baits_input.txt", "r").read().splitlines()
+                baits = (
+                    open(f"{read_from_path}/baits_input.txt", "r").read().splitlines()
+                )
                 diacritized_baits = (
                     open(f"{read_from_path}/baits_output.txt", "r").read().splitlines()
                 )
@@ -247,7 +241,7 @@ class BaitAnalysis:
                 raise Exception(
                     "either baits list should be provided or read_from_file should be True"
                 )
-
+        print("diacritized baits:", diacritized_baits)
         shatrs_arudi_styles_and_patterns = list()
         constructed_patterns_from_shatrs = list()
         if override_tashkeel:
