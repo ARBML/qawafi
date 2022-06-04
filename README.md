@@ -152,6 +152,15 @@ A large dataset for meter classification. You can find the link in [drive](https
 * train50K.txt : max 50K baits for each class 
 * labels.txt   : the label names for each class  
 
+The dataset could also be imported from huggingface 
+
+```python
+from datasets import load_dataset
+dataset = load_dataset("Zaid/metrecv2", "train_all")
+# or the smaller one 
+dataset = load_dataset("Zaid/metrecv2", "train_50k")
+```
+
 ### Training 
 
 We use the following notebooks for training 
