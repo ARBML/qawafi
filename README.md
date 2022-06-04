@@ -144,6 +144,14 @@ We collected and built a dataset of these tafeelat along with their patterns for
 
 This resource is engineered to be easy to build with, customize and work on for eager developers to work on Arabic arud, the science of Arabic poetry.
 
+### MetRecV2
+
+A large dataset for meter classification. You can find the link in [drive](https://drive.google.com/file/d/11iIHChBR7sVcUfGMnxfEAjbe7sSjzx5M/view?usp=sharing). The dataset contains
+
+* train.txt    : full dataset for training 
+* train50K.txt : max 50K baits for each class 
+* labels.txt   : the label names for each class  
+
 ### Training 
 
 We use the following notebooks for training 
