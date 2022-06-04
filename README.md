@@ -288,3 +288,14 @@ https://user-images.githubusercontent.com/15667714/171204487-fa47f86e-8753-44fc-
 │
 └── README.md
 ```
+
+## Citation
+```
+@misc{qawafi2022,
+  author = {Zaid Alyafeai, Maged Saeed AlShaibani, Omar Hammad},
+  title = {Qawafi: Arabic Poetry Analysis Using Deep Learning and Knowledge Based Methods.},
+  year = {2022},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/ARBML/qawafi}}
+}
