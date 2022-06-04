@@ -22,6 +22,8 @@ from bohour.qafiah import get_qafiah_type, get_qafiyah
 from collections import Counter
 from difflib import SequenceMatcher
 from pyarabic.araby import strip_tashkeel
+import traceback
+import sys
 
 
 class BaitAnalysis:
@@ -45,6 +47,23 @@ class BaitAnalysis:
                 continue
             self.BOHOUR_PATTERNS[bahr_name] = patterns
             self.BOHOUR_TAFEELAT[bahr_name] = tafeelat
+
+        self.use_cbhg = use_cbhg
+        if self.use_cbhg:
+            print("load diacritization model ... ")
+            try:
+                from Arabic_Diacritization.predict import DiacritizationTester
+
+                self.diac_model = DiacritizationTester(
+                    "Arabic_Diacritization/config/test.yml", "cbhg"
+                )
+                self.text_encoder = self.diac_model.text_encoder
+            except Exception as e:
+                print(traceback.format_exc())
+                print(
+                    f"{e}. Maybe you should run 'Git clone https://github.com/zaidalyafeai/Arabic_Diacritization'?"
+                )
+                raise e
 
         print("load meter classification model ...")
         self.METERS_MODEL = create_transformer_model()
