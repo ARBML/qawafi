@@ -37,19 +37,19 @@ ashaar
 ashaar is collected from mainly six online sources. There are other sources but with limited contribution to the dataset. These sources are:
 
 - www.aldiwan.net
-- poetry.dctabudhabi.ae
+- www.poetry.dctabudhabi.ae
 - www.poetsgate.com
 - www.aldiwanalarabi.com
-- adab.com
-- diwany.org
+- www.adab.com
+- www.diwany.org
 
 ##### General Statistics
 
 | metric          | value     |
 |-----------------|-----------|
-| number of poems | 254630    |
+| number of poems | 254,630    |
 | number of baits | 3,857,429 |
-| number of poets | 7167      |
+| number of poets | 7,167      |
 
 
 #### Bohour
