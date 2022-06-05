@@ -24,6 +24,7 @@ from difflib import SequenceMatcher
 from pyarabic.araby import strip_tashkeel
 import traceback
 import sys
+import gdown
 
 
 class BaitAnalysis:
@@ -64,6 +65,10 @@ class BaitAnalysis:
                     f"{e}. Maybe you should run 'Git clone https://github.com/zaidalyafeai/Arabic_Diacritization'?"
                 )
                 raise e
+
+        print("Exporting the pretrained models ... ")
+        url = 'https://drive.google.com/uc?id=1P8t7wfjxgLSSdVA9fZ5UYHq9iQ6bkz9G' 
+        gdown.cached_download(url,'deep-learning-models.zip', quiet=False, postprocess=gdown.extractall)
 
         print("load meter classification model ...")
         self.METERS_MODEL = create_transformer_model()
