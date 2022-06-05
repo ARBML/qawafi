@@ -245,7 +245,7 @@ Sample output
 ```
 ### Diacritization Model 
 
-Clone the directory `https://github.com/zaidalyafeai/Arabic_Diacritization`
+We first trained a [CBHG](https://github.com/zaidalyafeai/Arabic_Diacritization) model on [Tashkeela](https://huggingface.co/datasets/tashkeela) then finetuned it on [Ashaar](https://huggingface.co/datasets/MagedSaeed/ashaar). To use the model first clone the directory `https://github.com/zaidalyafeai/Arabic_Diacritization`
 
 ```python
 from predict import DiacritizationTester
