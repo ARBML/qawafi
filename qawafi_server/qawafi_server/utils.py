@@ -367,10 +367,10 @@ def beautiful_print(output):
             pprint(output[key])
 
 def get_output_df(output):
-  baits_df = {'المشكل':[], 'أقرب بيت':[], 'الكتابة العروضية':[], 'التفعيله':[], 'النمط':[] }
+  baits_df = {'المشكل':[], 'الكتابة العروضية':[], 'التفعيله':[], 'النمط':[] }
   poems_df = {'البحر':[], 'الحقبة الزمنية':[], 'العاطفة':[], 'القافية':[]}
   full_df = {**baits_df, **poems_df}
-  for key in ['diacritized', 'closest_baits', 'arudi_style', 'meter', 'era', 'theme','qafiyah']:
+  for key in ['diacritized', 'arudi_style', 'meter', 'era', 'theme','qafiyah']:
     if key == 'arudi_style':
       for style, mismatch, pattern in zip(output[key], output['patterns_mismatches'], output['closest_patterns']):
         full_df['الكتابة العروضية'].append(style[0])
