@@ -29,7 +29,7 @@ For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted fr
 
 ```python
 # pip install datasets
-import datastes
+import datasets
 ashaar = datasets.load_dataset('MagedSaeed/ashaar')
 ashaar
 ```
@@ -199,6 +199,14 @@ We use the following notebooks for training
     <td class="tg-yw4l">Train the embedding model </td>
     <td class="tg-yw4l">
     <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/embedding.ipynb">
+    <img src="https://colab.research.google.com/assets/colab-badge.svg"  >
+    </a></td>
+  </tr>
+
+  <tr>
+    <td class="tg-yw4l">Train the Diacratiziation model </td>
+    <td class="tg-yw4l">
+    <a href="https://colab.research.google.com/github/ARBML/qawafi/blob/main/Notebooks/diacratization.ipynb">
     <img src="https://colab.research.google.com/assets/colab-badge.svg"  >
     </a></td>
   </tr>
