@@ -174,7 +174,17 @@ def process_specials_before(bait):
 
     if bait[1] in all_chars:
         bait = bait[0] + harakat[1] + bait[1:]
-    return bait
+
+    out =[]
+    i = 0
+    while i < len(bait):
+        if bait[i] == 'ا' and bait[i - 1] in tnween_chars:
+            i += 1
+            continue
+        out += bait[i]
+        i += 1
+
+    return out
 
 def process_specials_after(bait):
     bait = bait.replace("ةن", "تن")
