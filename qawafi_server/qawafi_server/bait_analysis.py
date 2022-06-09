@@ -223,7 +223,7 @@ class BaitAnalysis:
         highlight_output=False,
     ):
         if self.use_cbhg:
-            proc_baits = baits[:] # TODO do we need to copy?
+            proc_baits = []
             diacritized_baits = []
             for bait in baits:
                 diacritized_bait = []
@@ -279,7 +279,6 @@ class BaitAnalysis:
 
         qafiyah = self.majority_vote(get_qafiyah(baits, short=short_qafiyah))
 
-        # TODO if it returns meter as nathr skip next arudi style?
         meter = self.majority_vote(self.get_meter(baits))
 
         closest_patterns_from_shatrs = self.get_closest_patterns(
