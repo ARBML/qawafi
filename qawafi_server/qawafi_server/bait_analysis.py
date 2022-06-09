@@ -185,7 +185,7 @@ class BaitAnalysis:
 
     def check_similarity(self, tf3, bahr):
         out = []
-        if meter in BOHOUR_NAMES_AR:
+        if bahr in BOHOUR_NAMES_AR:
             meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
             for comb, tafeelat in zip(
                 self.BOHOUR_PATTERNS[meter],
