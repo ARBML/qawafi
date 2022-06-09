@@ -185,14 +185,18 @@ class BaitAnalysis:
 
     def check_similarity(self, tf3, bahr):
         out = []
-        meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
-        for comb, tafeelat in zip(
-            self.BOHOUR_PATTERNS[meter],
-            self.BOHOUR_TAFEELAT[meter],
-        ):
-            prob = self.similarity_score(tf3, comb)
-            out.append((comb, prob, tafeelat))
-        return sorted(out, key=lambda x: x[1], reverse=True)
+        if meter in BOHOUR_NAMES_AR:
+            meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
+            for comb, tafeelat in zip(
+                self.BOHOUR_PATTERNS[meter],
+                self.BOHOUR_TAFEELAT[meter],
+            ):
+                prob = self.similarity_score(tf3, comb)
+                out.append((comb, prob, tafeelat))
+            return sorted(out, key=lambda x: x[1], reverse=True)
+        else:
+            # return empty results 
+            return [('', 0.0, '')]
 
     def get_closest_patterns(self, patterns, meter):
         most_similar_patterns = list()
@@ -289,9 +293,12 @@ class BaitAnalysis:
             closest_baits = self.get_closest_baits(baits)
         era = self.predict_era(strip_tashkeel(" ".join(baits)))
         theme = self.predict_theme(strip_tashkeel(" ".join(baits)))
-        gold_patterns = [
-            pattern for (pattern, ratio, tafeelat) in closest_patterns_from_shatrs
-        ]
+        
+        gold_patterns = []
+
+        for pattern in closest_patterns_from_shatrs:
+            (pattern, ratio, tafeelat) = pattern 
+            gold_patterns.append(pattern)
 
         patterns_mismatches = find_baits_mismatch(
             gold_patterns=gold_patterns,
