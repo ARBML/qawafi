@@ -176,13 +176,18 @@ class BaitAnalysis:
 
     def check_similarity(self, tf3, bahr):
         out = []
-        meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
-        for comb, tafeelat in zip(
-            self.BOHOUR_PATTERNS[meter], self.BOHOUR_TAFEELAT[meter],
-        ):
-            prob = self.similarity_score(tf3, comb)
-            out.append((comb, prob, tafeelat))
-        return sorted(out, key=lambda x: x[1], reverse=True)
+
+        if bahr != "نثر":
+            meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
+            for comb, tafeelat in zip(
+                self.BOHOUR_PATTERNS[meter], self.BOHOUR_TAFEELAT[meter],
+            ):
+                prob = self.similarity_score(tf3, comb)
+                out.append((comb, prob, tafeelat))
+            return sorted(out, key=lambda x: x[1], reverse=True)
+        else:
+            # return empty results
+            return [("", 0.0, "")]
 
     def get_closest_patterns(self, patterns, meter):
         most_similar_patterns = list()
@@ -206,14 +211,17 @@ class BaitAnalysis:
         highlight_output=False,
     ):
         if self.use_cbhg:
-            proc_baits = baits[:]
+            proc_baits = []
             diacritized_baits = []
             for bait in baits:
                 diacritized_bait = []
                 proc_bait = []
                 for shatr in bait.split("#"):
-                    diacritized_bait.append(self.diac_model.infer(shatr).strip())
-                    proc_bait.append(self.text_encoder.clean(shatr).strip())
+                    try:
+                        diacritized_bait.append(self.diac_model.infer(shatr).strip())
+                        proc_bait.append(self.text_encoder.clean(shatr).strip())
+                    except:
+                        continue
 
                 proc_baits.append(" # ".join(proc_bait))
                 diacritized_baits.append(" # ".join(diacritized_bait))
@@ -248,14 +256,11 @@ class BaitAnalysis:
                 )
 
         for bait in diacritized_baits:
-            results = get_arudi_style(bait.split("#"))
-            (
-                (first_shatr_arudi_style, first_shatr_pattern),
-                (second_shatr_arudi_style, second_shatr_pattern),
-            ) = results
-            shatrs_arudi_styles_and_patterns.extend(results)
-            constructed_patterns_from_shatrs.append(first_shatr_pattern)
-            constructed_patterns_from_shatrs.append(second_shatr_pattern)
+            for shatr in bait.split("#"):
+                results = get_arudi_style(shatr)
+                ((shatr_arudi_style, shatr_pattern),) = results
+                shatrs_arudi_styles_and_patterns.extend(results)
+                constructed_patterns_from_shatrs.append(shatr_pattern)
 
         # baits_arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
 
@@ -273,9 +278,12 @@ class BaitAnalysis:
             closest_baits = self.get_closest_baits(baits)
         era = self.predict_era(strip_tashkeel(" ".join(baits)))
         theme = self.predict_theme(strip_tashkeel(" ".join(baits)))
-        gold_patterns = [
-            pattern for (pattern, ratio, tafeelat) in closest_patterns_from_shatrs
-        ]
+
+        gold_patterns = []
+
+        for pattern in closest_patterns_from_shatrs:
+            (pattern, ratio, tafeelat) = pattern
+            gold_patterns.append(pattern)
 
         patterns_mismatches = find_baits_mismatch(
             gold_patterns=gold_patterns,

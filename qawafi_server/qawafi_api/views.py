@@ -50,7 +50,7 @@ class BaitAnalyzerAPIView(View):
             diacritized_baits=None,
             return_closest_baits=False,
             short_qafiyah=True,
-            override_tashkeel=False,
+            override_tashkeel=True,
         )
         return JsonResponse(
             analysis,
