@@ -185,7 +185,7 @@ class BaitAnalysis:
 
     def check_similarity(self, tf3, bahr):
         out = []
-        if bahr in BOHOUR_NAMES_AR:
+        if bahr in BOHOUR_NAMES:
             meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
             for comb, tafeelat in zip(
                 self.BOHOUR_PATTERNS[meter],
@@ -229,8 +229,11 @@ class BaitAnalysis:
                 diacritized_bait = []
                 proc_bait = []
                 for shatr in bait.split("#"):
+                  try:
                     diacritized_bait.append(self.diac_model.infer(shatr).strip())
                     proc_bait.append(self.text_encoder.clean(shatr).strip())
+                  except:
+                    continue
 
                 proc_baits.append(" # ".join(proc_bait))
                 diacritized_baits.append(" # ".join(diacritized_bait))
@@ -266,14 +269,13 @@ class BaitAnalysis:
                 )
 
         for bait in diacritized_baits:
-            results = get_arudi_style(bait.split("#"))
+          for shatr in bait.split("#"):
+            results = get_arudi_style(shatr)
             (
-                (first_shatr_arudi_style, first_shatr_pattern),
-                (second_shatr_arudi_style, second_shatr_pattern),
+                (shatr_arudi_style, shatr_pattern),
             ) = results
             shatrs_arudi_styles_and_patterns.extend(results)
-            constructed_patterns_from_shatrs.append(first_shatr_pattern)
-            constructed_patterns_from_shatrs.append(second_shatr_pattern)
+            constructed_patterns_from_shatrs.append(shatr_pattern)
 
         # baits_arudi_styles_and_patterns = get_arudi_style(diacritized_baits)
 

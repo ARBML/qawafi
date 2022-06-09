@@ -191,11 +191,13 @@ def process_specials_after(bait):
     # bait = bait.replace('ةي','تن')
     return bait
 
-def get_arudi_style(baits, verbose = False):
+def get_arudi_style(bait, verbose = False):
     results = []
-    for bait in baits:
-        bait = bait.strip()
-        preprocessed = process_specials_before(bait)
-        arudi_style, pattern = extract_tf3eelav3(preprocessed, verbose=verbose)
-        results.append([process_specials_after(arudi_style), pattern])
+    bait = bait.strip()
+    if len(bait) > 0:
+      preprocessed = process_specials_before(bait) 
+      arudi_style, pattern = extract_tf3eelav3(preprocessed, verbose=verbose)
+      results.append([process_specials_after(arudi_style), pattern])
+    else:
+      results.append(["", ""])
     return results
