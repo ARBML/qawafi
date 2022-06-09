@@ -25,6 +25,7 @@ from pyarabic.araby import strip_tashkeel
 import traceback
 import sys
 import gdown
+import bohour
 
 
 class BaitAnalysis:
@@ -34,21 +35,14 @@ class BaitAnalysis:
         self.BOHOUR_TAFEELAT = {}
         # abs_path = "/content/qawafi/qawafi_server"
         abs_path = "."
-        for bahr_file in glob.glob(f"{abs_path}/bohour_patterns_shatr/*.txt"):
-            # patterns = open(bahr_file, "r").read().splitlines()
-            patterns = list()
-            tafeelat = list()
-            for line in open(bahr_file, "r").read().splitlines():
-                pattern, tafela = line.split(",")
-                patterns.append(pattern)
-                tafeelat.append(tafela)
-            bahr_name = bahr_file.split("/")[-1].split(".")[0]
-            if bahr_name not in BOHOUR_NAMES:
-                # print(bahr_name)
-                continue
-            self.BOHOUR_PATTERNS[bahr_name] = patterns
-            self.BOHOUR_TAFEELAT[bahr_name] = tafeelat
-
+        for bahr_class in bohour.bohours_list:
+            bahr = bahr_class()
+            self.BOHOUR_PATTERNS[
+                bahr_class.__name__.lower()
+            ] = bahr.all_shatr_combinations_patterns
+            self.BOHOUR_TAFEELAT[
+                bahr_class.__name__.lower()
+            ] = bahr.get_all_shatr_combinations(as_str_list=True)
         self.use_cbhg = use_cbhg
         if self.use_cbhg:
             print("load diacritization model ... ")
@@ -148,10 +142,7 @@ class BaitAnalysis:
             [char2idx[char] for char in self.preprocess(bait)] for bait in baits
         ]
         processed_baits = pad_sequences(
-            processed_baits,
-            padding="post",
-            value=0,
-            maxlen=128,
+            processed_baits, padding="post", value=0, maxlen=128,
         )
         labels = meters_model.predict(processed_baits).argmax(-1)
         return [label2name[label] for label in labels]
@@ -187,8 +178,7 @@ class BaitAnalysis:
         out = []
         meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
         for comb, tafeelat in zip(
-            self.BOHOUR_PATTERNS[meter],
-            self.BOHOUR_TAFEELAT[meter],
+            self.BOHOUR_PATTERNS[meter], self.BOHOUR_TAFEELAT[meter],
         ):
             prob = self.similarity_score(tf3, comb)
             out.append((comb, prob, tafeelat))
@@ -198,10 +188,7 @@ class BaitAnalysis:
         most_similar_patterns = list()
         for pattern in patterns:
             most_similar_patterns.append(
-                self.check_similarity(
-                    tf3=pattern,
-                    bahr=meter,
-                )[0]
+                self.check_similarity(tf3=pattern, bahr=meter,)[0]
             )
         return most_similar_patterns
 
@@ -252,8 +239,7 @@ class BaitAnalysis:
         if override_tashkeel:
             try:
                 overridden_diacritized_baits = override_auto_baits_tashkeel(
-                    diacritized_baits,
-                    baits,
+                    diacritized_baits, baits,
                 )
                 diacritized_baits = overridden_diacritized_baits
             except:
@@ -278,8 +264,7 @@ class BaitAnalysis:
         meter = self.majority_vote(self.get_meter(baits))
 
         closest_patterns_from_shatrs = self.get_closest_patterns(
-            patterns=constructed_patterns_from_shatrs,
-            meter=meter,
+            patterns=constructed_patterns_from_shatrs, meter=meter,
         )
 
         # qafiyah = self.majority_vote(get_qafiyah(baits))
