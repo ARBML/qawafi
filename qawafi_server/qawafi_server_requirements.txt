@@ -94,3 +94,4 @@ zipp==3.8.0
 diacritization-evaluation==0.5
 ipython
 gdown
+git+https://github.com/MagedSaeed/Bohour.git

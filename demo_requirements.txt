@@ -8,3 +8,4 @@ h5py==2.10.0
 diacritization-evaluation==0.5
 ruamel.yaml==0.16.12
 pyarabic
+git+https://github.com/MagedSaeed/Bohour.git
