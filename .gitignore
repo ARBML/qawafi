@@ -132,3 +132,6 @@ qawafi_server/deep-learning-models/baits_embeddings/*.arrow
 
 *Zone.Identifier
 .vscode/*
+
+*/deep-learning-models*
+*/deep-learning-models*/*
