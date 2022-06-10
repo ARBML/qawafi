@@ -218,8 +218,9 @@ class BaitAnalysis:
                 proc_bait = []
                 for shatr in bait.split("#"):
                     try:
-                        diacritized_bait.append(self.diac_model.infer(shatr).strip())
-                        proc_bait.append(self.text_encoder.clean(shatr).strip())
+                        proc_shatr = self.text_encoder.clean(shatr).strip()
+                        diacritized_bait.append(self.diac_model.infer(proc_shatr))
+                        proc_bait.append(proc_shatr)
                     except:
                         continue
 
