@@ -217,15 +217,15 @@ class BaitAnalysis:
                 diacritized_bait = []
                 proc_bait = []
                 for shatr in bait.split("#"):
-                    try:
-                        proc_shatr = self.text_encoder.clean(shatr).strip()
-                        diacritized_bait.append(self.diac_model.infer(proc_shatr))
-                        proc_bait.append(proc_shatr)
-                    except:
-                        continue
-
-                proc_baits.append(" # ".join(proc_bait))
-                diacritized_baits.append(" # ".join(diacritized_bait))
+                    proc_shatr = self.text_encoder.clean(shatr).strip()
+                    if len(proc_shatr) > 0:
+                      diacritized_bait.append(self.diac_model.infer(proc_shatr))
+                      proc_bait.append(proc_shatr)
+                if len(proc_shatr) > 0:
+                  proc_baits.append(" # ".join(proc_bait))
+                  diacritized_baits.append(" # ".join(diacritized_bait))
+                else:
+                  print('skipped empty line')
             baits = proc_baits
         else:
             if baits is not None and diacritized_baits is not None:
@@ -258,8 +258,13 @@ class BaitAnalysis:
 
         for bait in diacritized_baits:
             for shatr in bait.split("#"):
-                results = get_arudi_style(shatr)
-                ((shatr_arudi_style, shatr_pattern),) = results
+                if len(shatr.strip()) > 0:
+                  results = get_arudi_style(shatr)
+                  ((shatr_arudi_style, shatr_pattern),) = results
+                else:
+                  print("skipping arudi style")
+                  continue
+
                 shatrs_arudi_styles_and_patterns.extend(results)
                 constructed_patterns_from_shatrs.append(shatr_pattern)
 
