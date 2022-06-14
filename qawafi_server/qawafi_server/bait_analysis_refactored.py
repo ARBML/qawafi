@@ -224,7 +224,7 @@ class BaitAnalysis:
                 proc_shatr = self.text_encoder.clean(shatr).strip()
                 if len(proc_shatr) > 0:
                   diacritized_shatr = self.diac_model.infer(proc_shatr)
-
+                  diacritized_shatr = self.text_encoder.clean(diacritized_shatr).strip()
                   if override_tashkeel:
                       try:
                           overridden_diacritized_shatr = override_auto_tashkeel(
