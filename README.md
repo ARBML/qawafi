@@ -25,7 +25,7 @@ We use deep learning for meter classification, theme and era classification. For
 
 #### ashaar
 
-For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted from 5 well-known Arabic poetry websites. The datatset is uploaded to [Huggingface Datasets Hub](https://huggingface.co/datasets/MagedSaeed/ashaar). The dataset can be downloaded as:
+For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted from 5 well-known Arabic poetry websites. The datatset is uploaded to [Huggingface Datasets Hub](https://huggingface.co/datasets/arbml/ashaar). The dataset can be downloaded as:
 
 ```python
 # pip install datasets
