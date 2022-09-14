@@ -30,7 +30,7 @@ For most of the tasks in qawafi, we trainined on ashaar, a dataset colleccted fr
 ```python
 # pip install datasets
 import datasets
-ashaar = datasets.load_dataset('MagedSaeed/ashaar')
+ashaar = datasets.load_dataset('arbml/ashaar')
 ashaar
 ```
 
