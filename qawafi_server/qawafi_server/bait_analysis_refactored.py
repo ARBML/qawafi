@@ -13,7 +13,7 @@ from .models import create_transformer_model, create_model_v1, create_era_theme_
 from tensorflow.keras.models import Model
 from datasets import load_from_disk
 import tkseem as tk
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sentence_transformers import util
 from bohour.arudi_style import get_arudi_style
 from bohour.qafiah import get_qafiyah
@@ -26,16 +26,17 @@ import gdown
 import bohour
 
 empty_analysis = {
-            "diacritized": [],
-            "arudi_style": [],
-            "patterns_mismatches": [],
-            "qafiyah": [],
-            "meter": "",
-            "closest_baits": [],
-            "era": "",
-            "closest_patterns": [],
-            "theme": "",
-        }
+    "diacritized": [],
+    "arudi_style": [],
+    "patterns_mismatches": [],
+    "qafiyah": [],
+    "meter": "",
+    "closest_baits": [],
+    "era": "",
+    "closest_patterns": [],
+    "theme": "",
+}
+
 
 class BaitAnalysis:
     def __init__(self, use_cbhg=True):
@@ -151,7 +152,10 @@ class BaitAnalysis:
             [char2idx[char] for char in self.preprocess(bait)] for bait in baits
         ]
         processed_baits = pad_sequences(
-            processed_baits, padding="post", value=0, maxlen=128,
+            processed_baits,
+            padding="post",
+            value=0,
+            maxlen=128,
         )
         labels = meters_model.predict(processed_baits).argmax(-1)
         return [label2name[label] for label in labels]
@@ -189,7 +193,8 @@ class BaitAnalysis:
         if bahr != "نثر":
             meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
             for comb, tafeelat in zip(
-                self.BOHOUR_PATTERNS[meter], self.BOHOUR_TAFEELAT[meter],
+                self.BOHOUR_PATTERNS[meter],
+                self.BOHOUR_TAFEELAT[meter],
             ):
                 prob = self.similarity_score(tf3, comb)
                 out.append((comb, prob, tafeelat))
@@ -204,7 +209,7 @@ class BaitAnalysis:
     def analyze(
         self,
         baits=None,
-        return_closest_baits = False,
+        return_closest_baits=False,
         short_qafiyah=False,
         override_tashkeel=False,
         highlight_output=False,
@@ -213,7 +218,7 @@ class BaitAnalysis:
         diacritized_baits = []
         shatrs_arudi_styles_and_patterns = []
         patterns_mismatches = []
-        closest_patterns_from_shatrs =[]
+        closest_patterns_from_shatrs = []
         shatrs = []
         diacritized_shatrs = []
         closest_baits = []
@@ -223,46 +228,61 @@ class BaitAnalysis:
             for shatr in bait.split("#"):
                 proc_shatr = self.text_encoder.clean(shatr).strip()
                 if len(proc_shatr) > 0:
-                  diacritized_shatr = self.diac_model.infer(proc_shatr)
-                  diacritized_shatr = self.text_encoder.clean(diacritized_shatr).strip()
-                  if override_tashkeel:
-                      try:
-                          overridden_diacritized_shatr = override_auto_tashkeel(
-                              diacritized_shatr, proc_shatr,
-                          )
-                          diacritized_shatr = overridden_diacritized_shatr
-                      except:
-                          print(
-                              "Error in override_auto_baits_tashkeel, rolling back to auto diacritization"
-                          )
-                      diacritized_bait.append(diacritized_shatr)
-            
-            
-            # ignore empty baits 
+                    diacritized_shatr = self.diac_model.infer(proc_shatr)
+                    diacritized_shatr = self.text_encoder.clean(
+                        diacritized_shatr
+                    ).strip()
+                    if override_tashkeel:
+                        try:
+                            overridden_diacritized_shatr = override_auto_tashkeel(
+                                diacritized_shatr,
+                                proc_shatr,
+                            )
+                            diacritized_shatr = overridden_diacritized_shatr
+                        except:
+                            print(
+                                "Error in override_auto_baits_tashkeel, rolling back to auto diacritization"
+                            )
+                        diacritized_bait.append(diacritized_shatr)
+
+            # ignore empty baits
             if len(diacritized_bait) == 2:
-              diacritized_shatrs += diacritized_bait 
-              diacritized_baits.append(" # ".join(diacritized_bait))
+                diacritized_shatrs += diacritized_bait
+                diacritized_baits.append(" # ".join(diacritized_bait))
 
         if return_closest_baits:
-          closest_baits = self.get_closest_baits(diacritized_baits)
-        
+            closest_baits = self.get_closest_baits(diacritized_baits)
+
         if len(diacritized_baits) == 0:
-          return empty_analysis
+            return empty_analysis
 
         meter = self.majority_vote(self.get_meter(diacritized_baits))
-        qafiyah = self.majority_vote(get_qafiyah(diacritized_baits, short=short_qafiyah))
+        qafiyah = self.majority_vote(
+            get_qafiyah(diacritized_baits, short=short_qafiyah)
+        )
         era = self.predict_era(strip_tashkeel(" ".join(diacritized_baits)))
         theme = self.predict_theme(strip_tashkeel(" ".join(diacritized_baits)))
 
         for i, diacritized_shatr in enumerate(diacritized_shatrs):
             if len(diacritized_shatr) > 0:
-              ((shatr_arudi_style, shatr_pattern),) = get_arudi_style(diacritized_shatr)
-              (closest_pattern, ratio, tafeelat) = self.check_similarity(tf3=shatr_pattern, bahr=meter,)[0]
-              pattern_mismatch = find_mismatch(closest_pattern, shatr_pattern, highlight_output=highlight_output,)
-              
-              closest_patterns_from_shatrs.append((closest_pattern, ratio, tafeelat))
-              shatrs_arudi_styles_and_patterns.append((shatr_arudi_style, shatr_pattern ))
-              patterns_mismatches.append(pattern_mismatch)
+                ((shatr_arudi_style, shatr_pattern),) = get_arudi_style(
+                    diacritized_shatr
+                )
+                (closest_pattern, ratio, tafeelat) = self.check_similarity(
+                    tf3=shatr_pattern,
+                    bahr=meter,
+                )[0]
+                pattern_mismatch = find_mismatch(
+                    closest_pattern,
+                    shatr_pattern,
+                    highlight_output=highlight_output,
+                )
+
+                closest_patterns_from_shatrs.append((closest_pattern, ratio, tafeelat))
+                shatrs_arudi_styles_and_patterns.append(
+                    (shatr_arudi_style, shatr_pattern)
+                )
+                patterns_mismatches.append(pattern_mismatch)
 
         analysis = {
             "diacritized": diacritized_baits,

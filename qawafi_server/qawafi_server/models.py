@@ -8,8 +8,8 @@ from numpy.linalg import norm
 from sentence_transformers import util
 
 import tensorflow as tf
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer, text_to_word_sequence
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer, text_to_word_sequence
 from tensorflow.keras.layers import (
     GRU,
     BatchNormalization,
@@ -107,6 +107,7 @@ def create_transformer_model():
         optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
     )
     return model
+
 
 def create_era_theme_model():
     model = Sequential()

@@ -9,3 +9,4 @@ diacritization-evaluation==0.5
 ruamel.yaml==0.16.12
 pyarabic
 git+https://github.com/MagedSaeed/Bohour.git
+gdown==4.6.0

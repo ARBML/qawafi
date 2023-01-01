@@ -14,8 +14,8 @@ from sentence_transformers import util
 
 import tensorflow as tf
 from django.conf import settings
-from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer, text_to_word_sequence
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.text import Tokenizer, text_to_word_sequence
 from tensorflow.keras.layers import (
     GRU,
     BatchNormalization,

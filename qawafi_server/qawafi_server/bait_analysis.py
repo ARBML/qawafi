@@ -15,7 +15,7 @@ from .models import create_transformer_model, create_model_v1, create_era_theme_
 from tensorflow.keras.models import Model
 from datasets import load_from_disk
 import tkseem as tk
-from keras.preprocessing.sequence import pad_sequences
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sentence_transformers import util
 from bohour.arudi_style import get_arudi_style
 from bohour.qafiah import get_qafiah_type, get_qafiyah
@@ -142,7 +142,10 @@ class BaitAnalysis:
             [char2idx[char] for char in self.preprocess(bait)] for bait in baits
         ]
         processed_baits = pad_sequences(
-            processed_baits, padding="post", value=0, maxlen=128,
+            processed_baits,
+            padding="post",
+            value=0,
+            maxlen=128,
         )
         labels = meters_model.predict(processed_baits).argmax(-1)
         return [label2name[label] for label in labels]
@@ -180,7 +183,8 @@ class BaitAnalysis:
         if bahr != "نثر":
             meter = BOHOUR_NAMES[BOHOUR_NAMES_AR.index(bahr)]
             for comb, tafeelat in zip(
-                self.BOHOUR_PATTERNS[meter], self.BOHOUR_TAFEELAT[meter],
+                self.BOHOUR_PATTERNS[meter],
+                self.BOHOUR_TAFEELAT[meter],
             ):
                 prob = self.similarity_score(tf3, comb)
                 out.append((comb, prob, tafeelat))
@@ -193,7 +197,10 @@ class BaitAnalysis:
         most_similar_patterns = list()
         for pattern in patterns:
             most_similar_patterns.append(
-                self.check_similarity(tf3=pattern, bahr=meter,)[0]
+                self.check_similarity(
+                    tf3=pattern,
+                    bahr=meter,
+                )[0]
             )
         return most_similar_patterns
 
@@ -219,13 +226,13 @@ class BaitAnalysis:
                 for shatr in bait.split("#"):
                     proc_shatr = self.text_encoder.clean(shatr).strip()
                     if len(proc_shatr) > 0:
-                      diacritized_bait.append(self.diac_model.infer(proc_shatr))
-                      proc_bait.append(proc_shatr)
+                        diacritized_bait.append(self.diac_model.infer(proc_shatr))
+                        proc_bait.append(proc_shatr)
                 if len(proc_shatr) > 0:
-                  proc_baits.append(" # ".join(proc_bait))
-                  diacritized_baits.append(" # ".join(diacritized_bait))
+                    proc_baits.append(" # ".join(proc_bait))
+                    diacritized_baits.append(" # ".join(diacritized_bait))
                 else:
-                  print('skipped empty line')
+                    print("skipped empty line")
             baits = proc_baits
         else:
             if baits is not None and diacritized_baits is not None:
@@ -248,7 +255,8 @@ class BaitAnalysis:
         if override_tashkeel:
             try:
                 overridden_diacritized_baits = override_auto_baits_tashkeel(
-                    diacritized_baits, baits,
+                    diacritized_baits,
+                    baits,
                 )
                 diacritized_baits = overridden_diacritized_baits
             except:
@@ -259,11 +267,11 @@ class BaitAnalysis:
         for bait in diacritized_baits:
             for shatr in bait.split("#"):
                 if len(shatr.strip()) > 0:
-                  results = get_arudi_style(shatr)
-                  ((shatr_arudi_style, shatr_pattern),) = results
+                    results = get_arudi_style(shatr)
+                    ((shatr_arudi_style, shatr_pattern),) = results
                 else:
-                  print("skipping arudi style")
-                  continue
+                    print("skipping arudi style")
+                    continue
 
                 shatrs_arudi_styles_and_patterns.extend(results)
                 constructed_patterns_from_shatrs.append(shatr_pattern)
@@ -275,7 +283,8 @@ class BaitAnalysis:
         meter = self.majority_vote(self.get_meter(baits))
 
         closest_patterns_from_shatrs = self.get_closest_patterns(
-            patterns=constructed_patterns_from_shatrs, meter=meter,
+            patterns=constructed_patterns_from_shatrs,
+            meter=meter,
         )
 
         # qafiyah = self.majority_vote(get_qafiyah(baits))
