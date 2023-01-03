@@ -25,7 +25,7 @@ BOHOUR_NAMES = [
     "hazaj",
     "rajaz",
     "mudhare",
-    "muqtatheb",
+    "muqtadheb",
     "nathr",
 ]
 BOHOUR_NAMES_AR = [
@@ -158,8 +158,8 @@ def find_mismatch(a, b, highlight_output=True):
 def find_baits_mismatch(gold_patterns, predicted_patterns, highlight_output=True):
     baits_mismatch = list()
     for gold_pattern, predicted_pattern in zip(gold_patterns, predicted_patterns):
-        if len(gold_pattern)*len(predicted_patterns) == 0:
-            baits_mismatch.append('')
+        if len(gold_pattern) * len(predicted_patterns) == 0:
+            baits_mismatch.append("")
         else:
             baits_mismatch.append(
                 find_mismatch(
@@ -170,88 +170,97 @@ def find_baits_mismatch(gold_patterns, predicted_patterns, highlight_output=True
             )
     return baits_mismatch
 
+
 def beautiful_print(output):
     for key in output:
         print(key)
-        if key == 'patterns_mismatches':
+        if key == "patterns_mismatches":
             for mismatch in output[key]:
                 print(mismatch)
-        elif key == 'diacritized':
+        elif key == "diacritized":
             for diac_bait in output[key]:
                 print(diac_bait)
-        elif key == 'closest_baits':
+        elif key == "closest_baits":
             for mismatch in output[key]:
                 print(mismatch[-1])
         else:
             pprint(output[key])
 
-def get_output_df(output):
-    baits_df = {'المشكل':[], 'الكتابة العروضية':[], 'التفعيله':[], 'النمط':[] }
-    poems_df = {'البحر':[], 'الحقبة الزمنية':[], 'العاطفة':[], 'القافية':[]}
-    full_df = {**baits_df, **poems_df}
-    for key in ['diacritized', 'arudi_style', 'meter', 'era', 'theme','qafiyah']:
-        if key == 'arudi_style':
-            for style, mismatch, pattern in zip(output[key], output['patterns_mismatches'], output['closest_patterns']):
-                full_df['الكتابة العروضية'].append(style[0])
-                full_df['التفعيله'].append(pattern[-1])
-                full_df['النمط'].append(mismatch)
 
-        elif key == 'diacritized':
+def get_output_df(output):
+    baits_df = {"المشكل": [], "الكتابة العروضية": [], "التفعيله": [], "النمط": []}
+    poems_df = {"البحر": [], "الحقبة الزمنية": [], "العاطفة": [], "القافية": []}
+    full_df = {**baits_df, **poems_df}
+    for key in ["diacritized", "arudi_style", "meter", "era", "theme", "qafiyah"]:
+        if key == "arudi_style":
+            for style, mismatch, pattern in zip(
+                output[key], output["patterns_mismatches"], output["closest_patterns"]
+            ):
+                full_df["الكتابة العروضية"].append(style[0])
+                full_df["التفعيله"].append(pattern[-1])
+                full_df["النمط"].append(mismatch)
+
+        elif key == "diacritized":
             for diac_bait in output[key]:
                 for shatr in diac_bait.split("#"):
-                    full_df['المشكل'].append(shatr.strip())
-        elif key == 'closest_baits':
+                    full_df["المشكل"].append(shatr.strip())
+        elif key == "closest_baits":
             for bait in output[key]:
                 for shatr in bait[0][0].split("#"):
-                    full_df['أقرب بيت'].append(shatr.strip())
-        elif key =='meter':
-            for i in range(len(output['arudi_style'])):
+                    full_df["أقرب بيت"].append(shatr.strip())
+        elif key == "meter":
+            for i in range(len(output["arudi_style"])):
                 if i == 0:
-                    full_df['البحر'].append(output[key])
+                    full_df["البحر"].append(output[key])
                 else:
-                    full_df['البحر'].append('')
-        elif key =='era':
-            for i in range(len(output['arudi_style'])):
+                    full_df["البحر"].append("")
+        elif key == "era":
+            for i in range(len(output["arudi_style"])):
                 if i == 0:
-                    full_df['الحقبة الزمنية'].append(output[key][0])
+                    full_df["الحقبة الزمنية"].append(output[key][0])
                 else:
-                    full_df['الحقبة الزمنية'].append('')
-        elif key =='theme':
-            for i in range(len(output['arudi_style'])):
+                    full_df["الحقبة الزمنية"].append("")
+        elif key == "theme":
+            for i in range(len(output["arudi_style"])):
                 if i == 0:
-                    full_df['العاطفة'].append(output[key][0])
+                    full_df["العاطفة"].append(output[key][0])
                 else:
-                    full_df['العاطفة'].append('')
-        elif key =='qafiyah':
-            for i in range(len(output['arudi_style'])):
+                    full_df["العاطفة"].append("")
+        elif key == "qafiyah":
+            for i in range(len(output["arudi_style"])):
                 if i == 0:
-                    full_df['القافية'].append(' '.join(output[key]))
+                    full_df["القافية"].append(" ".join(output[key]))
                 else:
-                    full_df['القافية'].append('')
+                    full_df["القافية"].append("")
     return pd.DataFrame(full_df)
 
-def process_and_write(input,output_file_path='/content/baits_input.txt'):
-  lines = input.split("\n")[1:-1]
-  baits = []
-  for i in range(len(lines) // 2):
-    bait = ' # '.join(lines[i*2:(i+1)*2])
-    baits.append(bait)
-  open(output_file_path, 'w').write('\n'.join(baits))
+
+def process_and_write(input, output_file_path="/content/baits_input.txt"):
+    lines = input.split("\n")[1:-1]
+    baits = []
+    for i in range(len(lines) // 2):
+        bait = " # ".join(lines[i * 2 : (i + 1) * 2])
+        baits.append(bait)
+    open(output_file_path, "w").write("\n".join(baits))
+
 
 import re
 from IPython.display import HTML
 
+
 def process_colors(pattern):
     out = ""
-    map_colors ={"R":"#EB5353", "G":"#36AE7C", "B":"#187498", "Y":"#F9D923"}
-    for i in range(len(pattern)// 2) :
-      color = pattern[2*i]
-      bit = pattern[2*i+1]
-      out += f'<span style="color: {map_colors[color]}">{bit}</span>'
+    map_colors = {"R": "#EB5353", "G": "#36AE7C", "B": "#187498", "Y": "#F9D923"}
+    for i in range(len(pattern) // 2):
+        color = pattern[2 * i]
+        bit = pattern[2 * i + 1]
+        out += f'<span style="color: {map_colors[color]}">{bit}</span>'
     return out
 
+
 def display_highlighted_patterns(df):
-    head = """
+    head = (
+        """
     <html>
     <head>
     <style>
@@ -275,21 +284,21 @@ def display_highlighted_patterns(df):
 
     <table>
         <thead>
-            """ + \
-            "".join(["<th> %s </th>" % c for c in df.columns])\
-            + """
+            """
+        + "".join(["<th> %s </th>" % c for c in df.columns])
+        + """
         </thead>
     <tbody>"""
-    for i,r in df.iterrows():
+    )
+    for i, r in df.iterrows():
         row = "<tr>"
         for c in list(df.columns):
-          if c == "النمط":
-            row += "<td> %s </td>" % process_colors(r[c])
-          else:
-            row += "<td> %s </td>" % r[c]
+            if c == "النمط":
+                row += "<td> %s </td>" % process_colors(r[c])
+            else:
+                row += "<td> %s </td>" % r[c]
         row += "</tr>"
         head += row
 
     head += "</tbody></table></html>"
     display(HTML(head))
-
